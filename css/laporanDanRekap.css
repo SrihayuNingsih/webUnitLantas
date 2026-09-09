@@ -1,0 +1,83 @@
+/* =========================================================
+   LAPORAN & REKAP
+   CSS TAMBAHAN
+========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   AREA UTAMA DESKTOP
+   Mengikuti --sidebar-width milik dashboard utama.
+========================================================= */
+
+@media (min-width: 768px) {
+  #laporanRekapMain {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
+}
+
+/* =========================================================
+   MOBILE
+   Tidak memakai margin sidebar.
+========================================================= */
+
+@media (max-width: 767px) {
+  #laporanRekapMain {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* =========================================================
+   INPUT DATE
+========================================================= */
+
+input[type='date'] {
+  min-height: 42px;
+}
+
+/* =========================================================
+   FONT FORM
+========================================================= */
+
+select,
+input,
+button {
+  font-family: inherit;
+}
+
+/* =========================================================
+   DISABLED BUTTON
+========================================================= */
+
+button:disabled {
+  opacity: 1;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bfdbfe;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #93c5fd;
+}

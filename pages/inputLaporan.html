@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Halaman Input Laporan</title>
+
+    <link rel="stylesheet" href="../css/inputLaporan.css" />
+    <link rel="stylesheet" href="../css/navbarInputLaporan.css" />
+
+    <!-- =====================================================
+       AWAL LIBRARY TAILWIND CSS
+  ====================================================== -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              lantas: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+                950: '#172554',
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- =====================================================
+       AKHIR LIBRARY TAILWIND CSS
+  ====================================================== -->
+
+    <!-- =====================================================
+       AWAL LIBRARY LUCIDE ICON
+  ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- =====================================================
+       AKHIR LIBRARY LUCIDE ICON
+  ====================================================== -->
+  </head>
+
+  <body class="min-h-screen overflow-x-hidden bg-blue-50/50 text-slate-800">
+    <!-- =====================================================
+   AWAL KOMPONEN NAVBAR
+====================================================== -->
+
+    <header
+      id="navbar"
+      class="sticky top-0 z-50 xl:h-[80px] 2xl:h-[100px] w-full border-b border-blue-800/60 bg-blue-950 text-white shadow-md shadow-blue-950/20"
+    >
+      <div class="w-full">
+        <!-- =================================================
+       AWAL BARIS UTAMA NAVBAR
+  ================================================== -->
+
+        <div
+          class="flex min-h-[70px] items-center gap-3 px-3 sm:px-5 md:min-h-[82px] lg:px-8 xl:px-10 2xl:px-12"
+        >
+          <!-- ===============================================
+         AWAL IDENTITAS MOBILE
+    ================================================ -->
+
+          <div class="flex min-w-0 items-center gap-2 sm:gap-3 md:hidden">
+            <!-- HAMBURGER -->
+
+            <button
+              id="menuButton"
+              type="button"
+              aria-label="Buka menu"
+              aria-expanded="false"
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-700/50 bg-blue-900/60 transition hover:bg-amber-500/20 active:scale-95 sm:h-11 sm:w-11"
+            >
+              <i
+                id="menuIcon"
+                data-lucide="menu"
+                class="h-5 w-5 sm:h-6 sm:w-6"
+              ></i>
+            </button>
+
+            <!-- LOGO -->
+
+            <div
+              class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12"
+            >
+              <img
+                src="../assets/images/logo/logoLantas.png"
+                alt="Logo Lalu Lintas"
+                class="h-full w-full object-contain"
+              />
+            </div>
+
+            <!-- IDENTITAS -->
+
+            <div class="min-w-0 leading-tight">
+              <h1
+                class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-sm"
+              >
+                UNIT LANTAS
+              </h1>
+
+              <p
+                class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-base"
+              >
+                POLSEK BAURENO
+              </p>
+            </div>
+          </div>
+
+          <!-- ===============================================
+         AKHIR IDENTITAS MOBILE
+    ================================================ -->
+
+          <!-- ===============================================
+         AWAL BAGIAN KANAN NAVBAR
+    ================================================ -->
+
+          <div
+            class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-5"
+          >
+            <!-- MODE PENGUNJUNG -->
+
+            <!-- <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
+          <span
+            class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
+          >
+            Mode Pengunjung
+          </span>
+
+          <button
+            id="loginButton"
+            type="button"
+            aria-label="Login Petugas"
+            title="Login Petugas"
+            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 lg:h-8 sm:gap-2 sm:px-3 sm:text-sm"
+          >
+            <i
+              data-lucide="log-in"
+              class="h-5 w-5 min-[380px]:h-3.5 min-[380px]:w-3.5 sm:h-[10px] sm:w-[10px]"
+            ></i>
+
+            <span class="hidden sm:inline"></span>
+          </button>
+        </div> -->
+
+            <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
+              <span
+                class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
+              >
+                Mode Pengunjung
+              </span>
+
+              <button
+                id="loginButton"
+                type="button"
+                aria-label="Login Petugas"
+                title="Login Petugas"
+                class="flex h-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 min-[380px]:px-2 sm:h-8 sm:gap-2 sm:px-3 sm:text-sm"
+              >
+                <!-- Perbaikan class icon di bawah ini -->
+                <i data-lucide="log-in" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></i>
+                <!-- Mengisi teks yang muncul saat layar minimal sm (640px) -->
+                <!-- <span class="hidden sm:inline">Login</span> -->
+              </button>
+            </div>
+
+            <!-- MODE PETUGAS -->
+
+            <div id="adminStatus" class="hidden items-center gap-2 lg:gap-5">
+              <div class="text-right leading-tight">
+                <p class="text-xs font-bold text-white sm:text-sm lg:text-md">
+                  Admin Lantas
+                </p>
+
+                <div class="mt-0.5 flex items-center justify-end gap-1.5">
+                  <span
+                    class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.8)]"
+                  ></span>
+
+                  <span
+                    class="text-[10px] font-medium text-green-300 sm:text-xs lg:text-md xl:text-lg 2xl:text-xl"
+                  >
+                    Online
+                  </span>
+                </div>
+              </div>
+
+              <button
+                id="logoutButton"
+                type="button"
+                aria-label="Logout"
+                title="Logout"
+                class="flex h-8 w-8 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
+              >
+                <i data-lucide="log-out" class="h-5 w-5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ===============================================
+         AKHIR BAGIAN KANAN NAVBAR
+    ================================================ -->
+        </div>
+
+        <!-- =================================================
+       AKHIR BARIS UTAMA NAVBAR
+  ================================================== -->
+      </div>
+    </header>
+
+    <!-- =====================================================
+   AKHIR KOMPONEN NAVBAR
+====================================================== -->
+
+    <!-- =====================================================
+   AWAL KOMPONEN OVERLAY MOBILE
+====================================================== -->
+
+    <div
+      id="menuOverlay"
+      class="absolute inset-0 z-40 hidden bg-blue-950/70 backdrop-brightness-90 md:hidden"
+    ></div>
+
+    <!-- =====================================================
+   AKHIR KOMPONEN OVERLAY MOBILE
+====================================================== -->
+
+    <!-- =====================================================
+   AWAL KOMPONEN SIDEBAR
+====================================================== -->
+
+    <aside
+      id="sidebar"
+      class="fixed left-0 top-0 z-[60] flex h-screen w-[290px] max-w-[85vw] -translate-x-full flex-col bg-blue-950 border-r border-blue-800/50 shadow-blue-950/50 text-white shadow-2xl transition-transform duration-300 ease-out md:translate-x-0 md:z-40 md:shadow-none"
+    >
+      <!-- ===============================================
+     AWAL HEADER SIDEBAR
+================================================ -->
+
+      <div
+        class="flex min-h-[82px] shrink-0 items-center justify-between px-4 sm:px-5"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-1 shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14"
+          >
+            <img
+              src="../assets/images/logo/logoLantas.png"
+              alt="Logo Lalu Lintas"
+              class="h-full w-full object-contain"
+            />
+          </div>
+
+          <div class="min-w-0 leading-tight">
+            <h1
+              class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-xs md:text-sm lg:text-md"
+            >
+              UNIT LANTAS
+            </h1>
+
+            <p
+              class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-sm md:text-md lg:text-lg"
+            >
+              POLSEK BAURENO
+            </p>
+          </div>
+        </div>
+
+        <button
+          id="closeMenuButton"
+          type="button"
+          aria-label="Tutup menu"
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-slate-300 transition hover:bg-white/20 hover:text-white active:scale-95 md:hidden"
+        >
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+
+      <!-- ===============================================
+     AKHIR HEADER SIDEBAR
+================================================ -->
+
+      <!-- ===============================================
+     AWAL ISI SIDEBAR
+================================================ -->
+
+      <div class="flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+        <!-- =============================================
+       MENU PENGUNJUNG
+  ============================================== -->
+
+        <nav id="visitorMenu" class="space-y-1">
+          <a
+            href="../dashboard.html"
+            class="menu-link active text-blue-100/90 hover:bg-amber-500/10 hover:text-amber-400"
+          >
+            <span class="menu-label">
+              <i data-lucide="house" class="h-5 w-5"></i>
+              <span class="lg:text-lg">Beranda</span>
+            </span>
+          </a>
+
+          <a href="../pages/halLakaLantas.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="car-front" class="h-5 w-5"></i>
+              <span class="lg:text-lg">Laka Lantas</span>
+            </span>
+          </a>
+
+          <div class="menu-development">
+            <div class="menu-link development-disabled">
+              <span class="menu-label">
+                <i data-lucide="package" class="h-5 w-5"></i>
+
+                <span class="lg:text-lg">Barang Bukti</span>
+              </span>
+            </div>
+
+            <p class="development-text text-blue-400/60 italic lg:text-xs">
+              Proses Pengembangan
+            </p>
+          </div>
+
+          <div class="menu-development">
+            <div class="menu-link development-disabled">
+              <span class="menu-label">
+                <i data-lucide="package-check" class="h-5 w-5"></i>
+
+                <span class="lg:text-lg">Pengambilan BB</span>
+              </span>
+            </div>
+
+            <p class="development-text text-blue-400/60 italic lg:text-xs">
+              Proses Pengembangan
+            </p>
+          </div>
+
+          <a href="../pages/laporanDanRekap.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="file-chart-column" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Laporan & Rekap</span>
+            </span>
+          </a>
+
+          <a href="../pages/informasi.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="info" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Informasi</span>
+            </span>
+          </a>
+        </nav>
+
+        <!-- =============================================
+       MENU PETUGAS
+  ============================================== -->
+
+        <nav id="officerMenu" class="hidden space-y-1">
+          <a href="../dashboard.html" class="menu-link active">
+            <span class="menu-label">
+              <i data-lucide="house" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Beranda</span>
+            </span>
+          </a>
+
+          <!-- DROPDOWN LAKA -->
+
+          <div class="dropdown-group">
+            <button
+              type="button"
+              class="menu-link dropdown-button"
+              data-dropdown="dropdown-laka"
+            >
+              <span class="menu-label">
+                <i data-lucide="car-front" class="h-5 w-5"></i>
+
+                <span class="lg:text-lg">Laka Lantas</span>
+              </span>
+
+              <i
+                data-lucide="chevron-down"
+                class="dropdown-chevron h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 transition-transform"
+              ></i>
+            </button>
+
+            <div id="dropdown-laka" class="dropdown-content hidden">
+              <a
+                href="../pages/inputLaporan.html"
+                class="submenu-link text-blue-200 hover:bg-amber-500/10 hover:text-amber-400"
+              >
+                <i data-lucide="plus-circle" class="h-4 w-4"></i>
+                <span class="lg:text-sm">Input Baru</span>
+              </a>
+
+              <a
+                href="../pages/halLakaLantas.html"
+                class="submenu-link text-blue-200 hover:bg-amber-500/10 hover:text-amber-400"
+              >
+                <i data-lucide="list" class="h-4 w-4"></i>
+                <span class="lg:text-sm">Daftar Laka Lantas</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- BARANG BUKTI -->
+
+          <div class="dropdown-group">
+            <button
+              type="button"
+              disabled
+              class="menu-link dropdown-button disabled-dropdown"
+            >
+              <span class="menu-label">
+                <i data-lucide="package" class="h-5 w-5"></i>
+
+                <span class="lg:text-lg">Barang Bukti</span>
+              </span>
+
+              <i
+                data-lucide="chevron-down"
+                class="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 opacity-50"
+              ></i>
+            </button>
+
+            <p class="development-text text-blue-400/60 italic lg:text-xs">
+              Proses Pengembangan
+            </p>
+          </div>
+
+          <!-- PENGAMBILAN BB -->
+
+          <div class="dropdown-group">
+            <button
+              type="button"
+              disabled
+              class="menu-link dropdown-button disabled-dropdown"
+            >
+              <span class="menu-label">
+                <i data-lucide="package-check" class="h-5 w-5"></i>
+
+                <span class="lg:text-lg">Pengambilan BB</span>
+              </span>
+
+              <i
+                data-lucide="chevron-down"
+                class="h-4 w-4 lg:h-6 lg:w-6 xl:h-8 xl:w-8 opacity-50"
+              ></i>
+            </button>
+
+            <p class="development-text text-blue-400/60 italic lg:text-xs">
+              Proses Pengembangan
+            </p>
+          </div>
+
+          <a href="../pages/laporanDanRekap.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="file-chart-column" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Laporan & Rekap</span>
+            </span>
+          </a>
+
+          <a href="../pages/daftarPersonil.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="users" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Daftar Personil</span>
+            </span>
+          </a>
+
+          <a href="../pages/informasi.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="info" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Informasi</span>
+            </span>
+          </a>
+
+          <a href="../pages/pengaturan.html" class="menu-link">
+            <span class="menu-label">
+              <i data-lucide="settings" class="h-5 w-5"></i>
+
+              <span class="lg:text-lg">Pengaturan</span>
+            </span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- ===============================================
+     AKHIR ISI SIDEBAR
+================================================ -->
+
+      <!-- ===============================================
+     AWAL FOOTER SIDEBAR
+================================================ -->
+
+      <div
+        class="shrink-0 border-t border-white/10 px-4 py-5 text-center sm:px-5"
+      >
+        <img
+          src="../assets/images/logo/presisiPutih.png"
+          alt="Logo Polri Presisi"
+          class="mx-auto h-12 w-auto object-contain sm:h-16"
+        />
+      </div>
+
+      <!-- ===============================================
+     AKHIR FOOTER SIDEBAR
+================================================ -->
+    </aside>
+
+    <!-- =====================================================
+   AKHIR KOMPONEN SIDEBAR
+====================================================== -->
+
+    <!-- ============================================================================================== 
+        AWAL HALAMAN INPUT
+        =========================================================================================== -->
+    <!-- =================================================================== -->
+    <!-- BARIS NAVIGASI ATAS & JUDUL HALAMAN                                -->
+    <!-- =================================================================== -->
+    <div id="inputLaporan" class="px-3 py-3 xl:px-4">
+      <div class="header-page mb-4">
+        <button
+          id="btn-back-previous"
+          type="button"
+          class="text-blue-600 text-sm font-medium flex items-center gap-1 mb-2 hidden"
+        >
+          &larr; Kembali
+        </button>
+        <h2 id="page-title" class="text-xl font-bold text-slate-800 uppercase">
+          INPUT LAPORAN LAKA LANTAS
+        </h2>
+        <p id="page-subtitle" class="text-xs text-slate-500">
+          Pilih cara input laporan
+        </p>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 1: LANDING PAGE INPUT (HANYA 2 CARD AWAL)                      -->
+      <!-- =================================================================== -->
+      <section
+        id="view-selection-cards"
+        class="view-step grid grid-cols-2 gap-3 mb-6"
+      >
+        <!-- Card 1: Dari WhatsApp Sebagai Input Default (Button menjadi menu active)-->
+        <button
+          id="card-select-wa"
+          type="button"
+          class="card-option border-2 border-slate-200 bg-white p-4 rounded-xl text-center hover:border-blue-600 transition"
+        >
+          <div class="icon-wrapper mb-2 text-blue-600 flex justify-center">
+            <!-- Icon Document / Paste -->
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-xs uppercase text-blue-600">
+            DARI WHATSAPP
+          </h3>
+          <p class="text-[10px] text-blue-500 mt-1">
+            Paste laporan WA & proses
+          </p>
+        </button>
+        <!-- Akhir Card 1 =================================================================== -->
+
+        <!-- Card 2: Input Manual -->
+        <button
+          id="card-select-manual"
+          type="button"
+          class="card-option border-2 border-slate-200 bg-white p-4 rounded-xl text-center hover:border-blue-600 transition"
+        >
+          <div class="icon-wrapper mb-2 text-slate-700 flex justify-center">
+            <!-- Icon Pencil / Edit -->
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-xs uppercase text-slate-800">
+            INPUT MANUAL
+          </h3>
+          <p class="text-[10px] text-slate-500 mt-1">Isi data secara manual</p>
+        </button>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 1: AKHIR LANDING PAGE INPUT (HANYA 2 CARD AWAL)                      -->
+      <!-- =================================================================== -->
+
+      <!-- =================================================================== -->
+      <!-- VIEW 2: HALAMAN PASTE LAPORAN WHATSAPP                              -->
+      <!-- Default Halaman                                                      -->
+      <!-- =================================================================== -->
+      <section id="view-input-wa" class="view-step">
+        <div
+          class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm mb-4"
+        >
+          <label
+            for="textarea-raw-wa"
+            class="block font-bold text-xs uppercase text-slate-800 mb-1"
+          >
+            Tempel Laporan WhatsApp
+          </label>
+          <p class="text-[11px] text-slate-500 mb-3">
+            Paste seluruh isi laporan dari WhatsApp ke kolom di bawah ini
+          </p>
+
+          <textarea
+            id="textarea-raw-wa"
+            rows="12"
+            class="w-full text-xs p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Hari Selasa, tanggal..."
+          ></textarea>
+        </div>
+
+        <!-- Alert Warning -->
+        <div
+          id="alert-warning-paste"
+          class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl flex items-start gap-2 text-xs mb-4"
+        >
+          <span class="font-bold">ⓘ</span>
+          <span>
+            Pastikan seluruh isi laporan sudah disalin sebelum diproses.
+          </span>
+        </div>
+
+        <!-- Tombol Aksi Proses -->
+        <button
+          id="btn-proses-laporan"
+          type="button"
+          class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow-md text-xs uppercase transition"
+        >
+          ⚙ PROSES LAPORAN
+        </button>
+        <p class="text-[10px] text-slate-400 text-center mt-1">
+          Parser akan memproses dan menampilkan hasilnya
+        </p>
+
+        <!-- Tips Box -->
+        <div
+          id="box-tips"
+          class="bg-blue-50/50 border border-blue-100 rounded-xl p-3 mt-4 text-[11px] text-blue-900"
+        >
+          <p class="font-bold mb-1">Tips:</p>
+          <ul class="list-disc list-inside space-y-0.5 text-slate-600">
+            <li>Salin seluruh isi laporan dari WhatsApp</li>
+            <li>Pastikan tidak ada bagian yang terpotong</li>
+            <li>
+              Setelah diproses, periksa kembali semua data sebelum dikirim
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 2: HALAMAN FORM REVIEW & EDIT DATA                             -->
+      <!-- Default Hidden                                                      -->
+      <!-- =================================================================== -->
+      <section id="view-form-review" class="view-step space-y-4">
+        <!-- Banner Status Parsing (Muncul jika masuk via WA Parsing) -->
+        <div
+          id="banner-success-parse"
+          class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl flex items-center justify-between text-xs mb-4"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="bg-emerald-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]"
+            >
+              ✓
+            </span>
+            <span class="font-medium">Data berhasil diproses</span>
+          </div>
+          <span class="text-[10px] text-emerald-600">
+            Periksa kembali sebelum dikirim
+          </span>
+        </div>
+
+        <!-- FORM LAPORAN -->
+        <form id="form-laporan-utama" onsubmit="return false;">
+          <!-- SECTION A: INFORMASI LAPORAN -->
+          <fieldset
+            id="section-info-laporan"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              A. INFORMASI LAPORAN
+            </legend>
+            <div class="space-y-2 mt-2">
+              <div>
+                <label
+                  for="input-id-laporan"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  ID Laporan
+                </label>
+                <input
+                  type="text"
+                  id="input-id-laporan"
+                  class="w-full text-xs p-2 bg-slate-100 border border-slate-300 rounded focus:outline-none"
+                  readonly
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label
+                    for="input-no-urut"
+                    class="text-[10px] font-semibold text-slate-500"
+                  >
+                    No Urut
+                  </label>
+                  <input
+                    type="text"
+                    id="input-no-urut"
+                    class="w-full text-xs p-2 border border-slate-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="input-waktu-input"
+                    class="text-[10px] font-semibold text-slate-500"
+                  >
+                    Waktu Input
+                  </label>
+                  <input
+                    type="text"
+                    id="input-waktu-input"
+                    class="w-full text-xs p-2 bg-slate-100 border border-slate-300 rounded"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- SECTION B: WAKTU & TEMPAT KEJADIAN -->
+          <fieldset
+            id="section-waktu-tempat"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              B. WAKTU & TEMPAT KEJADIAN
+            </legend>
+            <div class="space-y-2 mt-2">
+              <div>
+                <label
+                  for="input-tkp"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  TKP
+                </label>
+                <input
+                  type="text"
+                  id="input-tkp"
+                  class="w-full text-xs p-2 border border-slate-300 rounded"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label
+                    for="input-tanggal-kejadian"
+                    class="text-[10px] font-semibold text-slate-500"
+                  >
+                    Tanggal Kejadian
+                  </label>
+                  <input
+                    type="text"
+                    id="input-tanggal-kejadian"
+                    placeholder="DD/MM/YYYY"
+                    class="w-full text-xs p-2 border border-slate-300 rounded"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="select-hari-kejadian"
+                    class="text-[10px] font-semibold text-slate-500"
+                  >
+                    Hari Kejadian
+                  </label>
+                  <select
+                    id="select-hari-kejadian"
+                    class="w-full text-xs p-2 border border-slate-300 rounded bg-white"
+                  >
+                    <option value="Senin">Senin</option>
+                    <option value="Selasa">Selasa</option>
+                    <option value="Rabu">Rabu</option>
+                    <option value="Kamis">Kamis</option>
+                    <option value="Jumat">Jumat</option>
+                    <option value="Sabtu">Sabtu</option>
+                    <option value="Minggu">Minggu</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="input-jam-kejadian"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  Jam Kejadian
+                </label>
+                <input
+                  type="text"
+                  id="input-jam-kejadian"
+                  placeholder="HH:MM"
+                  class="w-full text-xs p-2 border border-slate-300 rounded"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- SECTION C: KENDARAAN YANG TERLIBAT (DYNAMIC ARRAY) -->
+          <fieldset
+            id="section-kendaraan"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              C. KENDARAAN YANG TERLIBAT KECELAKAAN
+            </legend>
+            <div id="container-list-kendaraan" class="space-y-2 mt-2">
+              <!-- Item baris kendaraan di-generate oleh JS ke dalam container ini -->
+            </div>
+            <button
+              id="btn-add-kendaraan"
+              type="button"
+              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-xs hover:bg-blue-50"
+            >
+              + Tambah Kendaraan
+            </button>
+          </fieldset>
+
+          <!-- SECTION D: DATA PENGENDARA (DYNAMIC ARRAY) -->
+          <fieldset
+            id="section-pengendara"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              D. IDENTITAS PENGENDARA
+            </legend>
+            <div id="container-list-pengendara" class="space-y-2 mt-2">
+              <!-- Item baris pengendara di-generate oleh JS ke dalam container ini -->
+            </div>
+            <button
+              id="btn-add-pengendara"
+              type="button"
+              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-xs hover:bg-blue-50"
+            >
+              + Tambah Pengendara
+            </button>
+          </fieldset>
+
+          <!-- SECTION E: IDENTITAS SAKSI - SAKSI (DYNAMIC ARRAY) -->
+          <fieldset
+            id="section-saksi"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              E. IDENTITAS SAKSI - SAKSI
+            </legend>
+            <div id="container-list-saksi" class="space-y-2 mt-2">
+              <!-- Item baris saksi di-generate oleh JS ke dalam container ini -->
+            </div>
+            <button
+              id="btn-add-saksi"
+              type="button"
+              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-xs hover:bg-blue-50"
+            >
+              + Tambah Saksi
+            </button>
+          </fieldset>
+
+          <!-- SECTION F: KRONOLOGI KEJADIAN -->
+          <fieldset
+            id="section-kronologi"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              F. KRONOLOGI KEJADIAN
+            </legend>
+            <div class="mt-2">
+              <textarea
+                id="textarea-kronologi-final"
+                rows="6"
+                class="w-full text-xs p-2 border border-slate-300 rounded leading-relaxed"
+              ></textarea>
+            </div>
+          </fieldset>
+
+          <!-- SECTION G: DATA KORBAN -->
+          <fieldset
+            id="section-korban"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              G. KORBAN
+            </legend>
+            <div class="grid grid-cols-3 gap-2 mt-2">
+              <div>
+                <label
+                  for="input-korban-lr"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  LR (Luka Ringan)
+                </label>
+                <div
+                  class="flex items-center border border-slate-300 rounded px-2"
+                >
+                  <input
+                    type="number"
+                    id="input-korban-lr"
+                    value="0"
+                    min="0"
+                    class="w-full text-xs p-1.5 focus:outline-none"
+                  />
+
+                  <span class="text-[10px] text-slate-400">Orang</span>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="input-korban-lb"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  LB (Luka Berat)
+                </label>
+                <div
+                  class="flex items-center border border-slate-300 rounded px-2"
+                >
+                  <input
+                    type="number"
+                    id="input-korban-lb"
+                    value="0"
+                    min="0"
+                    class="w-full text-xs p-1.5 focus:outline-none"
+                  />
+                  <span class="text-[10px] text-slate-400">Orang</span>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="input-korban-md"
+                  class="text-[10px] font-semibold text-slate-500"
+                >
+                  MD (Meninggal)
+                </label>
+                <div
+                  class="flex items-center border border-slate-300 rounded px-2"
+                >
+                  <input
+                    type="number"
+                    id="input-korban-md"
+                    value="0"
+                    min="0"
+                    class="w-full text-xs p-1.5 focus:outline-none"
+                  />
+                  <span class="text-[10px] text-slate-400">Orang</span>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- SECTION H: KERUGIAN MATERIAL (KERMAT) -->
+          <fieldset
+            id="section-kermat"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              H. KERMAT
+            </legend>
+            <div class="mt-2">
+              <label
+                for="input-kermat-rupiah"
+                class="text-[10px] font-semibold text-slate-500"
+              >
+                Kerugian Material
+              </label>
+              <input
+                type="text"
+                id="input-kermat-rupiah"
+                placeholder="Rp 0"
+                class="w-full text-xs p-2 border border-slate-300 rounded"
+              />
+            </div>
+          </fieldset>
+
+          <!-- SECTION I: PETUGAS YANG MENANGANI -->
+          <fieldset
+            id="section-petugas"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              I. PETUGAS YANG MENANGANI
+            </legend>
+            <div class="mt-2 space-y-2">
+              <div
+                id="container-tags-petugas"
+                class="flex flex-wrap gap-1 p-2 border border-slate-300 rounded bg-white min-h-[40px]"
+              >
+                <!-- Chip Nama Petugas di-generate via JS -->
+              </div>
+              <button
+                id="btn-add-petugas"
+                type="button"
+                class="w-full border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-xs hover:bg-blue-50"
+              >
+                + Tambah Petugas
+              </button>
+            </div>
+          </fieldset>
+
+          <!-- SECTION J: STATUS PENANGANAN -->
+          <fieldset
+            id="section-status"
+            class="bg-white border border-slate-200 p-3 rounded-xl mb-6"
+          >
+            <legend class="font-bold text-xs uppercase text-slate-800 px-1">
+              J. STATUS PENANGANAN
+            </legend>
+            <div class="mt-2">
+              <select
+                id="select-status-penanganan"
+                class="w-full text-xs p-2 border border-slate-300 rounded bg-white"
+              >
+                <option value="Dalam Penanganan">Dalam Penanganan</option>
+                <option value="Selesai / Damai">Selesai</option>
+                <option value="Pelimpahan">Limpah Polres</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <!-- SUBMIT & CANCEL BUTTONS -->
+          <div class="action-buttons space-y-2">
+            <button
+              id="btn-kirim-laporan"
+              type="button"
+              class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow-md text-xs uppercase transition"
+            >
+              🚀 KIRIM LAPORAN
+            </button>
+            <button
+              id="btn-batal-form"
+              type="button"
+              class="w-full bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-100 transition"
+            >
+              ✕ BATAL
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <!-- =====================================================
+   AWAL KOMPONEN MODAL LOGOUT
+====================================================== -->
+
+    <div
+      id="logoutModal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm"
+    >
+      <div
+        id="logoutModalContent"
+        class="w-full max-w-[400px] overflow-hidden rounded-2xl bg-white shadow-2xl"
+      >
+        <div class="border-b border-slate-100 px-5 py-4 sm:px-6 sm:py-5">
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600"
+            >
+              <i data-lucide="log-out" class="h-5 w-5"></i>
+            </div>
+
+            <div>
+              <h3 class="text-base font-bold text-slate-900 sm:text-lg">
+                Konfirmasi Logout
+              </h3>
+
+              <p class="mt-0.5 text-xs text-slate-500 sm:text-sm">
+                Keluar dari mode petugas
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-5 py-5 sm:px-6 sm:py-6">
+          <p class="text-sm leading-relaxed text-slate-600 sm:text-base">
+            Apakah Anda yakin ingin keluar dari
+            <strong class="text-slate-800">Mode Petugas</strong>
+            dan kembali ke Mode Pengunjung?
+          </p>
+        </div>
+
+        <div
+          class="flex justify-end gap-2 border-t border-slate-100 bg-slate-50 px-5 py-4 sm:px-6"
+        >
+          <button
+            id="cancelLogoutButton"
+            type="button"
+            class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 active:scale-95"
+          >
+            Batal
+          </button>
+
+          <button
+            id="confirmLogoutButton"
+            type="button"
+            class="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 active:scale-95"
+          >
+            <i data-lucide="log-out" class="h-4 w-4"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+   AKHIR KOMPONEN MODAL LOGOUT
+====================================================== -->
+  </body>
+
+  <script src="../js/inputLaporan.js"></script>
+  <script src="../js/navbarInputLaporan.js"></script>
+</html>

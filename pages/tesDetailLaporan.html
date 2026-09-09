@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Tes Detail Laporan Laka Lantas</title>
+
+    <!-- =====================================================
+         TAILWIND
+    ====================================================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              lantas: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+                950: '#172554',
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- =====================================================
+         LUCIDE
+    ====================================================== -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- =====================================================
+         CSS
+    ====================================================== -->
+    <link rel="stylesheet" href="../css/tesDetailLaporan.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+         DETAIL LAPORAN OVERLAY
+    ====================================================== -->
+
+    <div id="detailLaporanOverlay" aria-hidden="false">
+      <div id="detailLaporanPanel">
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header id="detailLaporanHeader">
+          <div
+            class="flex min-h-[76px] items-center justify-between gap-3 px-4 py-3 sm:px-6"
+          >
+            <div class="min-w-0">
+              <p class="detail-header-kicker">Detail Laporan Laka Lantas</p>
+
+              <h1 id="laporanId" class="detail-header-id">-</h1>
+
+              <p class="detail-header-time">
+                Waktu Input:
+                <strong id="waktuInput">-</strong>
+              </p>
+            </div>
+
+            <!-- HANYA CLOSE UNTUK HEADER -->
+            <button
+              id="btnTutupDetail"
+              type="button"
+              aria-label="Tutup Detail Laporan"
+              title="Tutup"
+            >
+              <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <main id="detailLaporanContent">
+          <!-- =================================================
+               IDENTITAS + STATUS
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p class="field-label">Nomor Laporan</p>
+
+                  <p
+                    id="laporanIdSecondary"
+                    class="mt-1 text-base font-black text-blue-950 sm:text-lg"
+                  >
+                    -
+                  </p>
+                </div>
+
+                <div id="statusBadge" data-status="">
+                  <span id="statusBadgeDot"></span>
+
+                  <span id="statusBadgeText">-</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               RINGKASAN
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="clipboard-list" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Ringkasan</h2>
+
+                  <p class="section-subtitle">
+                    Data korban dan kerugian material
+                  </p>
+                </div>
+              </div>
+
+              <div id="ringkasanGrid">
+                <!-- LR -->
+
+                <div class="summary-box">
+                  <span class="summary-label">LR</span>
+
+                  <strong id="jumlahLR" class="summary-value text-green-700">
+                    0
+                  </strong>
+
+                  <span class="summary-description">Luka Ringan</span>
+                </div>
+
+                <!-- LB -->
+
+                <div class="summary-box">
+                  <span class="summary-label">LB</span>
+
+                  <strong id="jumlahLB" class="text-amber-400 summary-value">
+                    0
+                  </strong>
+
+                  <span class="summary-description">Luka Berat</span>
+                </div>
+
+                <!-- MD -->
+
+                <div class="summary-box">
+                  <span class="summary-label">MD</span>
+
+                  <strong id="jumlahMD" class="text-red-700 summary-value">
+                    0
+                  </strong>
+
+                  <span class="summary-description">Meninggal Dunia</span>
+                </div>
+
+                <!-- KERMAT -->
+
+                <div class="summary-box">
+                  <span class="summary-label">Kermat</span>
+
+                  <strong
+                    id="jumlahKermat"
+                    class="summary-value text-[1rem] sm:text-[1.05rem]"
+                  >
+                    Rp 0
+                  </strong>
+
+                  <span class="summary-description">Kerugian Material</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               WAKTU KEJADIAN
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="clock-3" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Waktu Kejadian</h2>
+
+                  <p class="section-subtitle">
+                    Informasi waktu terjadinya kecelakaan
+                  </p>
+                </div>
+              </div>
+
+              <div id="waktuKejadian">
+                <div class="waktu-grid">
+                  <div class="waktu-box">
+                    <p class="field-label">Tanggal</p>
+
+                    <p id="tanggalKejadian" class="field-value">-</p>
+                  </div>
+
+                  <div class="waktu-box">
+                    <p class="field-label">Jam</p>
+
+                    <p id="jamKejadian" class="field-value">-</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               LOKASI
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="map-pin" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Lokasi Kejadian</h2>
+
+                  <p class="section-subtitle">Tempat kejadian perkara</p>
+                </div>
+              </div>
+
+              <div class="data-box">
+                <p class="field-label">TKP</p>
+
+                <p id="tkp" class="field-value">-</p>
+              </div>
+
+              <div id="mapContainer">
+                <div>
+                  <div
+                    class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-300/50 bg-blue-100/70 text-blue-700"
+                  >
+                    <i data-lucide="map" class="h-6 w-6"></i>
+                  </div>
+
+                  <p class="mt-3 text-sm font-extrabold text-blue-950">
+                    Peta Lokasi
+                  </p>
+
+                  <p
+                    class="mt-1 max-w-sm text-xs leading-relaxed text-blue-800/70"
+                  >
+                    Tampilan peta akan diaktifkan setelah koordinat atau data
+                    lokasi tersedia.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               KENDARAAN
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="car-front" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Kendaraan dan Pengendara</h2>
+
+                  <p class="section-subtitle">
+                    Identitas kendaraan dan orang yang terlibat
+                  </p>
+                </div>
+              </div>
+
+              <div id="kendaraanGrid" class="mt-4 grid gap-4 lg:grid-cols-2">
+                <!-- Dirender JavaScript -->
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               SAKSI
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="users" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Saksi-Saksi</h2>
+
+                  <p class="section-subtitle">
+                    Identitas saksi yang memberikan keterangan
+                  </p>
+                </div>
+              </div>
+
+              <div id="saksiGrid" class="mt-4 grid gap-4 md:grid-cols-2">
+                <!-- Dirender JavaScript -->
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               KRONOLOGI
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="list" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Kronologi Kejadian</h2>
+
+                  <p class="section-subtitle">
+                    Uraian kejadian berdasarkan laporan
+                  </p>
+                </div>
+              </div>
+
+              <div id="kronologi">-</div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               PETUGAS
+          ================================================== -->
+
+          <section class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="user-round-check" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Petugas</h2>
+
+                  <p class="section-subtitle">Petugas yang menangani laporan</p>
+                </div>
+              </div>
+
+              <div id="petugasList" class="mt-4 flex flex-col gap-2">
+                <!-- Dirender JavaScript -->
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+               DOKUMENTASI
+          ================================================== -->
+
+          <section id="sectionDokumentasi" class="detail-section">
+            <div class="detail-section-inner">
+              <div class="section-heading">
+                <div class="section-icon">
+                  <i data-lucide="image" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <h2 class="section-title">Dokumentasi</h2>
+
+                  <p class="section-subtitle">
+                    Dokumentasi foto dan berkas laporan
+                  </p>
+                </div>
+              </div>
+
+              <a
+                id="linkDokumentasi"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="flex min-w-0 items-center gap-3">
+                  <div
+                    class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-300/50 bg-blue-100/70 text-blue-700"
+                  >
+                    <i data-lucide="folder-open" class="h-5 w-5"></i>
+                  </div>
+
+                  <div class="min-w-0">
+                    <p class="text-sm font-extrabold text-blue-950">
+                      Dokumentasi Google Drive
+                    </p>
+
+                    <p
+                      id="namaDokumentasi"
+                      class="mt-1 truncate text-xs font-medium text-blue-800/70"
+                    >
+                      Buka dokumentasi
+                    </p>
+                  </div>
+                </div>
+
+                <i
+                  data-lucide="chevron-right"
+                  class="h-5 w-5 shrink-0 text-blue-700"
+                ></i>
+              </a>
+            </div>
+          </section>
+
+          <!-- RUANG BAWAH MOBILE -->
+
+          <div class="h-4 md:hidden"></div>
+        </main>
+
+        <!-- =================================================
+             FOOTER CLOSE MOBILE
+        ================================================== -->
+
+        <div id="detailLaporanFooter" class="md:hidden">
+          <button id="btnTutupDetailBottom" type="button">
+            <i data-lucide="x" class="h-5 w-5"></i>
+
+            <span>Tutup Detail Laporan</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../js/tesDetaillaporan.js"></script>
+  </body>
+</html>

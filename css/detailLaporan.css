@@ -1,0 +1,485 @@
+/* =========================================================
+   HAL DETAIL LAPORAN
+   CSS UMUM
+========================================================= */
+
+
+/* =========================================================
+   RESET RINGAN
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    margin: 0;
+    min-width: 0;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+
+.section-icon {
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.875rem;
+
+    background: rgba(219, 234, 254, 0.8);
+
+    color: #1d4ed8;
+}
+
+
+.section-title {
+    margin: 0;
+
+    font-size: 1rem;
+    line-height: 1.35;
+
+    font-weight: 800;
+
+    color: #1e293b;
+}
+
+
+.section-subtitle {
+    margin-top: 0.15rem;
+
+    font-size: 0.75rem;
+    line-height: 1.4;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.field-label {
+    margin: 0;
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   SUMMARY BOX
+========================================================= */
+
+.summary-box {
+    min-width: 0;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 1rem;
+
+    background: rgba(239, 246, 255, 0.7);
+
+    padding: 0.9rem;
+}
+
+
+.summary-label {
+    display: block;
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+
+    color: #2563eb;
+}
+
+
+.summary-value {
+    display: block;
+
+    margin-top: 0.2rem;
+
+    font-size: 1.35rem;
+
+    line-height: 1.2;
+
+    font-weight: 900;
+
+    color: #172554;
+}
+
+
+.summary-description {
+    display: block;
+
+    margin-top: 0.15rem;
+
+    font-size: 0.7rem;
+
+    line-height: 1.4;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   ACTION POPOVER
+========================================================= */
+
+.action-popover {
+    animation: popoverIn 0.15s ease-out;
+}
+
+
+@keyframes popoverIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   KENDARAAN CARD
+========================================================= */
+
+.vehicle-card {
+    overflow: hidden;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 1.25rem;
+
+    background: #ffffff;
+}
+
+
+.vehicle-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+    padding: 1rem;
+
+    background: linear-gradient(
+        135deg,
+        rgba(239, 246, 255, 1),
+        rgba(219, 234, 254, 0.65)
+    );
+}
+
+
+.vehicle-number {
+    display: flex;
+
+    width: 2.5rem;
+    height: 2.5rem;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.875rem;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 0.875rem;
+
+    font-weight: 900;
+}
+
+
+.vehicle-title {
+    font-size: 0.9rem;
+
+    font-weight: 800;
+
+    color: #1e3a8a;
+}
+
+
+.vehicle-section {
+    padding: 1rem;
+}
+
+
+.vehicle-section + .vehicle-section {
+    border-top: 1px solid #dbeafe;
+}
+
+
+.vehicle-section-title {
+    margin-bottom: 0.75rem;
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   DATA ROW
+========================================================= */
+
+.data-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(90px, 0.45fr)
+        minmax(0, 1fr);
+
+    gap: 0.75rem;
+
+    padding: 0.55rem 0;
+
+    border-bottom: 1px dashed #dbeafe;
+}
+
+
+.data-row:last-child {
+    border-bottom: none;
+}
+
+
+.data-label {
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    color: #64748b;
+}
+
+
+.data-value {
+    min-width: 0;
+
+    white-space: pre-line;
+
+    overflow-wrap: anywhere;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    line-height: 1.55;
+
+    color: #334155;
+}
+
+
+/* =========================================================
+   PERSON CARD
+========================================================= */
+
+.person-card {
+    border: 1px solid #bfdbfe;
+
+    border-radius: 1rem;
+
+    background: rgba(239, 246, 255, 0.65);
+
+    padding: 1rem;
+}
+
+
+.person-number {
+    display: flex;
+
+    width: 2.25rem;
+    height: 2.25rem;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.75rem;
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+    font-size: 0.75rem;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   PETUGAS
+========================================================= */
+
+.petugas-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 1rem;
+
+    background: #eff6ff;
+
+    padding: 0.75rem;
+}
+
+
+.petugas-number {
+    display: flex;
+
+    width: 2rem;
+    height: 2rem;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.7rem;
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+    font-size: 0.7rem;
+
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   LINK DOKUMENTASI
+========================================================= */
+
+#linkDokumentasi {
+    text-decoration: none;
+}
+
+
+#linkDokumentasi.disabled {
+    pointer-events: none;
+
+    opacity: 0.65;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 639px) {
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+
+    .section-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+
+    .section-title {
+        font-size: 0.95rem;
+    }
+
+
+    .data-row {
+        grid-template-columns: 1fr;
+
+        gap: 0.15rem;
+    }
+
+
+    .vehicle-header {
+        padding: 0.9rem;
+    }
+
+
+    .vehicle-section {
+        padding: 0.9rem;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 640px) {
+
+    .summary-box {
+        padding: 1rem;
+    }
+
+}
+
+
+/* =========================================================
+   LAYAR BESAR
+========================================================= */
+
+@media (min-width: 1024px) {
+
+    .vehicle-section {
+        padding: 1.1rem;
+    }
+
+
+    .summary-value {
+        font-size: 1.5rem;
+    }
+
+}

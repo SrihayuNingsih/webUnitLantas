@@ -1,0 +1,277 @@
+/* =====================================================
+       AWAL STYLE NAVBAR + SIDEBAR
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS GLOBAL
+  ====================================================== */
+
+:root {
+  --sidebar-width: clamp(240px, 30vw, 300px);
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(239, 246, 255, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =====================================================
+       AKHIR CSS GLOBAL
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS ICON LOGIN
+  ====================================================== */
+
+#loginButton svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 1.5;
+}
+
+@media (min-width: 380px) {
+  #loginButton svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.7;
+  }
+}
+
+@media (min-width: 640px) {
+  #loginButton svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+  }
+}
+
+/* =====================================================
+       AKHIR CSS ICON LOGIN
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS SIDEBAR MENU
+  ====================================================== */
+
+.menu-link {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 12px 13px;
+  color: rgb(203 213 225);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.menu-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-link:hover {
+  background-color: rgb(255, 174, 0);
+  color: rgb(1 27 145);
+}
+
+.menu-link:active {
+  transform: scale(0.985);
+}
+
+.menu-link.active {
+  background-color: rgb(255, 174, 0);
+  color: white;
+}
+
+/* =====================================================
+       AKHIR CSS SIDEBAR MENU
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS SUBMENU
+  ====================================================== */
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  padding: 10px 12px 10px 47px;
+  color: rgb(148 163 184);
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.submenu-link:hover {
+  background-color: rgb(255, 174, 0);
+  color: rgb(1 27 145);
+}
+
+/* =====================================================
+       AKHIR CSS SUBMENU
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS PROSES PENGEMBANGAN
+  ====================================================== */
+
+.development-text {
+  margin-left: 47px;
+  margin-top: -2px;
+  padding-bottom: 7px;
+  font-size: 10px;
+  font-style: italic;
+  color: rgb(148 163 184);
+}
+
+.development-disabled {
+  cursor: default;
+}
+
+.development-disabled:hover {
+  background-color: transparent;
+  color: rgb(203 213 225);
+}
+
+.disabled-dropdown {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.disabled-dropdown:hover {
+  background-color: transparent;
+  color: rgb(203 213 225);
+}
+
+/* =====================================================
+       AKHIR CSS PROSES PENGEMBANGAN
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS SCROLLBAR SIDEBAR
+  ====================================================== */
+
+#sidebar > div:nth-child(2)::-webkit-scrollbar {
+  width: 5px;
+}
+
+#sidebar > div:nth-child(2)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar > div:nth-child(2)::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =====================================================
+       AKHIR CSS SCROLLBAR SIDEBAR
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS DESKTOP LAYOUT
+  ====================================================== */
+
+@media (min-width: 768px) {
+  #sidebar {
+    width: var(--sidebar-width);
+  }
+
+  #navbar {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    max-width: calc(100% - var(--sidebar-width));
+  }
+
+  #laka-page {
+    margin-left: var(--sidebar-width);
+  }
+
+  #halamanDetail {
+    margin-left: var(--sidebar-width);
+  }
+
+  .menu-link {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    font-size: 15px;
+  }
+
+  .submenu-link {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .menu-link {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .menu-link {
+    font-size: 15px;
+  }
+}
+
+/* =====================================================
+       AKHIR CSS DESKTOP LAYOUT
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS RESPONSIVE KECIL
+  ====================================================== */
+
+@media (max-width: 379px) {
+  #navbar {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+       AKHIR CSS RESPONSIVE KECIL
+  ====================================================== */
+
+/* =====================================================
+       AKHIR STYLE NAVBAR + SIDEBAR
+  ====================================================== */
+
+/* =====================================================
+       AWAL CSS ANIMASI MODAL
+  ====================================================== */
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* =====================================================
+       AKHIR CSS ANIMASI MODAL
+  ====================================================== */

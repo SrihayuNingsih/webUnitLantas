@@ -1,0 +1,25 @@
+@media (min-width: 768px) {
+  #inputLaporan {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* ================================================================
+   ACTIVE STATE CARD PILIHAN INPUT
+   ================================================================ */
+
+.input-card-active {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow:
+    0 0 0 2px rgba(59, 130, 246, 0.15),
+    0 8px 20px rgba(59, 130, 246, 0.12);
+}
+
+/*
+   Saat card aktif, efek hover tetap nyaman.
+*/
+
+.input-card-active:hover {
+  background-color: #dbeafe;
+}

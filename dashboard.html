@@ -319,7 +319,7 @@
          AWAL ISI SIDEBAR
     ================================================ -->
 
-      <div class="flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+      <div class="flex-1 px-3 py-4 sm:px-4">
         <!-- =============================================
            MENU PENGUNJUNG
       ============================================== -->
@@ -546,6 +546,29 @@
         </nav>
       </div>
 
+      <div id="loginStatus" class="flex py-2">
+        <button
+          id="loginButton"
+          type="button"
+          aria-label="Login Petugas"
+          title="Login Petugas"
+          class="flex h-7 w-7 shrink-0 items-center justify-center border border-slate-400 rounded-md text-slate-400 transition hover:border-green-300 hover:bg-slate-500/50 hover:text-green-400 active:scale-95"
+        >
+          <i data-lucide="log-in" class="h-5 w-5 sm:h-[18px] sm:w-[18px]"></i>
+        </button>
+      </div>
+      <div id="logoutStatus" class="hidden py-2">
+        <button
+          id="logoutButton"
+          type="button"
+          aria-label="Logout"
+          title="Logout"
+          class="flex h-7 w-7 shrink-0 items-center justify-center border border-slate-400 rounded-md text-slate-400 transition hover:border-amber-400 hover:bg-slate-300/20 hover:text-amber-400 active:scale-95"
+        >
+          <i data-lucide="log-out" class="h-4 w-4"></i>
+        </button>
+      </div>
+
       <!-- ===============================================
          AKHIR ISI SIDEBAR
     ================================================ -->
@@ -554,14 +577,14 @@
      AWAL FOOTER SIDEBAR
 ================================================ -->
       <div
-        class="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 px-6 pb-30 pt-2 md:py-5 md:pb-0 sm:px-5"
+        class="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 px-6 pb-10 pt-2 md:py-5 md:pb-0 sm:px-5"
       >
         <img
           src="assets/images/logo/presisiPutih.png"
           alt="Logo Polri Presisi"
           class="h-10 w-auto object-contain"
         />
-        <div id="loginStatus" class="flex py-2">
+        <!-- <div id="loginStatus" class="flex py-2">
           <button
             id="loginButton"
             type="button"
@@ -582,7 +605,7 @@
           >
             <i data-lucide="log-out" class="h-4 w-4"></i>
           </button>
-        </div>
+        </div> -->
       </div>
       <!-- ===============================================
          AKHIR FOOTER SIDEBAR

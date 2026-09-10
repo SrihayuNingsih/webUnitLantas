@@ -1650,7 +1650,7 @@ const lihatSemuaButton = document.getElementById("btn-lihat-semua");
 
 if (lihatSemuaButton) {
   lihatSemuaButton.addEventListener("click", function () {
-    alert("Membuka seluruh daftar Laka Lantas.");
+    window.location.href = "pages/halLakaLantas.html";
   });
 }
 
@@ -1704,7 +1704,7 @@ function updateRekapStatus(data = RekapStatusData) {
 
     dalamPenanganan: ["statusDalamPenanganan", "statusDalamDesktop"],
 
-    RJ: ["statusRJ", "statusRJDesktop"],
+    rj: ["statusRJ", "statusRJDesktop"],
 
     limpahPolres: ["statusLimpahPolres", "statusLimpahDesktop"],
   };

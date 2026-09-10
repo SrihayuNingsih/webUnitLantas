@@ -481,7 +481,11 @@ let isMenuOpen = false;
 
 function openSidebar() {
   if (window.innerWidth < 768) {
-    document.body.classList.add("overflow-hidden");
+    // Tambahan Code Baru
+    // Simpan Posisi scroll sekarang
+    const scrollY = window.scrollY;
+    document.body.style.top = `${scrollY}px`;
+    document.body.classList.add("overflow-hidden", "fixed", "w-full");
   }
   /*
       Sidebar mobile saja.
@@ -518,11 +522,15 @@ function closeSidebar() {
     return;
   }
 
+  const scrollY = document.body.style.top;
+
+  document.body.style.top = "";
+
   sidebar.classList.add("-translate-x-full");
 
   menuOverlay.classList.add("hidden");
 
-  document.body.classList.remove("overflow-hidden");
+  document.body.classList.remove("overflow-hidden", "fixed", "w-full");
 
   isMenuOpen = false;
 

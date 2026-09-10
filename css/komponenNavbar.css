@@ -1,13 +1,21 @@
 /* =====================================================
-       AWAL STYLE NAVBAR + SIDEBAR
+       AWAL STYLE APLIKASI
+       
+       Semua CSS custom dikumpulkan di satu tempat.
+       
+       Nanti saat dipecah di VS Code:
+       - Style Navbar
+       - Style Sidebar
+       - Style Responsive
+       dapat dipisahkan dengan mudah.
   ====================================================== */
 
 /* =====================================================
        AWAL CSS GLOBAL
-  ====================================================== */
+    ====================================================== */
 
 :root {
-  --sidebar-width: clamp(240px, 30vw, 300px);
+  --sidebar-width: clamp(240px, 30vw, 260px);
 }
 
 html,
@@ -25,11 +33,31 @@ body {
 
 /* =====================================================
        AKHIR CSS GLOBAL
-  ====================================================== */
+    ====================================================== */
+
+/* =====================================================
+       AWAL CSS ANIMASI MODAL
+    ====================================================== */
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* =====================================================
+       AKHIR CSS ANIMASI MODAL
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS ICON LOGIN
-  ====================================================== */
+    ====================================================== */
 
 #loginButton svg {
   width: 12px;
@@ -55,11 +83,11 @@ body {
 
 /* =====================================================
        AKHIR CSS ICON LOGIN
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS SIDEBAR MENU
-  ====================================================== */
+    ====================================================== */
 
 .menu-link {
   display: flex;
@@ -67,7 +95,7 @@ body {
   align-items: center;
   justify-content: space-between;
   border-radius: 12px;
-  padding: 12px 13px;
+  padding: 12px 12px;
   color: rgb(203 213 225);
   font-size: 14px;
   font-weight: 600;
@@ -85,7 +113,7 @@ body {
 
 .menu-link:hover {
   background-color: rgb(255, 174, 0);
-  color: rgb(1 27 145);
+  color: rgb(1, 27, 145);
 }
 
 .menu-link:active {
@@ -99,11 +127,11 @@ body {
 
 /* =====================================================
        AKHIR CSS SIDEBAR MENU
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS SUBMENU
-  ====================================================== */
+    ====================================================== */
 
 .submenu-link {
   display: flex;
@@ -121,16 +149,16 @@ body {
 
 .submenu-link:hover {
   background-color: rgb(255, 174, 0);
-  color: rgb(1 27 145);
+  color: rgb(1, 27, 145);
 }
 
 /* =====================================================
        AKHIR CSS SUBMENU
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS PROSES PENGEMBANGAN
-  ====================================================== */
+    ====================================================== */
 
 .development-text {
   margin-left: 47px;
@@ -162,11 +190,11 @@ body {
 
 /* =====================================================
        AKHIR CSS PROSES PENGEMBANGAN
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS SCROLLBAR SIDEBAR
-  ====================================================== */
+    ====================================================== */
 
 #sidebar > div:nth-child(2)::-webkit-scrollbar {
   width: 5px;
@@ -183,11 +211,11 @@ body {
 
 /* =====================================================
        AKHIR CSS SCROLLBAR SIDEBAR
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS DESKTOP LAYOUT
-  ====================================================== */
+    ====================================================== */
 
 @media (min-width: 768px) {
   #sidebar {
@@ -200,78 +228,74 @@ body {
     max-width: calc(100% - var(--sidebar-width));
   }
 
-  #laka-page {
+  #footer {
     margin-left: var(--sidebar-width);
   }
 
-  #halamanDetail {
+  main {
     margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    max-width: calc(100% - var(--sidebar-width));
+    overflow-x: hidden;
   }
 
   .menu-link {
-    padding-top: 13px;
-    padding-bottom: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 15px;
   }
 
   .submenu-link {
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 14px;
   }
 }
 
 @media (min-width: 1200px) {
   .menu-link {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
 @media (min-width: 1600px) {
   .menu-link {
     font-size: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 }
 
 /* =====================================================
        AKHIR CSS DESKTOP LAYOUT
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS RESPONSIVE KECIL
-  ====================================================== */
+    ====================================================== */
 
 @media (max-width: 379px) {
-  #navbar {
-    width: 100%;
+  #section-laka-terbaru {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  #section-rekap-status {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  #section-petugas-piket {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 }
 
 /* =====================================================
        AKHIR CSS RESPONSIVE KECIL
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
-       AKHIR STYLE NAVBAR + SIDEBAR
-  ====================================================== */
-
-/* =====================================================
-       AWAL CSS ANIMASI MODAL
-  ====================================================== */
-
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-/* =====================================================
-       AKHIR CSS ANIMASI MODAL
+       AKHIR STYLE APLIKASI
   ====================================================== */

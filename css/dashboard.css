@@ -15,7 +15,7 @@
     ====================================================== */
 
 :root {
-  --sidebar-width: clamp(240px, 30vw, 300px);
+  --sidebar-width: clamp(240px, 30vw, 260px);
 }
 
 html,
@@ -95,7 +95,7 @@ body {
   align-items: center;
   justify-content: space-between;
   border-radius: 12px;
-  padding: 12px 13px;
+  padding: 12px 12px;
   color: rgb(203 213 225);
   font-size: 14px;
   font-weight: 600;
@@ -240,28 +240,30 @@ body {
   }
 
   .menu-link {
-    padding-top: 13px;
-    padding-bottom: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 15px;
   }
 
   .submenu-link {
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 14px;
   }
 }
 
 @media (min-width: 1200px) {
   .menu-link {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
 @media (min-width: 1600px) {
   .menu-link {
     font-size: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 }
 

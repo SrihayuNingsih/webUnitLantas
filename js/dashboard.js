@@ -477,6 +477,9 @@ let isMenuOpen = false;
   ===================================================== */
 
 function openSidebar() {
+  if (window.innerWidth < 768) {
+    document.body.classList.add("overflow-hidden");
+  }
   /*
       Sidebar mobile saja.
       

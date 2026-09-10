@@ -61,19 +61,19 @@
 
     <header
       id="navbar"
-      class="sticky transition-all duration-300 ease-in-out translate-y-0 top-0 z-50 xl:h-[80px] 2xl:h-[100px] w-full border-b border-blue-800/60 bg-blue-950 text-white shadow-md shadow-blue-950/20"
+      class="sticky transition-all duration-300 ease-in-out translate-y-0 top-0 z-50 xl:h-[60px] w-full border-b border-blue-800/60 bg-blue-950 text-white shadow-md shadow-blue-950/20"
     >
       <div class="w-full">
         <!-- =================================================
-           AWAL BARIS UTAMA NAVBAR
-      ================================================== -->
+         AWAL BARIS UTAMA NAVBAR
+    ================================================== -->
 
         <div
-          class="flex min-h-[70px] items-center gap-3 px-3 sm:px-5 md:min-h-[82px] lg:px-8 xl:px-10 2xl:px-12"
+          class="flex min-h-[70px] items-center gap-3 px-3 sm:px-5 md:min-h-[82px] lg:px-8 xl:min-h-[60px] xl:px-10 2xl:px-12"
         >
           <!-- ===============================================
-             AWAL IDENTITAS MOBILE
-        ================================================ -->
+           AWAL IDENTITAS MOBILE
+      ================================================ -->
 
           <div class="flex min-w-0 items-center gap-2 sm:gap-3 md:hidden">
             <!-- HAMBURGER -->
@@ -122,69 +122,44 @@
           </div>
 
           <!-- ===============================================
-             AKHIR IDENTITAS MOBILE
-        ================================================ -->
+           AKHIR IDENTITAS MOBILE
+      ================================================ -->
 
           <!-- ===============================================
-             AWAL SEARCH DESKTOP
-        ================================================ -->
+           AWAL SEARCH DESKTOP
+      ================================================ -->
 
           <div
             class="relative hidden min-w-0 flex-1 md:flex lg:pr-4 xl:pr-6 2xl:pr-8"
           >
             <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 xl:pl-6 text-slate-400"
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 xl:pl-6"
             >
-              <i data-lucide="search" class="h-5 w-5 xl:h-7 xl:w-7"></i>
+              <i data-lucide="search" class="h-4 w-4"></i>
             </div>
 
             <input
               id="searchInputDesktop"
               type="search"
-              placeholder="Cari laporan laka, nomor polisi, nama, atau informasi..."
-              class="h-11 w-full 2xl:h-14 rounded-xl border border-blue-800 bg-blue-900/50 pl-11 xl:pl-16 pr-4 text-sm text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/80 sm:h-12 lg:text-base xl:text-lg"
+              placeholder="Cari ID laporan, nopol kendaraan, nama, atau informasi..."
+              class="h-8 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 xl:pl-16 pr-4 text-xs text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/80 2xl:h-10"
             />
           </div>
 
           <!-- ===============================================
-             AKHIR SEARCH DESKTOP
-        ================================================ -->
+           AKHIR SEARCH DESKTOP
+      ================================================ -->
 
           <!-- ===============================================
-             AWAL BAGIAN KANAN NAVBAR
-        ================================================ -->
+           AWAL BAGIAN KANAN NAVBAR
+      ================================================ -->
 
           <div
             class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-5"
           >
             <!-- MODE PENGUNJUNG -->
 
-            <!-- <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
-              <span
-                class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
-              >
-                Mode Pengunjung
-              </span>
-
-              <button
-                id="loginButton"
-                type="button"
-                aria-label="Login Petugas"
-                title="Login Petugas"
-                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 lg:h-8 sm:gap-2 sm:px-3 sm:text-sm"
-              >
-                <i
-                  data-lucide="log-in"
-                  class="h-5 w-5 min-[380px]:h-3.5 min-[380px]:w-3.5 sm:h-[10px] sm:w-[10px]"
-                ></i>
-
-                <span class="hidden sm:inline"></span>
-              </button>
-            </div> -->
-            <div
-              id="visitorStatus"
-              class="flex flex-col items-end gap-1 lg:flex-row lg:gap-3"
-            >
+            <div id="visitorStatus" class="flex flex-col items-end gap-1">
               <span
                 class="max-w-[55px] text-center text-[10px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[12px] sm:text-sm lg:text-md"
               >
@@ -198,13 +173,10 @@
                 title="Login Petugas"
                 class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-lantas-900 transition hover:bg-slate-300/20 active:scale-95"
               >
-                <!-- Perbaikan class icon di bawah ini -->
                 <i
                   data-lucide="log-in"
                   class="h-4 w-4 sm:h-4.5 sm:w-4.5 text-blue-300 font-extrabold"
                 ></i>
-                <!-- Mengisi teks yang muncul saat layar minimal sm (640px) -->
-                <!-- <span class="hidden sm:inline">Login</span> -->
               </button>
             </div>
 
@@ -242,42 +214,49 @@
           </div>
 
           <!-- ===============================================
-             AKHIR BAGIAN KANAN NAVBAR
-        ================================================ -->
+           AKHIR BAGIAN KANAN NAVBAR
+      ================================================ -->
         </div>
 
         <!-- =================================================
-           AKHIR BARIS UTAMA NAVBAR
-      ================================================== -->
+         AKHIR BARIS UTAMA NAVBAR
+    ================================================== -->
 
         <!-- =================================================
-           AWAL SEARCH MOBILE
-      ================================================== -->
+         AWAL SEARCH MOBILE
+    ================================================== -->
 
         <div
-          class="border-t border-white/10 px-3 pb-3 sm:px-5 sm:pb-4 md:hidden"
+          class="border-t border-white/10 px-3 py-2 sm:px-5 sm:py-3 md:hidden"
         >
           <div class="relative">
             <div
               class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"
             >
-              <i data-lucide="search" class="h-5 w-5"></i>
+              <i data-lucide="search" class="h-3 w-3"></i>
             </div>
 
             <input
               id="searchInput"
               type="search"
-              placeholder="Cari laporan laka, nomor polisi, nama, atau informasi..."
-              class="h-11 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/50 sm:h-12"
+              placeholder="Cari ID laporan, nopol kendaraan, nama, atau informasi . . ."
+              class="h-8 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 pr-4 text-xs text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/50"
             />
           </div>
         </div>
 
         <!-- =================================================
-           AKHIR SEARCH MOBILE
-      ================================================== -->
+         AKHIR SEARCH MOBILE
+    ================================================== -->
       </div>
     </header>
+    <!-- ### Yang saya ubah Hanya bagian tinggi **baris utama navbar**: ```html
+    md:min-h-[82px] lg:px-8 xl:min-h-[60px] ``` Sebelumnya: ```html
+    md:min-h-[82px] lg:px-8 xl:px-10 ``` Jadi pada layar `xl` ke atas: * tinggi
+    baris navbar = **60px** * `items-center` tetap aktif * search otomatis
+    berada **tepat di tengah vertikal 60px tersebut** * ukuran search tetap
+    `h-9`, dan `2xl:h-10` * padding search tetap seperti kode Anda * posisi
+    visitor/login tidak saya ubah * tampilan mobile tidak saya ubah. -->
 
     <!-- =====================================================
        AKHIR KOMPONEN NAVBAR
@@ -313,7 +292,7 @@
       >
         <div class="flex items-center gap-3">
           <div
-            class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-1 shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14"
+            class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-1 shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12"
           >
             <img
               src="assets/images/logo/logoLantas.png"
@@ -324,13 +303,13 @@
 
           <div class="min-w-0 leading-tight">
             <h1
-              class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-xs md:text-sm lg:text-md"
+              class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-xs md:text-sm"
             >
               UNIT LANTAS
             </h1>
 
             <p
-              class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-sm md:text-md lg:text-lg"
+              class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-sm md:text-md"
             >
               POLSEK BAURENO
             </p>
@@ -360,30 +339,29 @@
            MENU PENGUNJUNG
       ============================================== -->
 
-        <nav id="visitorMenu" class="space-y-1">
-          <a
-            href="dashboard.html"
-            class="menu-link active text-blue-100/90 hover:bg-amber-500/10 hover:text-amber-400"
-          >
+        <nav id="visitorMenu" class="space-y-2">
+          <a href="dashboard.html" class="menu-link active text-blue-100/90">
             <span class="menu-label">
               <i data-lucide="house" class="h-5 w-5"></i>
-              <span class="lg:text-lg">Beranda</span>
+              <span class="lg:text-md">Beranda</span>
             </span>
           </a>
 
           <a href="pages/halLakaLantas.html" class="menu-link">
             <span class="menu-label">
               <i data-lucide="car-front" class="h-5 w-5"></i>
-              <span class="lg:text-lg">Laka Lantas</span>
+              <span class="lg:text-md">Laka Lantas</span>
             </span>
           </a>
 
           <div class="menu-development">
             <div class="menu-link development-disabled">
               <span class="menu-label">
-                <i data-lucide="package" class="h-5 w-5"></i>
+                <i data-lucide="package" class="h-5 w-5 text-slate-500"></i>
 
-                <span class="lg:text-lg">Barang Bukti</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Barang Bukti</span
+                >
               </span>
             </div>
 
@@ -395,9 +373,14 @@
           <div class="menu-development">
             <div class="menu-link development-disabled">
               <span class="menu-label">
-                <i data-lucide="package-check" class="h-5 w-5"></i>
+                <i
+                  data-lucide="package-check"
+                  class="h-5 w-5 text-slate-500"
+                ></i>
 
-                <span class="lg:text-lg">Pengambilan BB</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Pengambilan BB</span
+                >
               </span>
             </div>
 
@@ -410,15 +393,21 @@
             <span class="menu-label">
               <i data-lucide="file-chart-column" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Laporan & Rekap</span>
+              <span class="lg:text-md">Laporan & Rekap</span>
             </span>
           </a>
 
-          <a href="pages/informasi.html" class="menu-link">
+          <a
+            href="#"
+            class="menu-link development-disabled"
+            onclick="return false;"
+          >
             <span class="menu-label">
-              <i data-lucide="info" class="h-5 w-5"></i>
+              <i data-lucide="info" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Informasi</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Informasi</span
+              >
             </span>
           </a>
         </nav>
@@ -432,7 +421,7 @@
             <span class="menu-label">
               <i data-lucide="house" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Beranda</span>
+              <span class="lg:text-md">Beranda</span>
             </span>
           </a>
 
@@ -447,7 +436,7 @@
               <span class="menu-label">
                 <i data-lucide="car-front" class="h-5 w-5"></i>
 
-                <span class="lg:text-lg">Laka Lantas</span>
+                <span class="lg:text-md">Laka Lantas</span>
               </span>
 
               <i
@@ -484,9 +473,11 @@
               class="menu-link dropdown-button disabled-dropdown"
             >
               <span class="menu-label">
-                <i data-lucide="package" class="h-5 w-5"></i>
+                <i data-lucide="package" class="h-5 w-5 text-slate-500"></i>
 
-                <span class="lg:text-lg">Barang Bukti</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Barang Bukti</span
+                >
               </span>
 
               <i
@@ -509,9 +500,14 @@
               class="menu-link dropdown-button disabled-dropdown"
             >
               <span class="menu-label">
-                <i data-lucide="package-check" class="h-5 w-5"></i>
+                <i
+                  data-lucide="package-check"
+                  class="h-5 w-5 text-slate-500"
+                ></i>
 
-                <span class="lg:text-lg">Pengambilan BB</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Pengambilan BB</span
+                >
               </span>
 
               <i
@@ -529,31 +525,37 @@
             <span class="menu-label">
               <i data-lucide="file-chart-column" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Laporan & Rekap</span>
+              <span class="lg:text-md">Laporan & Rekap</span>
             </span>
           </a>
 
           <a href="pages/daftarPersonil.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="users" class="h-5 w-5"></i>
+              <i data-lucide="users" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Daftar Personil</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Daftar Personil</span
+              >
             </span>
           </a>
 
           <a href="pages/informasi.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="info" class="h-5 w-5"></i>
+              <i data-lucide="info" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Informasi</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Informasi</span
+              >
             </span>
           </a>
 
           <a href="pages/pengaturan.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="settings" class="h-5 w-5"></i>
+              <i data-lucide="settings" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Pengaturan</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Pengaturan</span
+              >
             </span>
           </a>
         </nav>
@@ -568,7 +570,7 @@
     ================================================ -->
 
       <div
-        class="shrink-0 border-t border-white/10 px-4 py-20 md:py-5 md:pb-0 text-center sm:px-5"
+        class="shrink-0 border-t border-white/10 px-4 py-12 md:py-5 md:pb-0 text-center sm:px-5"
       >
         <img
           src="assets/images/logo/presisiPutih.png"
@@ -875,7 +877,7 @@
             </h3>
 
             <p
-              class="mt-1 whitespace-nowrap font-bold leading-tight text-amber-500 md:text-lg lg:text-2xl xl:text-3xl 2xl:text-5xl"
+              class="mt-1 whitespace-nowrap font-bold leading-tight text-white md:text-lg lg:text-2xl xl:text-3xl 2xl:text-5xl"
             >
               Polres Bojonegoro
             </p>
@@ -978,13 +980,13 @@
                 class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
               >
                 <div
-                  class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700 border-blue-200 sm:h-12 sm:w-12"
+                  class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-200/70 text-blue-700 border-blue-200 sm:h-12 sm:w-12"
                 >
                   <i data-lucide="car-front" class="h-6 w-6 sm:h-7 sm:w-7"></i>
                 </div>
 
                 <div class="min-w-0 text-left leading-tight">
-                  <p class="text-xs font-bold text-blue-900 sm:text-base">
+                  <p class="text-xs font-bold text-blue-700 sm:text-base">
                     Total Kejadian
                   </p>
 
@@ -1012,7 +1014,7 @@
               <!-- KORBAN LR -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-green-300/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
               >
                 <div
                   class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 sm:h-12 sm:w-12"
@@ -1024,7 +1026,7 @@
                 </div>
 
                 <div class="min-w-0 text-left leading-tight">
-                  <p class="text-xs font-bold text-emerald-900 sm:text-base">
+                  <p class="text-xs font-bold text-blue-700 sm:text-base">
                     Korban LR
                   </p>
 
@@ -1036,7 +1038,7 @@
 
                   <p
                     id="korbanLR"
-                    class="mt-1 text-2xl font-extrabold leading-none text-emerald-900 sm:text-3xl"
+                    class="mt-1 text-2xl font-extrabold leading-none text-green-700 sm:text-3xl"
                   >
                     8
                   </p>
@@ -1052,7 +1054,7 @@
               <!-- KORBAN LB -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-amber-300/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
               >
                 <div
                   class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 sm:h-12 sm:w-12"
@@ -1064,7 +1066,7 @@
                 </div>
 
                 <div class="min-w-0 text-left leading-tight">
-                  <p class="text-xs font-bold text-amber-900 sm:text-base">
+                  <p class="text-xs font-bold text-blue-700 sm:text-base">
                     Korban LB
                   </p>
 
@@ -1076,7 +1078,7 @@
 
                   <p
                     id="korbanLB"
-                    class="mt-1 text-2xl font-extrabold leading-none text-amber-900 sm:text-3xl"
+                    class="mt-1 text-2xl font-extrabold leading-none text-amber-400 sm:text-3xl"
                   >
                     3
                   </p>
@@ -1092,7 +1094,7 @@
               <!-- KORBAN MD -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-red-300/70 bg-blue-50/80 px-3 py-4 shadow-sm sm:min-h-[140px] sm:px-4"
               >
                 <div
                   class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-700 sm:h-12 sm:w-12"
@@ -1101,7 +1103,7 @@
                 </div>
 
                 <div class="min-w-0 text-left leading-tight">
-                  <p class="text-xs font-bold text-rose-900 sm:text-base">
+                  <p class="text-xs font-bold text-blue-700 sm:text-base">
                     Korban MD
                   </p>
 
@@ -1113,7 +1115,7 @@
 
                   <p
                     id="korbanMD"
-                    class="mt-1 text-2xl font-extrabold leading-none text-rose-900 sm:text-3xl"
+                    class="mt-1 text-2xl font-extrabold leading-none text-red-700 sm:text-3xl"
                   >
                     1
                   </p>
@@ -1184,7 +1186,7 @@
                 class="flex min-w-0 flex-1 flex-col justify-center px-4 text-left"
               >
                 <p
-                  class="text-sm font-bold leading-tight text-emerald-700 sm:text-base"
+                  class="text-sm font-bold leading-tight text-blue-700 sm:text-base"
                 >
                   Selesai
                   <br />
@@ -1193,7 +1195,7 @@
 
                 <p
                   id="statusRJ"
-                  class="mt-2 text-2xl font-extrabold leading-none text-emerald-900 sm:text-3xl"
+                  class="mt-2 text-2xl font-extrabold leading-none text-green-700 sm:text-3xl"
                 >
                   3
                 </p>
@@ -1215,7 +1217,7 @@
                 class="flex min-w-0 flex-1 flex-col justify-center px-4 text-left"
               >
                 <p
-                  class="text-sm font-bold leading-tight text-amber-700 sm:text-base"
+                  class="text-sm font-bold leading-tight text-blue-700 sm:text-base"
                 >
                   Limpah
                   <br />
@@ -1224,7 +1226,7 @@
 
                 <p
                   id="statusLimpahPolres"
-                  class="mt-2 text-2xl font-extrabold leading-none text-amber-900 sm:text-3xl"
+                  class="mt-2 text-2xl font-extrabold leading-none text-amber-400 sm:text-3xl"
                 >
                   1
                 </p>
@@ -1283,7 +1285,7 @@
 
                 <div class="min-w-0 text-left leading-tight">
                   <p
-                    class="text-sm font-bold text-blue-900 lg:text-md 2xl:text-lg"
+                    class="text-sm font-bold text-blue-700 lg:text-md 2xl:text-lg"
                   >
                     Total Kejadian
                   </p>
@@ -1308,7 +1310,7 @@
               <!-- LR -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-green-300/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
               >
                 <div
                   class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 xl:h-14 xl:w-14"
@@ -1321,7 +1323,7 @@
 
                 <div class="min-w-0 text-left leading-tight">
                   <p
-                    class="text-sm font-bold text-emerald-900 lg:text-md 2xl:text-lg"
+                    class="text-sm font-bold text-blue-700 lg:text-md 2xl:text-lg"
                   >
                     Korban LR
                   </p>
@@ -1344,7 +1346,7 @@
               <!-- LB -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-amber-200/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
               >
                 <div
                   class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 xl:h-14 xl:w-14"
@@ -1357,7 +1359,7 @@
 
                 <div class="min-w-0 text-left leading-tight">
                   <p
-                    class="text-sm font-bold text-amber-900 lg:text-md 2xl:text-lg"
+                    class="text-sm font-bold text-blue-700 lg:text-md 2xl:text-lg"
                   >
                     Korban LB
                   </p>
@@ -1368,7 +1370,7 @@
 
                   <p
                     id="korbanLBDekstop"
-                    class="mt-2 text-3xl font-extrabold leading-none text-amber-900"
+                    class="mt-2 text-3xl font-extrabold leading-none text-amber-400"
                   >
                     3
                   </p>
@@ -1380,7 +1382,7 @@
               <!-- MD -->
 
               <div
-                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-blue-200/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
+                class="flex min-h-[125px] items-center gap-3 rounded-xl border border-red-300/70 bg-blue-50/80 p-4 lg:min-h-[145px]"
               >
                 <div
                   class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-700 xl:h-14 xl:w-14"
@@ -1388,9 +1390,9 @@
                   <i data-lucide="heart-off" class="h-6 w-6 lg:h-7 lg:w-7"></i>
                 </div>
 
-                <div class="min-w-0 text-left leading-tight">
+                <div class="min-w-0 text-left leading-tight border-red-700">
                   <p
-                    class="text-sm font-bold text-rose-900 lg:text-md 2xl:text-lg"
+                    class="text-sm font-bold text-blue-700 lg:text-md 2xl:text-lg"
                   >
                     Korban MD
                   </p>
@@ -1401,7 +1403,7 @@
 
                   <p
                     id="korbanMDDekstop"
-                    class="mt-2 text-3xl font-extrabold leading-none text-rose-900"
+                    class="mt-2 text-3xl font-extrabold leading-none text-red-700"
                   >
                     1
                   </p>
@@ -1436,7 +1438,7 @@
                 class="flex min-h-[125px] flex-col items-center justify-center rounded-xl border border-blue-200/70 bg-blue-50/70 p-3 text-center lg:min-h-[140px]"
               >
                 <p
-                  class="text-xs font-bold leading-tight text-blue-700 lg:text-md xl:text-lg"
+                  class="text-xs font-bold leading-tight text-blue-700 lg:text-sm xl:text-md"
                 >
                   Dalam
                   <span class="block">Penanganan</span>
@@ -1455,17 +1457,17 @@
               <!-- RJ -->
 
               <div
-                class="flex min-h-[125px] flex-col items-center justify-center rounded-xl border border-blue-200/70 bg-blue-50/70 p-3 text-center lg:min-h-[140px]"
+                class="flex min-h-[125px] flex-col items-center justify-center rounded-xl border border-green-300/70 bg-blue-50/70 p-3 text-center lg:min-h-[140px]"
               >
                 <p
-                  class="text-xs font-bold leading-tight text-emerald-700 lg:text-md xl:text-lg"
+                  class="text-xs font-bold leading-tight text-blue-700 lg:text-sm xl:text-md"
                 >
                   Selesai (Kekeluargaan)
                 </p>
 
                 <p
                   id="statusRJDekstop"
-                  class="mt-2 text-3xl font-extrabold leading-none text-emerald-900 lg:text-4xl"
+                  class="mt-2 text-3xl font-extrabold leading-none text-green-700 lg:text-4xl"
                 >
                   3
                 </p>
@@ -1476,17 +1478,17 @@
               <!-- LIMPAH -->
 
               <div
-                class="col-span-2 flex min-h-[125px] flex-col items-center justify-center rounded-xl border border-blue-200/70 bg-blue-50/70 p-3 text-center lg:min-h-[140px]"
+                class="col-span-2 flex min-h-[125px] flex-col items-center justify-center rounded-xl border border-amber-200/70 bg-blue-50/70 p-3 text-center lg:min-h-[140px]"
               >
                 <p
-                  class="text-xs font-bold leading-tight text-amber-700 lg:text-md xl:text-lg"
+                  class="text-xs font-bold leading-tight text-blue-700 lg:text-sm xl:text-md"
                 >
                   Limpah Polres
                 </p>
 
                 <p
                   id="statusLimpahDekstop"
-                  class="mt-2 text-3xl font-extrabold leading-none text-amber-900 lg:text-4xl"
+                  class="mt-2 text-3xl font-extrabold leading-none text-amber-400 lg:text-4xl"
                 >
                   1
                 </p>
@@ -1657,7 +1659,7 @@
             <button
               id="btn-lihat-semua"
               type="button"
-              class="self-start rounded-xl b-blue-600 bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-blue-950 sm:self-auto sm:px-5 sm:py-2.5 sm:text-sm"
+              class="self-start rounded-xl b-blue-600 bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-blue-900 sm:self-auto sm:px-5 sm:py-2.5 sm:text-sm"
             >
               LIHAT SEMUA
             </button>

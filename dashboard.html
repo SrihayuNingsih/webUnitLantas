@@ -88,14 +88,14 @@
               <i
                 id="menuIcon"
                 data-lucide="menu"
-                class="h-5 w-5 sm:h-6 sm:w-6"
+                class="h-7 w-7 sm:h-8 sm:w-8"
               ></i>
             </button>
 
             <!-- LOGO -->
 
             <div
-              class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12"
+              class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md sm:h-12 sm:w-12"
             >
               <img
                 src="assets/images/logo/logoLantas.png"
@@ -108,13 +108,13 @@
 
             <div class="min-w-0 leading-tight">
               <h1
-                class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-sm"
+                class="truncate text-[9px] min-[380px]:text-[11px] font-semibold tracking-wide text-slate-300"
               >
                 UNIT LANTAS
               </h1>
 
               <p
-                class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-base"
+                class="truncate text-[10px] min-[380px]:text-sm font-extrabold tracking-wide text-amber-400"
               >
                 POLSEK BAURENO
               </p>
@@ -181,11 +181,14 @@
                 <span class="hidden sm:inline"></span>
               </button>
             </div> -->
-            <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
+            <div
+              id="visitorStatus"
+              class="flex flex-col items-end gap-1 lg:flex-row lg:gap-3"
+            >
               <span
-                class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
+                class="max-w-[55px] text-center text-[10px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[12px] sm:text-sm lg:text-md"
               >
-                Mode Pengunjung
+                Pengunjung
               </span>
 
               <button
@@ -193,10 +196,13 @@
                 type="button"
                 aria-label="Login Petugas"
                 title="Login Petugas"
-                class="flex h-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 min-[380px]:px-2 sm:h-8 sm:gap-2 sm:px-3 sm:text-sm"
+                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-lantas-900 transition hover:bg-slate-300/20 active:scale-95"
               >
                 <!-- Perbaikan class icon di bawah ini -->
-                <i data-lucide="log-in" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></i>
+                <i
+                  data-lucide="log-in"
+                  class="h-4 w-4 sm:h-4.5 sm:w-4.5 text-amber-300 font-extrabold"
+                ></i>
                 <!-- Mengisi teks yang muncul saat layar minimal sm (640px) -->
                 <!-- <span class="hidden sm:inline">Login</span> -->
               </button>
@@ -228,9 +234,9 @@
                 type="button"
                 aria-label="Logout"
                 title="Logout"
-                class="flex h-8 w-8 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
+                class="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
               >
-                <i data-lucide="log-out" class="h-5 w-5"></i>
+                <i data-lucide="log-out" class="h-3 w-3"></i>
               </button>
             </div>
           </div>
@@ -562,7 +568,7 @@
     ================================================ -->
 
       <div
-        class="shrink-0 border-t border-white/10 px-4 py-5 text-center sm:px-5"
+        class="shrink-0 border-t border-white/10 px-4 py-5 pb-10 md:pb-0 text-center sm:px-5"
       >
         <img
           src="assets/images/logo/presisiPutih.png"

@@ -8,7 +8,7 @@
 // State Halaman Laka
 let lakaPageCurrent = 1;
 let lakaPageSize = 10;
-let lakaSortOrder = 'terbaru';
+let lakaSortOrder = "terbaru";
 let lakaFilteredData = [...lakaData];
 
 /* =====================================================
@@ -23,51 +23,51 @@ let lakaPageActiveMenuId = null;
          HELPER STATUS LAKA
       ===================================================== */
 function getStatusDot(statusText) {
-  const status = (statusText || '').toLowerCase().trim();
-  if (status === 'selesai') return 'bg-emerald-500';
-  if (status === 'dalam penanganan') return 'bg-amber-600';
-  if (status === 'limpah polres') return 'bg-rose-600';
-  return 'bg-slate-300';
+  const status = (statusText || "").toLowerCase().trim();
+  if (status === "selesai") return "bg-green-700";
+  if (status === "dalam penanganan") return "bg-amber-400";
+  if (status === "limpah polres") return "bg-red-700";
+  return "bg-slate-300";
 }
 
 function getStatusText(statusText) {
-  const status = (statusText || '').toLowerCase().trim();
-  if (status === 'selesai') return 'text-emerald-600';
-  if (status === 'dalam penanganan') return 'text-amber-600';
-  if (status === 'limpah polres') return 'text-rose-600';
-  return 'text-slate-500';
+  const status = (statusText || "").toLowerCase().trim();
+  if (status === "selesai") return "text-green-700";
+  if (status === "dalam penanganan") return "text-amber-400";
+  if (status === "limpah polres") return "text-red-700";
+  return "text-slate-500";
 }
 
 /* =====================================================
          HELPER TANGGAL & WAKTU LAKA
       ===================================================== */
 function getLakaMonthNumber(item) {
-  if (!item || !item.hariTanggal) return '';
+  if (!item || !item.hariTanggal) return "";
   const bulanMap = {
-    Januari: '01',
-    Februari: '02',
-    Maret: '03',
-    April: '04',
-    Mei: '05',
-    Juni: '06',
-    Juli: '07',
-    Agustus: '08',
-    September: '09',
-    Oktober: '10',
-    November: '11',
-    Desember: '12',
+    Januari: "01",
+    Februari: "02",
+    Maret: "03",
+    April: "04",
+    Mei: "05",
+    Juni: "06",
+    Juli: "07",
+    Agustus: "08",
+    September: "09",
+    Oktober: "10",
+    November: "11",
+    Desember: "12",
   };
-  const bagianTanggal = item.hariTanggal.split(',');
-  if (bagianTanggal.length < 2) return '';
-  const tanggal = bagianTanggal[1].trim().split(' ');
-  if (tanggal.length < 2) return '';
-  return bulanMap[tanggal[1]] || '';
+  const bagianTanggal = item.hariTanggal.split(",");
+  if (bagianTanggal.length < 2) return "";
+  const tanggal = bagianTanggal[1].trim().split(" ");
+  if (tanggal.length < 2) return "";
+  return bulanMap[tanggal[1]] || "";
 }
 
 function getLakaYear(item) {
-  if (!item || !item.hariTanggal) return '';
-  const bagianTanggal = item.hariTanggal.trim().split(' ');
-  return bagianTanggal[bagianTanggal.length - 1] || '';
+  if (!item || !item.hariTanggal) return "";
+  const bagianTanggal = item.hariTanggal.trim().split(" ");
+  return bagianTanggal[bagianTanggal.length - 1] || "";
 }
 
 function getLakaHour(item) {
@@ -124,26 +124,26 @@ function getLakaHour(item) {
 function parseIndonesianDate(dateStr) {
   if (!dateStr) return null;
   const monthMap = {
-    Januari: '01',
-    Februari: '02',
-    Maret: '03',
-    April: '04',
-    Mei: '05',
-    Juni: '06',
-    Juli: '07',
-    Agustus: '08',
-    September: '09',
-    Oktober: '10',
-    November: '11',
-    Desember: '12',
+    Januari: "01",
+    Februari: "02",
+    Maret: "03",
+    April: "04",
+    Mei: "05",
+    Juni: "06",
+    Juli: "07",
+    Agustus: "08",
+    September: "09",
+    Oktober: "10",
+    November: "11",
+    Desember: "12",
   };
-  const parts = dateStr.split(',');
+  const parts = dateStr.split(",");
   const strToParse = parts.length > 1 ? parts[1].trim() : parts[0].trim();
-  const dateTokens = strToParse.split(' ');
+  const dateTokens = strToParse.split(" ");
   if (dateTokens.length < 3) return null;
 
-  const day = dateTokens[0].padStart(2, '0');
-  const month = monthMap[dateTokens[1]] || '01';
+  const day = dateTokens[0].padStart(2, "0");
+  const month = monthMap[dateTokens[1]] || "01";
   const year = dateTokens[2];
 
   return new Date(`${year}-${month}-${day}`);
@@ -174,7 +174,7 @@ function sortLakaData(data) {
     /*
      * Terbaru → Terlama
      */
-    if (lakaSortOrder === 'terbaru') {
+    if (lakaSortOrder === "terbaru") {
       return dateB - dateA;
     }
 
@@ -190,15 +190,15 @@ function sortLakaData(data) {
    ===================================================== */
 
 function toggleLakaSortMenu() {
-  const button = document.getElementById('laka-sort-button');
-  const menu = document.getElementById('laka-sort-menu');
+  const button = document.getElementById("laka-sort-button");
+  const menu = document.getElementById("laka-sort-menu");
 
   if (!button || !menu) return;
 
-  const isHidden = menu.classList.contains('hidden');
+  const isHidden = menu.classList.contains("hidden");
 
-  menu.classList.toggle('hidden', !isHidden);
-  button.setAttribute('aria-expanded', String(isHidden));
+  menu.classList.toggle("hidden", !isHidden);
+  button.setAttribute("aria-expanded", String(isHidden));
 
   if (window.lucide) {
     lucide.createIcons();
@@ -206,15 +206,15 @@ function toggleLakaSortMenu() {
 }
 
 function closeLakaSortMenu() {
-  const button = document.getElementById('laka-sort-button');
-  const menu = document.getElementById('laka-sort-menu');
+  const button = document.getElementById("laka-sort-button");
+  const menu = document.getElementById("laka-sort-menu");
 
   if (!menu) return;
 
-  menu.classList.add('hidden');
+  menu.classList.add("hidden");
 
   if (button) {
-    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute("aria-expanded", "false");
   }
 }
 
@@ -223,10 +223,10 @@ function applyLakaSort(sortValue) {
    * newest = Terbaru → Terlama
    * oldest = Terlama → Terbaru
    */
-  if (sortValue === 'newest') {
-    lakaSortOrder = 'terbaru';
-  } else if (sortValue === 'oldest') {
-    lakaSortOrder = 'terlama';
+  if (sortValue === "newest") {
+    lakaSortOrder = "terbaru";
+  } else if (sortValue === "oldest") {
+    lakaSortOrder = "terlama";
   } else {
     return;
   }
@@ -250,15 +250,15 @@ function applyLakaSort(sortValue) {
   /* Update Tanda Centang Sesuai pilihan sortir yang aktif */
 
   document
-    .querySelectorAll('#laka-sort-menu [data-sort]')
+    .querySelectorAll("#laka-sort-menu [data-sort]")
     .forEach(function (item) {
-      const checkIcon = item.querySelector('[data-sort-check]');
+      const checkIcon = item.querySelector("[data-sort-check]");
 
       if (!checkIcon) return;
 
       const isActive = item.dataset.sort === sortValue;
 
-      checkIcon.classList.toggle('hidden', !isActive);
+      checkIcon.classList.toggle("hidden", !isActive);
     });
 
   /*
@@ -269,11 +269,11 @@ function applyLakaSort(sortValue) {
 // Akhir tambahan Code
 
 function applyLakaFilter() {
-  const tahunEl = document.getElementById('filter-tahun');
-  const bulanEl = document.getElementById('filter-bulan');
-  const waktuEl = document.getElementById('filter-waktu');
-  const tglMulaiEl = document.getElementById('filter-tanggal-mulai');
-  const tglAkhirEl = document.getElementById('filter-tanggal-akhir');
+  const tahunEl = document.getElementById("filter-tahun");
+  const bulanEl = document.getElementById("filter-bulan");
+  const waktuEl = document.getElementById("filter-waktu");
+  const tglMulaiEl = document.getElementById("filter-tanggal-mulai");
+  const tglAkhirEl = document.getElementById("filter-tanggal-akhir");
 
   lakaFilteredData = lakaData.filter(function (item) {
     if (lakaRentangTanggalAktif) {
@@ -294,19 +294,19 @@ function applyLakaFilter() {
       return true;
     }
 
-    const tahun = tahunEl ? tahunEl.value : '';
-    const bulan = bulanEl ? bulanEl.value : '';
-    const waktu = waktuEl ? waktuEl.value : '';
+    const tahun = tahunEl ? tahunEl.value : "";
+    const bulan = bulanEl ? bulanEl.value : "";
+    const waktu = waktuEl ? waktuEl.value : "";
 
     if (tahun && getLakaYear(item) !== tahun) return false;
     if (bulan && getLakaMonthNumber(item) !== bulan) return false;
     if (waktu) {
       const jam = getLakaHour(item);
       if (jam === null) return false;
-      if (waktu === '00-06' && (jam < 0 || jam >= 6)) return false;
-      if (waktu === '06-12' && (jam < 6 || jam >= 12)) return false;
-      if (waktu === '12-18' && (jam < 12 || jam >= 18)) return false;
-      if (waktu === '18-24' && (jam < 18 || jam >= 24)) return false;
+      if (waktu === "00-06" && (jam < 0 || jam >= 6)) return false;
+      if (waktu === "06-12" && (jam < 6 || jam >= 12)) return false;
+      if (waktu === "12-18" && (jam < 12 || jam >= 18)) return false;
+      if (waktu === "18-24" && (jam < 18 || jam >= 24)) return false;
     }
     return true;
   });
@@ -321,17 +321,17 @@ function applyLakaFilter() {
 }
 
 function resetLakaFilter() {
-  const tahun = document.getElementById('filter-tahun');
-  const bulan = document.getElementById('filter-bulan');
-  const waktu = document.getElementById('filter-waktu');
-  const tglMulai = document.getElementById('filter-tanggal-mulai');
-  const tglAkhir = document.getElementById('filter-tanggal-akhir');
+  const tahun = document.getElementById("filter-tahun");
+  const bulan = document.getElementById("filter-bulan");
+  const waktu = document.getElementById("filter-waktu");
+  const tglMulai = document.getElementById("filter-tanggal-mulai");
+  const tglAkhir = document.getElementById("filter-tanggal-akhir");
 
-  if (tahun) tahun.value = '';
-  if (bulan) bulan.value = '';
-  if (waktu) waktu.value = '';
-  if (tglMulai) tglMulai.value = '';
-  if (tglAkhir) tglAkhir.value = '';
+  if (tahun) tahun.value = "";
+  if (bulan) bulan.value = "";
+  if (waktu) waktu.value = "";
+  if (tglMulai) tglMulai.value = "";
+  if (tglAkhir) tglAkhir.value = "";
 
   if (lakaRentangTanggalAktif && rentangTanggalButton) {
     rentangTanggalButton.click();
@@ -341,22 +341,22 @@ function resetLakaFilter() {
    * Reset SORTIR ke default halaman:
    * Terbaru → Terlama
    */
-  lakaSortOrder = 'terbaru';
+  lakaSortOrder = "terbaru";
 
   /*
    * Kembalikan tanda centang dropdown
    * ke Terbaru → Terlama.
    */
   document
-    .querySelectorAll('#laka-sort-menu [data-sort]')
+    .querySelectorAll("#laka-sort-menu [data-sort]")
     .forEach(function (item) {
-      const checkIcon = item.querySelector('[data-sort-check]');
+      const checkIcon = item.querySelector("[data-sort-check]");
 
       if (!checkIcon) return;
 
-      const isActive = item.dataset.sort === 'newest';
+      const isActive = item.dataset.sort === "newest";
 
-      checkIcon.classList.toggle('hidden', !isActive);
+      checkIcon.classList.toggle("hidden", !isActive);
     });
 
   /*
@@ -384,22 +384,34 @@ function resetLakaFilter() {
 // Tambahan Code (menyesuaikan halaman Laporan dan Rekap)
 
 /* =====================================================
+   HELPER BUTTON KEMBALI
+   ===================================================== */
+
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back(); // Mundur 1 langkah
+  } else {
+    window.location.href = "../index.html";
+  }
+}
+
+/* =====================================================
    FILTER DARI HALAMAN LAPORAN & REKAP
    Membaca parameter periode dari URL
    ===================================================== */
 function applyLakaFilterFromUrl() {
   const params = new URLSearchParams(window.location.search);
 
-  const tahun = params.get('tahun');
-  const bulan = params.get('bulan');
-  const tanggalMulai = params.get('tanggalMulai');
-  const tanggalAkhir = params.get('tanggalAkhir');
+  const tahun = params.get("tahun");
+  const bulan = params.get("bulan");
+  const tanggalMulai = params.get("tanggalMulai");
+  const tanggalAkhir = params.get("tanggalAkhir");
 
-  const tahunEl = document.getElementById('filter-tahun');
-  const bulanEl = document.getElementById('filter-bulan');
-  const waktuEl = document.getElementById('filter-waktu');
-  const tglMulaiEl = document.getElementById('filter-tanggal-mulai');
-  const tglAkhirEl = document.getElementById('filter-tanggal-akhir');
+  const tahunEl = document.getElementById("filter-tahun");
+  const bulanEl = document.getElementById("filter-bulan");
+  const waktuEl = document.getElementById("filter-waktu");
+  const tglMulaiEl = document.getElementById("filter-tanggal-mulai");
+  const tglAkhirEl = document.getElementById("filter-tanggal-akhir");
 
   /*
     Tidak ada parameter:
@@ -429,18 +441,18 @@ function applyLakaFilterFromUrl() {
     }
 
     if (tglMulaiEl) {
-      tglMulaiEl.value = tanggalMulai || '';
+      tglMulaiEl.value = tanggalMulai || "";
     }
 
     if (tglAkhirEl) {
-      tglAkhirEl.value = tanggalAkhir || '';
+      tglAkhirEl.value = tanggalAkhir || "";
     }
 
     /*
       Waktu tidak digunakan dalam mode rentang.
     */
     if (waktuEl) {
-      waktuEl.value = '';
+      waktuEl.value = "";
     }
 
     applyLakaFilter();
@@ -457,15 +469,15 @@ function applyLakaFilterFromUrl() {
   }
 
   if (tahunEl) {
-    tahunEl.value = tahun || '';
+    tahunEl.value = tahun || "";
   }
 
   if (bulanEl) {
-    bulanEl.value = bulan || '';
+    bulanEl.value = bulan || "";
   }
 
   if (waktuEl) {
-    waktuEl.value = '';
+    waktuEl.value = "";
   }
 
   applyLakaFilter();
@@ -480,19 +492,19 @@ function getLakaPaginationPages(current, total) {
     return Array.from({ length: total }, (_, index) => index + 1);
   }
   const pages = [1];
-  if (current > 4) pages.push('...');
+  if (current > 4) pages.push("...");
   const start = Math.max(2, current - 1);
   const end = Math.min(total - 1, current + 1);
   for (let page = start; page <= end; page++) {
     pages.push(page);
   }
-  if (current < total - 3) pages.push('...');
+  if (current < total - 3) pages.push("...");
   pages.push(total);
   return pages;
 }
 
 function renderLakaPagination() {
-  const container = document.getElementById('laka-pagination');
+  const container = document.getElementById("laka-pagination");
   if (!container) return;
 
   const total = lakaFilteredData.length;
@@ -502,7 +514,7 @@ function renderLakaPagination() {
           <button
             type="button"
             data-page="first"
-            ${lakaPageCurrent === 1 ? 'disabled' : ''}
+            ${lakaPageCurrent === 1 ? "disabled" : ""}
             class="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-100 bg-white text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
             aria-label="Halaman pertama"
           >
@@ -511,7 +523,7 @@ function renderLakaPagination() {
           <button
             type="button"
             data-page="prev"
-            ${lakaPageCurrent === 1 ? 'disabled' : ''}
+            ${lakaPageCurrent === 1 ? "disabled" : ""}
             class="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-100 bg-white text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
             aria-label="Halaman sebelumnya"
           >
@@ -521,7 +533,7 @@ function renderLakaPagination() {
 
   const pages = getLakaPaginationPages(lakaPageCurrent, totalPages);
   pages.forEach(function (page) {
-    if (page === '...') {
+    if (page === "...") {
       html += `<span class="flex h-9 w-9 items-center justify-center text-sm text-slate-400">...</span>`;
       return;
     }
@@ -530,11 +542,11 @@ function renderLakaPagination() {
             <button
               type="button"
               data-page="${page}"
-              ${active ? 'aria-current="page"' : ''}
+              ${active ? 'aria-current="page"' : ""}
               class="flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-semibold transition-colors ${
                 active
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'border border-blue-100 bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700'
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "border border-blue-100 bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700"
               }"
             >
               ${page}
@@ -546,7 +558,7 @@ function renderLakaPagination() {
           <button
             type="button"
             data-page="next"
-            ${lakaPageCurrent === totalPages ? 'disabled' : ''}
+            ${lakaPageCurrent === totalPages ? "disabled" : ""}
             class="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-100 bg-white text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
             aria-label="Halaman berikutnya"
           >
@@ -555,7 +567,7 @@ function renderLakaPagination() {
           <button
             type="button"
             data-page="last"
-            ${lakaPageCurrent === totalPages ? 'disabled' : ''}
+            ${lakaPageCurrent === totalPages ? "disabled" : ""}
             class="flex h-9 w-9 items-center justify-center rounded-lg border border-blue-100 bg-white text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
             aria-label="Halaman terakhir"
           >
@@ -687,27 +699,27 @@ function renderLakaPagination() {
 /* =====================================================
    TOGGLE RENTANG TANGGAL
    ===================================================== */
-const rentangTanggalButton = document.getElementById('btn-rentang-tanggal');
+const rentangTanggalButton = document.getElementById("btn-rentang-tanggal");
 
 if (rentangTanggalButton) {
-  rentangTanggalButton.addEventListener('click', function () {
+  rentangTanggalButton.addEventListener("click", function () {
     lakaRentangTanggalAktif = !lakaRentangTanggalAktif;
 
-    const container = document.getElementById('rentang-tanggal-container');
-    const icon = document.getElementById('icon-rentang-tanggal');
-    const filterTahun = document.getElementById('filter-tahun');
-    const filterBulan = document.getElementById('filter-bulan');
-    const filterWaktu = document.getElementById('filter-waktu');
+    const container = document.getElementById("rentang-tanggal-container");
+    const icon = document.getElementById("icon-rentang-tanggal");
+    const filterTahun = document.getElementById("filter-tahun");
+    const filterBulan = document.getElementById("filter-bulan");
+    const filterWaktu = document.getElementById("filter-waktu");
 
     const disabledClasses = [
-      'bg-slate-100',
-      'text-slate-400',
-      'cursor-not-allowed',
-      'border-slate-200',
+      "bg-slate-100",
+      "text-slate-400",
+      "cursor-not-allowed",
+      "border-slate-200",
     ];
 
     if (lakaRentangTanggalAktif) {
-      if (container) container.classList.remove('hidden');
+      if (container) container.classList.remove("hidden");
 
       [filterTahun, filterBulan, filterWaktu].forEach((el) => {
         if (el) {
@@ -716,15 +728,15 @@ if (rentangTanggalButton) {
         }
       });
 
-      if (icon) icon.classList.add('rotate-180');
-      rentangTanggalButton.classList.remove('bg-white', 'text-blue-600');
+      if (icon) icon.classList.add("rotate-180");
+      rentangTanggalButton.classList.remove("bg-white", "text-blue-600");
       rentangTanggalButton.classList.add(
-        'bg-blue-50',
-        'text-blue-700',
-        'border-blue-200',
+        "bg-blue-50",
+        "text-blue-700",
+        "border-blue-200",
       );
     } else {
-      if (container) container.classList.add('hidden');
+      if (container) container.classList.add("hidden");
 
       [filterTahun, filterBulan, filterWaktu].forEach((el) => {
         if (el) {
@@ -733,12 +745,12 @@ if (rentangTanggalButton) {
         }
       });
 
-      if (icon) icon.classList.remove('rotate-180');
-      rentangTanggalButton.classList.add('bg-white', 'text-blue-600');
+      if (icon) icon.classList.remove("rotate-180");
+      rentangTanggalButton.classList.add("bg-white", "text-blue-600");
       rentangTanggalButton.classList.remove(
-        'bg-blue-50',
-        'text-blue-700',
-        'border-blue-200',
+        "bg-blue-50",
+        "text-blue-700",
+        "border-blue-200",
       );
     }
 
@@ -750,9 +762,9 @@ if (rentangTanggalButton) {
          RENDER HALAMAN LAKA
       ===================================================== */
 function renderLakaPage() {
-  const container = document.getElementById('laka-page-list');
-  const emptyState = document.getElementById('laka-page-empty');
-  const totalData = document.getElementById('laka-total-data');
+  const container = document.getElementById("laka-page-list");
+  const emptyState = document.getElementById("laka-page-empty");
+  const totalData = document.getElementById("laka-total-data");
 
   if (!container) return;
 
@@ -760,14 +772,14 @@ function renderLakaPage() {
   if (totalData) totalData.textContent = total;
 
   if (total === 0) {
-    container.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    container.innerHTML = "";
+    if (emptyState) emptyState.classList.remove("hidden");
     renderLakaPagination();
     if (window.lucide) lucide.createIcons();
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (emptyState) emptyState.classList.add("hidden");
 
   const startIndex = (lakaPageCurrent - 1) * lakaPageSize;
   const endIndex = startIndex + lakaPageSize;
@@ -797,11 +809,11 @@ function renderLakaPage() {
               </div>
 
               <div class="mb-2.5 flex items-center gap-3 text-sm font-medium">
-                <span class="text-slate-600">LR <span class="font-semibold text-blue-600">${item.lr}</span></span>
+                <span class="text-slate-600">LR <span class="font-semibold text-green-700">${item.lr}</span></span>
                 <span class="text-blue-200">|</span>
-                <span class="text-slate-600">LB <span class="font-semibold text-amber-600">${item.lb}</span></span>
+                <span class="text-slate-600">LB <span class="font-semibold text-amber-400">${item.lb}</span></span>
                 <span class="text-blue-200">|</span>
-                <span class="text-slate-600">MD <span class="font-semibold text-rose-600">${item.md}</span></span>
+                <span class="text-slate-600">MD <span class="font-semibold text-red-700">${item.md}</span></span>
               </div>
 
               <div class="mb-4 flex items-center gap-2">
@@ -842,12 +854,12 @@ function renderLakaPage() {
             </article>
           `;
     })
-    .join('');
+    .join("");
 
   renderLakaPagination();
   if (window.lucide) lucide.createIcons();
   updateLakaMode(
-    typeof isOfficerMode !== 'undefined' ? Boolean(isOfficerMode) : false,
+    typeof isOfficerMode !== "undefined" ? Boolean(isOfficerMode) : false,
   );
 }
 
@@ -856,25 +868,25 @@ function renderLakaPage() {
       ===================================================== */
 function updateLakaMode(isOfficer) {
   document
-    .querySelectorAll('.visitor-page-action')
-    .forEach((btn) => btn.classList.toggle('hidden', isOfficer));
+    .querySelectorAll(".visitor-page-action")
+    .forEach((btn) => btn.classList.toggle("hidden", isOfficer));
   document
-    .querySelectorAll('.officer-page-action')
-    .forEach((btn) => btn.classList.toggle('hidden', !isOfficer));
+    .querySelectorAll(".officer-page-action")
+    .forEach((btn) => btn.classList.toggle("hidden", !isOfficer));
   document
-    .querySelectorAll('.visitor-page-detail-button')
-    .forEach((btn) => btn.classList.toggle('hidden', isOfficer));
+    .querySelectorAll(".visitor-page-detail-button")
+    .forEach((btn) => btn.classList.toggle("hidden", isOfficer));
   document
-    .querySelectorAll('.officer-page-detail-button')
-    .forEach((btn) => btn.classList.toggle('hidden', !isOfficer));
+    .querySelectorAll(".officer-page-detail-button")
+    .forEach((btn) => btn.classList.toggle("hidden", !isOfficer));
   document
-    .querySelectorAll('.officer-page-action-button')
-    .forEach((btn) => btn.classList.toggle('hidden', !isOfficer));
+    .querySelectorAll(".officer-page-action-button")
+    .forEach((btn) => btn.classList.toggle("hidden", !isOfficer));
 
-  const visitorStatus = document.getElementById('visitorStatus');
-  const adminStatus = document.getElementById('adminStatus');
-  if (visitorStatus) visitorStatus.classList.toggle('hidden', isOfficer);
-  if (adminStatus) adminStatus.classList.toggle('hidden', !isOfficer);
+  const visitorStatus = document.getElementById("visitorStatus");
+  const adminStatus = document.getElementById("adminStatus");
+  if (visitorStatus) visitorStatus.classList.toggle("hidden", isOfficer);
+  if (adminStatus) adminStatus.classList.toggle("hidden", !isOfficer);
 
   if (!isOfficer) closeActionMenu();
 }
@@ -932,20 +944,20 @@ function updateLakaMode(isOfficer) {
 function toggleActionMenu(event, id, button) {
   event.stopPropagation();
   const officer =
-    typeof isOfficerMode !== 'undefined' ? Boolean(isOfficerMode) : false;
+    typeof isOfficerMode !== "undefined" ? Boolean(isOfficerMode) : false;
   if (!officer || !lakaPageActionMenu || !button) return;
 
   // Jika tombol titik tiga diklik ulang pada item yang sama, sembunyikan menu
   if (
     lakaPageActiveMenuId === id &&
-    !lakaPageActionMenu.classList.contains('hidden')
+    !lakaPageActionMenu.classList.contains("hidden")
   ) {
     closeActionMenu();
     return;
   }
 
   lakaPageActiveMenuId = id;
-  lakaPageActionMenu.classList.remove('hidden');
+  lakaPageActionMenu.classList.remove("hidden");
 
   const rect = button.getBoundingClientRect();
   const menuHeight = lakaPageActionMenu.offsetHeight || 150;
@@ -972,9 +984,9 @@ function toggleActionMenu(event, id, button) {
 
 function closeActionMenu() {
   if (lakaPageActionMenu) {
-    lakaPageActionMenu.classList.add('hidden');
-    lakaPageActionMenu.style.top = '';
-    lakaPageActionMenu.style.left = '';
+    lakaPageActionMenu.classList.add("hidden");
+    lakaPageActionMenu.style.top = "";
+    lakaPageActionMenu.style.left = "";
   }
   lakaPageActiveMenuId = null;
 }
@@ -996,21 +1008,21 @@ function handleDelete() {
   lakaIdToDelete = lakaPageActiveMenuId;
   closeActionMenu();
 
-  const modal = document.getElementById('deleteLakaModal');
-  const textId = document.getElementById('delete-laka-id-text');
+  const modal = document.getElementById("deleteLakaModal");
+  const textId = document.getElementById("delete-laka-id-text");
 
   if (textId) textId.textContent = lakaIdToDelete;
   if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
   }
 }
 
 function closeDeleteLakaModal() {
-  const modal = document.getElementById('deleteLakaModal');
+  const modal = document.getElementById("deleteLakaModal");
   if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
   }
   lakaIdToDelete = null;
 }
@@ -1041,7 +1053,7 @@ function lihatDetail(id) {
 }
 
 function inputLaporanBaru() {
-  alert('Membuka form Input Laporan Baru.');
+  alert("Membuka form Input Laporan Baru.");
 }
 
 function handleEdit() {
@@ -1078,13 +1090,13 @@ function handleEdit() {
          MODAL & AUTH
       ===================================================== */
 function openLogoutModal() {
-  const modal = document.getElementById('logoutModal');
-  if (modal) (modal.classList.remove('hidden'), modal.classList.add('flex'));
+  const modal = document.getElementById("logoutModal");
+  if (modal) (modal.classList.remove("hidden"), modal.classList.add("flex"));
 }
 
 function closeLogoutModal() {
-  const modal = document.getElementById('logoutModal');
-  if (modal) (modal.classList.add('hidden'), modal.classList.remove('flex'));
+  const modal = document.getElementById("logoutModal");
+  if (modal) (modal.classList.add("hidden"), modal.classList.remove("flex"));
 }
 
 function confirmLogout() {
@@ -1092,7 +1104,7 @@ function confirmLogout() {
   closeLogoutModal();
   updateLakaMode(false);
   document.dispatchEvent(
-    new CustomEvent('modeChanged', { detail: { isOfficerMode: false } }),
+    new CustomEvent("modeChanged", { detail: { isOfficerMode: false } }),
   );
 }
 
@@ -1102,11 +1114,11 @@ function confirmLogout() {
    TOMBOL KEMBALI HALAMAN LAKA LANTAS
    ===================================================== */
 function initLakaPageBackButton() {
-  const lakaPageButton = document.getElementById('lakaPageButton');
+  const lakaPageButton = document.getElementById("lakaPageButton");
 
   if (!lakaPageButton) return;
 
-  lakaPageButton.addEventListener('click', function () {
+  lakaPageButton.addEventListener("click", function () {
     window.history.back();
   });
 }
@@ -1115,7 +1127,7 @@ function initLakaPageBackButton() {
          INITIALIZATION & EVENT LISTENERS
       ===================================================== */
 function initLakaPage() {
-  lakaPageActionMenu = document.getElementById('action-menu-laka-page');
+  lakaPageActionMenu = document.getElementById("action-menu-laka-page");
 
   // Tambahan Code
   initLakaPageBackButton();
@@ -1124,17 +1136,17 @@ function initLakaPage() {
   // SORTIR LAKA
   // =====================================================
 
-  const lakaSortButton = document.getElementById('laka-sort-button');
-  const lakaSortMenu = document.getElementById('laka-sort-menu');
+  const lakaSortButton = document.getElementById("laka-sort-button");
+  const lakaSortMenu = document.getElementById("laka-sort-menu");
 
   /*
    * Tombol icon sortir.
    * Default dropdown tersembunyi.
    */
   if (lakaSortButton && lakaSortMenu) {
-    lakaSortButton.setAttribute('aria-expanded', 'false');
+    lakaSortButton.setAttribute("aria-expanded", "false");
 
-    lakaSortButton.addEventListener('click', function (event) {
+    lakaSortButton.addEventListener("click", function (event) {
       event.stopPropagation();
       toggleLakaSortMenu();
     });
@@ -1144,8 +1156,8 @@ function initLakaPage() {
      * newest = Terbaru → Terlama
      * oldest = Terlama → Terbaru
      */
-    lakaSortMenu.addEventListener('click', function (event) {
-      const sortItem = event.target.closest('[data-sort]');
+    lakaSortMenu.addEventListener("click", function (event) {
+      const sortItem = event.target.closest("[data-sort]");
 
       if (!sortItem) return;
 
@@ -1161,10 +1173,10 @@ function initLakaPage() {
    * Klik di luar tombol/dropdown
    * akan menutup dropdown sortir.
    */
-  document.addEventListener('click', function (event) {
+  document.addEventListener("click", function (event) {
     if (
-      !event.target.closest('#laka-sort-button') &&
-      !event.target.closest('#laka-sort-menu')
+      !event.target.closest("#laka-sort-button") &&
+      !event.target.closest("#laka-sort-menu")
     ) {
       closeLakaSortMenu();
     }
@@ -1173,19 +1185,19 @@ function initLakaPage() {
   // Akhir tambahan code
 
   // Event Listener Pagination & Menu Card
-  document.addEventListener('click', function (event) {
+  document.addEventListener("click", function (event) {
     const pageButton = event.target.closest(
-      '#laka-pagination button[data-page]',
+      "#laka-pagination button[data-page]",
     );
     if (pageButton) {
       const totalPages = Math.ceil(lakaFilteredData.length / lakaPageSize);
       const action = pageButton.dataset.page;
-      if (action === 'first') lakaPageCurrent = 1;
-      else if (action === 'prev')
+      if (action === "first") lakaPageCurrent = 1;
+      else if (action === "prev")
         lakaPageCurrent = Math.max(1, lakaPageCurrent - 1);
-      else if (action === 'next')
+      else if (action === "next")
         lakaPageCurrent = Math.min(totalPages, lakaPageCurrent + 1);
-      else if (action === 'last') lakaPageCurrent = totalPages;
+      else if (action === "last") lakaPageCurrent = totalPages;
       else lakaPageCurrent = Number(action);
       renderLakaPage();
       return;
@@ -1213,21 +1225,21 @@ function initLakaPage() {
       return;
     }
 
-    if (!event.target.closest('#action-menu-laka-page')) {
+    if (!event.target.closest("#action-menu-laka-page")) {
       closeActionMenu();
     }
   });
 
   // Filter Controls
-  const resetFilterBtn = document.getElementById('btn-reset-filter');
-  if (resetFilterBtn) resetFilterBtn.addEventListener('click', resetLakaFilter);
+  const resetFilterBtn = document.getElementById("btn-reset-filter");
+  if (resetFilterBtn) resetFilterBtn.addEventListener("click", resetLakaFilter);
 
-  const applyFilterBtn = document.getElementById('btn-terapkan-filter');
-  if (applyFilterBtn) applyFilterBtn.addEventListener('click', applyLakaFilter);
+  const applyFilterBtn = document.getElementById("btn-terapkan-filter");
+  if (applyFilterBtn) applyFilterBtn.addEventListener("click", applyLakaFilter);
 
-  const pageSizeSelect = document.getElementById('laka-page-size');
+  const pageSizeSelect = document.getElementById("laka-page-size");
   if (pageSizeSelect) {
-    pageSizeSelect.addEventListener('change', function () {
+    pageSizeSelect.addEventListener("change", function () {
       lakaPageSize = Number(this.value);
       lakaPageCurrent = 1;
       renderLakaPage();
@@ -1235,29 +1247,29 @@ function initLakaPage() {
   }
 
   // Header Action Controls
-  const inputLaporanBtn = document.getElementById('btn-input-laporan');
+  const inputLaporanBtn = document.getElementById("btn-input-laporan");
   if (inputLaporanBtn)
-    inputLaporanBtn.addEventListener('click', inputLaporanBaru);
+    inputLaporanBtn.addEventListener("click", inputLaporanBaru);
 
   // const lihatSemuaBtn = document.getElementById("btn-lihat-semua-page");
   // if (lihatSemuaBtn)
   //   lihatSemuaBtn.addEventListener("click", () => renderLakaPage());
 
   // Popup Actions
-  const editBtn = document.getElementById('action-edit-page');
-  if (editBtn) editBtn.addEventListener('click', handleEdit);
+  const editBtn = document.getElementById("action-edit-page");
+  if (editBtn) editBtn.addEventListener("click", handleEdit);
 
-  const deleteBtn = document.getElementById('action-delete-page');
-  if (deleteBtn) deleteBtn.addEventListener('click', handleDelete);
+  const deleteBtn = document.getElementById("action-delete-page");
+  if (deleteBtn) deleteBtn.addEventListener("click", handleDelete);
 
   // Auth Controls
-  const loginBtn = document.getElementById('loginButton');
+  const loginBtn = document.getElementById("loginButton");
   if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
+    loginBtn.addEventListener("click", () => {
       isOfficerMode = true;
       updateLakaMode(true);
       document.dispatchEvent(
-        new CustomEvent('modeChanged', {
+        new CustomEvent("modeChanged", {
           detail: { isOfficerMode: true },
         }),
       );
@@ -1266,40 +1278,46 @@ function initLakaPage() {
 
   // Tambahan Code =======================================================================================
   // Listener Modal Konfirmasi Hapus Laka
-  const cancelDeleteLakaBtn = document.getElementById('cancelDeleteLakaButton');
+  const cancelDeleteLakaBtn = document.getElementById("cancelDeleteLakaButton");
   if (cancelDeleteLakaBtn)
-    cancelDeleteLakaBtn.addEventListener('click', closeDeleteLakaModal);
+    cancelDeleteLakaBtn.addEventListener("click", closeDeleteLakaModal);
 
   const confirmDeleteLakaBtn = document.getElementById(
-    'confirmDeleteLakaButton',
+    "confirmDeleteLakaButton",
   );
   if (confirmDeleteLakaBtn)
-    confirmDeleteLakaBtn.addEventListener('click', confirmDeleteLaka);
+    confirmDeleteLakaBtn.addEventListener("click", confirmDeleteLaka);
   // Akhir tambahan code =================================================================================
 
-  const logoutBtn = document.getElementById('logoutButton');
-  if (logoutBtn) logoutBtn.addEventListener('click', openLogoutModal);
+  const logoutBtn = document.getElementById("logoutButton");
+  if (logoutBtn) logoutBtn.addEventListener("click", openLogoutModal);
 
-  const cancelLogoutBtn = document.getElementById('cancelLogoutButton');
+  const cancelLogoutBtn = document.getElementById("cancelLogoutButton");
   if (cancelLogoutBtn)
-    cancelLogoutBtn.addEventListener('click', closeLogoutModal);
+    cancelLogoutBtn.addEventListener("click", closeLogoutModal);
 
-  const confirmLogoutBtn = document.getElementById('confirmLogoutButton');
+  const confirmLogoutBtn = document.getElementById("confirmLogoutButton");
   if (confirmLogoutBtn)
-    confirmLogoutBtn.addEventListener('click', confirmLogout);
+    confirmLogoutBtn.addEventListener("click", confirmLogout);
 
   // Window scroll & resize
   // window.addEventListener("resize", closeActionMenu);
   // window.addEventListener("scroll", () => closeActionMenu(), true);
 
-  window.addEventListener('scroll', closeActionMenu, true);
-  window.addEventListener('resize', closeActionMenu);
+  window.addEventListener("scroll", closeActionMenu, true);
+  window.addEventListener("resize", closeActionMenu);
 
   // Global modeChanged Event
-  document.addEventListener('modeChanged', function (e) {
+  document.addEventListener("modeChanged", function (e) {
     const officer = Boolean(e.detail && e.detail.isOfficerMode);
     updateLakaMode(officer);
   });
+
+  document
+    .getElementById("lakaBackButton")
+    .addEventListener("click", function () {
+      goBack();
+    });
 
   // First Render
   // renderLakaPage();
@@ -1307,7 +1325,7 @@ function initLakaPage() {
   updateLakaMode(Boolean(isOfficerMode));
 }
 
-document.addEventListener('DOMContentLoaded', initLakaPage);
+document.addEventListener("DOMContentLoaded", initLakaPage);
 
 /* =====================================================
        AKHIR SCRIPT UTAMA & INTEGRASI LAKA LANTAS

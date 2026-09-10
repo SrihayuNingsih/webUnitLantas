@@ -92,6 +92,10 @@ const visitorStatus = document.getElementById("visitorStatus");
 
 const adminStatus = document.getElementById("adminStatus");
 
+const loginStatus = document.getElementById("loginStatus");
+
+const logoutStatus = document.getElementById("logoutStatus");
+
 const loginButton = document.getElementById("loginButton");
 
 const logoutButton = document.getElementById("logoutButton");
@@ -466,10 +470,26 @@ function updateSidebarMode(isOfficer) {
     visitorMenu.classList.add("hidden");
 
     officerMenu.classList.remove("hidden");
+
+    if (loginStatus) {
+      loginStatus.classList.add("hidden");
+    }
+
+    if (logoutStatus) {
+      logoutStatus.classList.remove("hidden");
+    }
   } else {
     visitorMenu.classList.remove("hidden");
 
     officerMenu.classList.add("hidden");
+
+    if (loginStatus) {
+      loginStatus.classList.remove("hidden");
+    }
+
+    if (logoutStatus) {
+      logoutStatus.classList.add("hidden");
+    }
   }
 }
 

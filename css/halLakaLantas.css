@@ -215,7 +215,7 @@ body {
 
 /* =====================================================
        AWAL CSS DESKTOP LAYOUT
-  ====================================================== */
+    ====================================================== */
 
 @media (min-width: 768px) {
   #sidebar {
@@ -228,43 +228,48 @@ body {
     max-width: calc(100% - var(--sidebar-width));
   }
 
-  #laka-page {
+  #footer {
     margin-left: var(--sidebar-width);
   }
 
-  #lakaBackButton {
+  main {
     margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    max-width: calc(100% - var(--sidebar-width));
+    overflow-x: hidden;
   }
 
   .menu-link {
-    padding-top: 13px;
-    padding-bottom: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 15px;
   }
 
   .submenu-link {
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     font-size: 14px;
   }
 }
 
 @media (min-width: 1200px) {
   .menu-link {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
 @media (min-width: 1600px) {
   .menu-link {
     font-size: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 }
 
 /* =====================================================
        AKHIR CSS DESKTOP LAYOUT
-  ====================================================== */
+    ====================================================== */
 
 /* =====================================================
        AWAL CSS RESPONSIVE KECIL

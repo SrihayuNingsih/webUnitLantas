@@ -362,10 +362,64 @@ let isMenuOpen = false;
      OPEN SIDEBAR
   ===================================================== */
 
+// function openSidebar() {
+//   /*
+//       Sidebar mobile saja.
+
+//       Desktop tidak perlu membuka Sidebar
+//       karena Sidebar memang selalu tampil.
+//     */
+
+//   if (window.innerWidth >= 768) {
+//     return;
+//   }
+
+//   if (!sidebar || !menuOverlay) {
+//     return;
+//   }
+
+//   sidebar.classList.remove("-translate-x-full");
+
+//   menuOverlay.classList.remove("hidden");
+
+//   document.body.classList.add("overflow-hidden");
+
+//   isMenuOpen = true;
+
+//   document.dispatchEvent(new CustomEvent("sidebarOpened"));
+// }
+
+// /* =====================================================
+//      CLOSE SIDEBAR
+//   ===================================================== */
+
+// function closeSidebar() {
+//   if (!sidebar || !menuOverlay) {
+//     return;
+//   }
+
+//   sidebar.classList.add("-translate-x-full");
+
+//   menuOverlay.classList.add("hidden");
+
+//   document.body.classList.remove("overflow-hidden");
+
+//   isMenuOpen = false;
+
+//   document.dispatchEvent(new CustomEvent("sidebarClosed"));
+// }
+
 function openSidebar() {
+  if (window.innerWidth < 768) {
+    // Tambahan Code Baru
+    // Simpan Posisi scroll sekarang
+    const scrollY = window.scrollY;
+    document.body.style.top = `${scrollY}px`;
+    document.body.classList.add("overflow-hidden", "fixed", "w-full");
+  }
   /*
       Sidebar mobile saja.
-
+      
       Desktop tidak perlu membuka Sidebar
       karena Sidebar memang selalu tampil.
     */
@@ -398,11 +452,15 @@ function closeSidebar() {
     return;
   }
 
+  const scrollY = document.body.style.top;
+
+  document.body.style.top = "";
+
   sidebar.classList.add("-translate-x-full");
 
   menuOverlay.classList.add("hidden");
 
-  document.body.classList.remove("overflow-hidden");
+  document.body.classList.remove("overflow-hidden", "fixed", "w-full");
 
   isMenuOpen = false;
 

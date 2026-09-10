@@ -4,7 +4,7 @@
    ===================================================== */
 
 (() => {
-  'use strict';
+  "use strict";
 
   /* =====================================================
      1. KONFIGURASI
@@ -17,7 +17,7 @@
     MOCK_DELAY: 500,
 
     // Halaman daftar laporan
-    REPORT_PAGE: 'halLakaLantas.html',
+    REPORT_PAGE: "halLakaLantas.html",
   };
 
   /* =====================================================
@@ -25,7 +25,7 @@
      ===================================================== */
 
   const state = {
-    periodType: 'semua',
+    periodType: "semua",
 
     period: {
       startDate: null,
@@ -41,7 +41,7 @@
     currentResponse: null,
 
     mode:
-      localStorage.getItem('isOfficerMode') === 'true' ? 'officer' : 'visitor',
+      localStorage.getItem("isOfficerMode") === "true" ? "officer" : "visitor",
   };
 
   /* =====================================================
@@ -51,68 +51,68 @@
   const el = {};
 
   function cacheElements() {
-    el.backButton = document.getElementById('laporanBackButton');
+    el.backButton = document.getElementById("laporanBackButton");
 
-    el.jenisPeriode = document.getElementById('jenisPeriode');
+    el.jenisPeriode = document.getElementById("jenisPeriode");
 
-    el.periodeBulanan = document.getElementById('periodeBulanan');
-    el.tahunBulanan = document.getElementById('tahunBulanan');
-    el.bulanBulanan = document.getElementById('bulanBulanan');
+    el.periodeBulanan = document.getElementById("periodeBulanan");
+    el.tahunBulanan = document.getElementById("tahunBulanan");
+    el.bulanBulanan = document.getElementById("bulanBulanan");
 
-    el.periodeTahunan = document.getElementById('periodeTahunan');
-    el.tahunTahunan = document.getElementById('tahunTahunan');
+    el.periodeTahunan = document.getElementById("periodeTahunan");
+    el.tahunTahunan = document.getElementById("tahunTahunan");
 
-    el.periodeRentang = document.getElementById('periodeRentang');
-    el.tanggalMulai = document.getElementById('tanggalMulai');
-    el.tanggalAkhir = document.getElementById('tanggalAkhir');
+    el.periodeRentang = document.getElementById("periodeRentang");
+    el.tanggalMulai = document.getElementById("tanggalMulai");
+    el.tanggalAkhir = document.getElementById("tanggalAkhir");
 
-    el.tampilkanRekapButton = document.getElementById('tampilkanRekapButton');
+    el.tampilkanRekapButton = document.getElementById("tampilkanRekapButton");
 
-    el.resetFilterButton = document.getElementById('resetFilterButton');
+    el.resetFilterButton = document.getElementById("resetFilterButton");
 
-    el.filterMingguIni = document.getElementById('filterMingguIni');
+    el.filterMingguIni = document.getElementById("filterMingguIni");
 
-    el.filterBulanIni = document.getElementById('filterBulanIni');
+    el.filterBulanIni = document.getElementById("filterBulanIni");
 
-    el.filterTahunIni = document.getElementById('filterTahunIni');
+    el.filterTahunIni = document.getElementById("filterTahunIni");
 
-    el.periodeAktifText = document.getElementById('periodeAktifText');
+    el.periodeAktifText = document.getElementById("periodeAktifText");
 
-    el.dataDiperbaruiText = document.getElementById('dataDiperbaruiText');
+    el.dataDiperbaruiText = document.getElementById("dataDiperbaruiText");
 
-    el.totalKejadianLaporan = document.getElementById('totalKejadianLaporan');
+    el.totalKejadianLaporan = document.getElementById("totalKejadianLaporan");
 
-    el.korbanLRLaporan = document.getElementById('korbanLRLaporan');
+    el.korbanLRLaporan = document.getElementById("korbanLRLaporan");
 
-    el.korbanLBLaporan = document.getElementById('korbanLBLaporan');
+    el.korbanLBLaporan = document.getElementById("korbanLBLaporan");
 
-    el.korbanMDLaporan = document.getElementById('korbanMDLaporan');
+    el.korbanMDLaporan = document.getElementById("korbanMDLaporan");
 
     el.kerugianMaterialLaporan = document.getElementById(
-      'kerugianMaterialLaporan',
+      "kerugianMaterialLaporan",
     );
 
     el.statusDalamPenangananLaporan = document.getElementById(
-      'statusDalamPenangananLaporan',
+      "statusDalamPenangananLaporan",
     );
 
-    el.statusRJLaporan = document.getElementById('statusRJLaporan');
+    el.statusRJLaporan = document.getElementById("statusRJLaporan");
 
     el.statusLimpahPolresLaporan = document.getElementById(
-      'statusLimpahPolresLaporan',
+      "statusLimpahPolresLaporan",
     );
 
-    el.laporanCountText = document.getElementById('laporanCountText');
+    el.laporanCountText = document.getElementById("laporanCountText");
 
-    el.laporanCountNumber = document.getElementById('laporanCountNumber');
+    el.laporanCountNumber = document.getElementById("laporanCountNumber");
 
     el.lihatDaftarLaporanButton = document.getElementById(
-      'lihatDaftarLaporanButton',
+      "lihatDaftarLaporanButton",
     );
 
-    el.exportPdfButton = document.getElementById('exportPdfButton');
+    el.exportPdfButton = document.getElementById("exportPdfButton");
 
-    el.exportExcelButton = document.getElementById('exportExcelButton');
+    el.exportExcelButton = document.getElementById("exportExcelButton");
   }
 
   /* =====================================================
@@ -237,11 +237,11 @@
   const MOCK_EMPTY_RESPONSE = {
     success: true,
 
-    message: 'Tidak ada data pada periode yang dipilih.',
+    message: "Tidak ada data pada periode yang dipilih.",
 
     periode: {
-      type: 'rentang',
-      label: 'Tidak ada data',
+      type: "rentang",
+      label: "Tidak ada data",
       startDate: null,
       endDate: null,
     },
@@ -268,7 +268,7 @@
   const MOCK_ERROR_RESPONSE = {
     success: false,
 
-    message: 'Data rekap tidak dapat dimuat.',
+    message: "Data rekap tidak dapat dimuat.",
 
     periode: null,
 
@@ -310,15 +310,15 @@
   }
 
   function formatNumber(value) {
-    return safeNumber(value).toLocaleString('id-ID');
+    return safeNumber(value).toLocaleString("id-ID");
   }
 
   function formatRupiah(value) {
     const number = safeNumber(value);
 
-    return number.toLocaleString('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
+    return number.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     });
@@ -348,7 +348,7 @@
       Desember: 11,
     };
 
-    const parts = String(dateStr).split(',');
+    const parts = String(dateStr).split(",");
 
     const datePart = parts.length > 1 ? parts[1].trim() : parts[0].trim();
 
@@ -376,12 +376,12 @@
 
   function formatDateForInput(date) {
     if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-      return '';
+      return "";
     }
 
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
   }
@@ -389,7 +389,7 @@
   // Akhir tambahan Code
 
   function padNumber(number) {
-    return String(number).padStart(2, '0');
+    return String(number).padStart(2, "0");
   }
 
   function createLocalDate(year, month, day) {
@@ -402,20 +402,20 @@
 
   function dateToInputValue(date) {
     if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-      return '';
+      return "";
     }
 
     return [
       date.getFullYear(),
       padNumber(date.getMonth() + 1),
       padNumber(date.getDate()),
-    ].join('-');
+    ].join("-");
   }
 
   function inputValueToDate(value) {
     if (!value) return null;
 
-    const parts = value.split('-');
+    const parts = value.split("-");
 
     if (parts.length !== 3) {
       return null;
@@ -492,35 +492,35 @@
      ===================================================== */
 
   const MONTH_NAMES = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
   ];
 
   function formatDateIndonesia(date) {
     if (!(date instanceof Date)) {
-      return '-';
+      return "-";
     }
 
     return [
       padNumber(date.getDate()),
       MONTH_NAMES[date.getMonth()],
       date.getFullYear(),
-    ].join(' ');
+    ].join(" ");
   }
 
   function createPeriodLabel(startDate, endDate) {
     if (!startDate && !endDate) {
-      return 'Semua Data';
+      return "Semua Data";
     }
 
     if (startDate && endDate) {
@@ -535,7 +535,7 @@
       return formatDateIndonesia(endDate);
     }
 
-    return 'Semua Data';
+    return "Semua Data";
   }
 
   /* =====================================================
@@ -553,10 +553,10 @@
     selects.forEach((select) => {
       if (!elementExists(select)) return;
 
-      select.innerHTML = '';
+      select.innerHTML = "";
 
       for (let year = endYear; year >= startYear; year--) {
-        const option = document.createElement('option');
+        const option = document.createElement("option");
 
         option.value = String(year);
         option.textContent = String(year);
@@ -576,36 +576,36 @@
 
   function hidePeriodPanels() {
     if (elementExists(el.periodeBulanan)) {
-      el.periodeBulanan.classList.add('hidden');
+      el.periodeBulanan.classList.add("hidden");
     }
 
     if (elementExists(el.periodeTahunan)) {
-      el.periodeTahunan.classList.add('hidden');
+      el.periodeTahunan.classList.add("hidden");
     }
 
     if (elementExists(el.periodeRentang)) {
-      el.periodeRentang.classList.add('hidden');
+      el.periodeRentang.classList.add("hidden");
     }
   }
 
   function updatePeriodTypeUI(type) {
     hidePeriodPanels();
 
-    if (type === 'bulanan') {
+    if (type === "bulanan") {
       if (elementExists(el.periodeBulanan)) {
-        el.periodeBulanan.classList.remove('hidden');
+        el.periodeBulanan.classList.remove("hidden");
       }
     }
 
-    if (type === 'tahunan') {
+    if (type === "tahunan") {
       if (elementExists(el.periodeTahunan)) {
-        el.periodeTahunan.classList.remove('hidden');
+        el.periodeTahunan.classList.remove("hidden");
       }
     }
 
-    if (type === 'rentang') {
+    if (type === "rentang") {
       if (elementExists(el.periodeRentang)) {
-        el.periodeRentang.classList.remove('hidden');
+        el.periodeRentang.classList.remove("hidden");
       }
     }
   }
@@ -615,13 +615,13 @@
      ===================================================== */
 
   function setDefaultPeriod() {
-    state.periodType = 'semua';
+    state.periodType = "semua";
 
     state.period.startDate = null;
     state.period.endDate = null;
 
     if (elementExists(el.jenisPeriode)) {
-      el.jenisPeriode.value = 'semua';
+      el.jenisPeriode.value = "semua";
     }
 
     hidePeriodPanels();
@@ -639,14 +639,14 @@
     }
 
     if (elementExists(el.tanggalMulai)) {
-      el.tanggalMulai.value = '';
+      el.tanggalMulai.value = "";
     }
 
     if (elementExists(el.tanggalAkhir)) {
-      el.tanggalAkhir.value = '';
+      el.tanggalAkhir.value = "";
     }
 
-    setText(el.periodeAktifText, 'Semua Data');
+    setText(el.periodeAktifText, "Semua Data");
   }
 
   /* =====================================================
@@ -654,23 +654,23 @@
      ===================================================== */
 
   function getSelectedPeriod() {
-    const type = el.jenisPeriode ? el.jenisPeriode.value : 'semua';
+    const type = el.jenisPeriode ? el.jenisPeriode.value : "semua";
 
     /* ---------- SEMUA ---------- */
 
-    if (type === 'semua') {
+    if (type === "semua") {
       return {
         valid: true,
-        type: 'semua',
+        type: "semua",
         startDate: null,
         endDate: null,
-        label: 'Semua Data',
+        label: "Semua Data",
       };
     }
 
     /* ---------- BULANAN ---------- */
 
-    if (type === 'bulanan') {
+    if (type === "bulanan") {
       const year = Number(el.tahunBulanan?.value);
 
       const month = Number(el.bulanBulanan?.value);
@@ -683,7 +683,7 @@
       ) {
         return {
           valid: false,
-          message: 'Tahun atau bulan belum dipilih dengan benar.',
+          message: "Tahun atau bulan belum dipilih dengan benar.",
         };
       }
 
@@ -693,7 +693,7 @@
 
       return {
         valid: true,
-        type: 'bulanan',
+        type: "bulanan",
         startDate,
         endDate,
         label: `${MONTH_NAMES[month - 1]} ${year}`,
@@ -702,13 +702,13 @@
 
     /* ---------- TAHUNAN ---------- */
 
-    if (type === 'tahunan') {
+    if (type === "tahunan") {
       const year = Number(el.tahunTahunan?.value);
 
       if (!Number.isInteger(year)) {
         return {
           valid: false,
-          message: 'Tahun belum dipilih dengan benar.',
+          message: "Tahun belum dipilih dengan benar.",
         };
       }
 
@@ -718,7 +718,7 @@
 
       return {
         valid: true,
-        type: 'tahunan',
+        type: "tahunan",
         startDate,
         endDate,
         label: `Tahun ${year}`,
@@ -727,7 +727,7 @@
 
     /* ---------- RENTANG ---------- */
 
-    if (type === 'rentang') {
+    if (type === "rentang") {
       const startDate = inputValueToDate(el.tanggalMulai?.value);
 
       const endDate = inputValueToDate(el.tanggalAkhir?.value);
@@ -735,20 +735,20 @@
       if (!startDate || !endDate) {
         return {
           valid: false,
-          message: 'Tanggal mulai dan tanggal akhir harus diisi.',
+          message: "Tanggal mulai dan tanggal akhir harus diisi.",
         };
       }
 
       if (endDate < startDate) {
         return {
           valid: false,
-          message: 'Tanggal akhir tidak boleh lebih awal dari tanggal mulai.',
+          message: "Tanggal akhir tidak boleh lebih awal dari tanggal mulai.",
         };
       }
 
       return {
         valid: true,
-        type: 'rentang',
+        type: "rentang",
         startDate,
         endDate,
         label: createPeriodLabel(startDate, endDate),
@@ -757,7 +757,7 @@
 
     return {
       valid: false,
-      message: 'Jenis periode tidak dikenali.',
+      message: "Jenis periode tidak dikenali.",
     };
   }
 
@@ -770,7 +770,7 @@
 
   function buildRequestPayload(period) {
     return {
-      action: 'getLaporanRekap',
+      action: "getLaporanRekap",
 
       periode: {
         type: period.type,
@@ -920,7 +920,7 @@
   function createMockResponseForPeriod(payload) {
     const sourceData = Array.isArray(lakaData) ? lakaData : [];
 
-    const type = payload?.periode?.type || 'semua';
+    const type = payload?.periode?.type || "semua";
 
     const startDate = payload?.periode?.startDate
       ? inputValueToDate(payload.periode.startDate)
@@ -978,15 +978,15 @@
 
     const status = {
       dalamPenanganan: filteredData.filter(
-        (item) => String(item.status || '').trim() === 'Dalam Penanganan',
+        (item) => String(item.status || "").trim() === "Dalam Penanganan",
       ).length,
 
       rj: filteredData.filter(
-        (item) => String(item.status || '').trim() === 'RJ',
+        (item) => String(item.status || "").trim() === "RJ",
       ).length,
 
       limpahPolres: filteredData.filter(
-        (item) => String(item.status || '').trim() === 'Limpah Polres',
+        (item) => String(item.status || "").trim() === "Limpah Polres",
       ).length,
     };
 
@@ -995,7 +995,7 @@
 
       return {
         ...item,
-        tanggalKejadian: itemDate ? formatDateForInput(itemDate) : '',
+        tanggalKejadian: itemDate ? formatDateForInput(itemDate) : "",
       };
     });
 
@@ -1004,8 +1004,8 @@
 
       message:
         filteredData.length > 0
-          ? 'Data berhasil diproses.'
-          : 'Tidak ada data pada periode yang dipilih.',
+          ? "Data berhasil diproses."
+          : "Tidak ada data pada periode yang dipilih.",
 
       periode: {
         type,
@@ -1039,50 +1039,50 @@
      ===================================================== */
 
   function validateResponse(response) {
-    if (!response || typeof response !== 'object') {
+    if (!response || typeof response !== "object") {
       return {
         valid: false,
-        type: 'invalid',
-        message: 'Response data tidak valid.',
+        type: "invalid",
+        message: "Response data tidak valid.",
       };
     }
 
     if (response.success !== true) {
       return {
         valid: false,
-        type: 'error',
-        message: response.message || 'Data rekap gagal dimuat.',
+        type: "error",
+        message: response.message || "Data rekap gagal dimuat.",
       };
     }
 
-    if (!response.summary || typeof response.summary !== 'object') {
+    if (!response.summary || typeof response.summary !== "object") {
       return {
         valid: false,
-        type: 'invalid',
-        message: 'Data ringkasan tidak lengkap.',
+        type: "invalid",
+        message: "Data ringkasan tidak lengkap.",
       };
     }
 
-    if (!response.status || typeof response.status !== 'object') {
+    if (!response.status || typeof response.status !== "object") {
       return {
         valid: false,
-        type: 'invalid',
-        message: 'Data status penanganan tidak lengkap.',
+        type: "invalid",
+        message: "Data status penanganan tidak lengkap.",
       };
     }
 
     if (!Array.isArray(response.reports)) {
       return {
         valid: false,
-        type: 'invalid',
-        message: 'Daftar laporan tidak valid.',
+        type: "invalid",
+        message: "Daftar laporan tidak valid.",
       };
     }
 
     return {
       valid: true,
-      type: 'success',
-      message: response.message || '',
+      type: "success",
+      message: response.message || "",
     };
   }
 
@@ -1097,11 +1097,11 @@
     return {
       success: true,
 
-      message: response.message || '',
+      message: response.message || "",
 
       periode: response.periode || {
-        type: 'semua',
-        label: 'Semua Data',
+        type: "semua",
+        label: "Semua Data",
         startDate: null,
         endDate: null,
       },
@@ -1165,7 +1165,7 @@
      ===================================================== */
 
   function renderPeriodInfo(response) {
-    const label = response?.periode?.label || 'Semua Data';
+    const label = response?.periode?.label || "Semua Data";
 
     setText(el.periodeAktifText, label);
 
@@ -1173,9 +1173,9 @@
       const date = new Date(response.updatedAt);
 
       if (!Number.isNaN(date.getTime())) {
-        const formatted = date.toLocaleString('id-ID', {
-          dateStyle: 'medium',
-          timeStyle: 'short',
+        const formatted = date.toLocaleString("id-ID", {
+          dateStyle: "medium",
+          timeStyle: "short",
         });
 
         setText(el.dataDiperbaruiText, formatted);
@@ -1184,7 +1184,7 @@
       }
     }
 
-    setText(el.dataDiperbaruiText, '-');
+    setText(el.dataDiperbaruiText, "-");
   }
 
   /* =====================================================
@@ -1199,7 +1199,7 @@
     if (count === 0) {
       setText(
         el.laporanCountText,
-        'Tidak ada laporan ditemukan dalam periode ini.',
+        "Tidak ada laporan ditemukan dalam periode ini.",
       );
     } else {
       el.laporanCountText.innerHTML = `<span class="font-bold text-md">
@@ -1221,17 +1221,17 @@
     }
 
     if (count <= 0) {
-      el.lihatDaftarLaporanButton.classList.add('opacity-50');
+      el.lihatDaftarLaporanButton.classList.add("opacity-50");
 
-      el.lihatDaftarLaporanButton.classList.add('pointer-events-none');
+      el.lihatDaftarLaporanButton.classList.add("pointer-events-none");
 
-      el.lihatDaftarLaporanButton.setAttribute('aria-disabled', 'true');
+      el.lihatDaftarLaporanButton.setAttribute("aria-disabled", "true");
     } else {
-      el.lihatDaftarLaporanButton.classList.remove('opacity-50');
+      el.lihatDaftarLaporanButton.classList.remove("opacity-50");
 
-      el.lihatDaftarLaporanButton.classList.remove('pointer-events-none');
+      el.lihatDaftarLaporanButton.classList.remove("pointer-events-none");
 
-      el.lihatDaftarLaporanButton.removeAttribute('aria-disabled');
+      el.lihatDaftarLaporanButton.removeAttribute("aria-disabled");
     }
   }
 
@@ -1252,17 +1252,17 @@
       el.tampilkanRekapButton.dataset.originalText =
         el.tampilkanRekapButton.textContent;
 
-      el.tampilkanRekapButton.textContent = 'Memproses...';
+      el.tampilkanRekapButton.textContent = "Memproses...";
 
-      el.tampilkanRekapButton.classList.add('opacity-70');
+      el.tampilkanRekapButton.classList.add("opacity-70");
     } else {
       el.tampilkanRekapButton.disabled = false;
 
       const originalText = el.tampilkanRekapButton.dataset.originalText;
 
-      el.tampilkanRekapButton.textContent = originalText || 'Tampilkan Rekap';
+      el.tampilkanRekapButton.textContent = originalText || "Tampilkan Rekap";
 
-      el.tampilkanRekapButton.classList.remove('opacity-70');
+      el.tampilkanRekapButton.classList.remove("opacity-70");
     }
   }
 
@@ -1285,36 +1285,36 @@
      ===================================================== */
 
   function renderErrorState(message) {
-    const safeMessage = message || 'Data rekap tidak dapat dimuat.';
+    const safeMessage = message || "Data rekap tidak dapat dimuat.";
 
     /*
       Jangan menampilkan data lama sebagai hasil
       request baru.
     */
 
-    setText(el.totalKejadianLaporan, '-');
+    setText(el.totalKejadianLaporan, "-");
 
-    setText(el.korbanLRLaporan, '-');
+    setText(el.korbanLRLaporan, "-");
 
-    setText(el.korbanLBLaporan, '-');
+    setText(el.korbanLBLaporan, "-");
 
-    setText(el.korbanMDLaporan, '-');
+    setText(el.korbanMDLaporan, "-");
 
-    setText(el.kerugianMaterialLaporan, '-');
+    setText(el.kerugianMaterialLaporan, "-");
 
-    setText(el.statusDalamPenangananLaporan, '-');
+    setText(el.statusDalamPenangananLaporan, "-");
 
-    setText(el.statusRJLaporan, '-');
+    setText(el.statusRJLaporan, "-");
 
-    setText(el.statusLimpahPolresLaporan, '-');
+    setText(el.statusLimpahPolresLaporan, "-");
 
-    setText(el.laporanCountNumber, '-');
+    setText(el.laporanCountNumber, "-");
 
-    setText(el.laporanCountText, 'Data tidak dapat dimuat.');
+    setText(el.laporanCountText, "Data tidak dapat dimuat.");
 
     updateReportLinkState(0);
 
-    setText(el.dataDiperbaruiText, '-');
+    setText(el.dataDiperbaruiText, "-");
 
     showMessage(safeMessage);
   }
@@ -1341,7 +1341,7 @@
     /* Validasi */
 
     if (!period.valid) {
-      showMessage(period.message || 'Periode tidak valid.');
+      showMessage(period.message || "Periode tidak valid.");
 
       return;
     }
@@ -1378,7 +1378,7 @@
           diaktifkan.
         */
 
-        throw new Error('Backend belum diaktifkan.');
+        throw new Error("Backend belum diaktifkan.");
       }
 
       /*
@@ -1411,13 +1411,13 @@
 
       renderReportCount(normalized);
     } catch (error) {
-      console.error('Laporan & Rekap error:', error);
+      console.error("Laporan & Rekap error:", error);
 
       if (requestId !== state.lastRequestId) {
         return;
       }
 
-      renderErrorState('Terjadi kesalahan saat memuat data rekap.');
+      renderErrorState("Terjadi kesalahan saat memuat data rekap.");
     } finally {
       if (requestId === state.lastRequestId) {
         setLoading(false);
@@ -1488,19 +1488,19 @@
     Gunakan filter Bulanan:
     Tahun + Bulan
   */
-    if (type === 'bulan') {
+    if (type === "bulan") {
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
 
-      state.periodType = 'bulanan';
+      state.periodType = "bulanan";
       state.period.startDate = getStartOfMonth(today);
       state.period.endDate = getEndOfMonth(today);
 
       if (elementExists(el.jenisPeriode)) {
-        el.jenisPeriode.value = 'bulanan';
+        el.jenisPeriode.value = "bulanan";
       }
 
-      updatePeriodTypeUI('bulanan');
+      updatePeriodTypeUI("bulanan");
 
       if (elementExists(el.tahunBulanan)) {
         el.tahunBulanan.value = String(year);
@@ -1519,18 +1519,18 @@
     Gunakan filter Tahunan:
     Tahun saja
   */
-    if (type === 'tahun') {
+    if (type === "tahun") {
       const year = today.getFullYear();
 
-      state.periodType = 'tahunan';
+      state.periodType = "tahunan";
       state.period.startDate = getStartOfYear(today);
       state.period.endDate = getEndOfYear(today);
 
       if (elementExists(el.jenisPeriode)) {
-        el.jenisPeriode.value = 'tahunan';
+        el.jenisPeriode.value = "tahunan";
       }
 
-      updatePeriodTypeUI('tahunan');
+      updatePeriodTypeUI("tahunan");
 
       if (elementExists(el.tahunTahunan)) {
         el.tahunTahunan.value = String(year);
@@ -1544,19 +1544,19 @@
     MINGGU INI
     Gunakan filter Rentang Tanggal.
   */
-    if (type === 'minggu') {
+    if (type === "minggu") {
       const startDate = getStartOfWeek(today);
       const endDate = getEndOfWeek(today);
 
-      state.periodType = 'rentang';
+      state.periodType = "rentang";
       state.period.startDate = startDate;
       state.period.endDate = endDate;
 
       if (elementExists(el.jenisPeriode)) {
-        el.jenisPeriode.value = 'rentang';
+        el.jenisPeriode.value = "rentang";
       }
 
-      updatePeriodTypeUI('rentang');
+      updatePeriodTypeUI("rentang");
 
       if (elementExists(el.tanggalMulai)) {
         el.tanggalMulai.value = dateToInputValue(startDate);
@@ -1601,27 +1601,27 @@
      ===================================================== */
 
   function renderLoadingPlaceholder() {
-    setText(el.totalKejadianLaporan, '...');
+    setText(el.totalKejadianLaporan, "...");
 
-    setText(el.korbanLRLaporan, '...');
+    setText(el.korbanLRLaporan, "...");
 
-    setText(el.korbanLBLaporan, '...');
+    setText(el.korbanLBLaporan, "...");
 
-    setText(el.korbanMDLaporan, '...');
+    setText(el.korbanMDLaporan, "...");
 
-    setText(el.kerugianMaterialLaporan, '...');
+    setText(el.kerugianMaterialLaporan, "...");
 
-    setText(el.statusDalamPenangananLaporan, '...');
+    setText(el.statusDalamPenangananLaporan, "...");
 
-    setText(el.statusRJLaporan, '...');
+    setText(el.statusRJLaporan, "...");
 
-    setText(el.statusLimpahPolresLaporan, '...');
+    setText(el.statusLimpahPolresLaporan, "...");
 
-    setText(el.laporanCountNumber, '...');
+    setText(el.laporanCountNumber, "...");
 
-    setText(el.laporanCountText, 'Memuat data laporan...');
+    setText(el.laporanCountText, "Memuat data laporan...");
 
-    setText(el.dataDiperbaruiText, 'Memuat...');
+    setText(el.dataDiperbaruiText, "Memuat...");
   }
 
   /* =====================================================
@@ -1644,7 +1644,7 @@
       Fallback.
     */
 
-    window.location.href = '../index.html';
+    window.location.href = "../index.html";
   }
 
   /* =====================================================
@@ -1745,7 +1745,7 @@
      * SEMUA
      * Tidak perlu parameter.
      */
-    if (period.type === 'semua') {
+    if (period.type === "semua") {
       return CONFIG.REPORT_PAGE;
     }
 
@@ -1756,10 +1756,10 @@
      * Contoh:
      * halLakaLantas.html?tahun=2026&bulan=09
      */
-    if (period.type === 'bulanan') {
-      params.set('tahun', String(period.startDate.getFullYear()));
+    if (period.type === "bulanan") {
+      params.set("tahun", String(period.startDate.getFullYear()));
 
-      params.set('bulan', padNumber(period.startDate.getMonth() + 1));
+      params.set("bulan", padNumber(period.startDate.getMonth() + 1));
 
       return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
     }
@@ -1770,8 +1770,8 @@
      * Contoh:
      * halLakaLantas.html?tahun=2026
      */
-    if (period.type === 'tahunan') {
-      params.set('tahun', String(period.startDate.getFullYear()));
+    if (period.type === "tahunan") {
+      params.set("tahun", String(period.startDate.getFullYear()));
 
       return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
     }
@@ -1782,13 +1782,13 @@
      * Contoh:
      * halLakaLantas.html?tanggalMulai=2026-09-01&tanggalAkhir=2026-09-04
      */
-    if (period.type === 'rentang') {
+    if (period.type === "rentang") {
       if (period.startDate) {
-        params.set('tanggalMulai', dateToInputValue(period.startDate));
+        params.set("tanggalMulai", dateToInputValue(period.startDate));
       }
 
       if (period.endDate) {
-        params.set('tanggalAkhir', dateToInputValue(period.endDate));
+        params.set("tanggalAkhir", dateToInputValue(period.endDate));
       }
 
       const queryString = params.toString();
@@ -1809,7 +1809,7 @@
     const url = buildReportPageUrl();
 
     if (!url) {
-      showMessage('Periode yang dipilih tidak valid.');
+      showMessage("Periode yang dipilih tidak valid.");
 
       return;
     }
@@ -1819,7 +1819,7 @@
     const reportCount = Number(response?.summary?.totalKejadian) || 0;
 
     if (reportCount <= 0) {
-      showMessage('Tidak ada laporan pada periode yang dipilih.');
+      showMessage("Tidak ada laporan pada periode yang dipilih.");
 
       return;
     }
@@ -1832,7 +1832,7 @@
      ===================================================== */
 
   function updateApplicationMode(isOfficerMode) {
-    state.mode = isOfficerMode ? 'officer' : 'visitor';
+    state.mode = isOfficerMode ? "officer" : "visitor";
 
     /*
       Saat ini tampilan Laporan & Rekap
@@ -1853,13 +1853,13 @@
     /* ---------- Back ---------- */
 
     if (elementExists(el.backButton)) {
-      el.backButton.addEventListener('click', goBack);
+      el.backButton.addEventListener("click", goBack);
     }
 
     /* ---------- Jenis Periode ---------- */
 
     if (elementExists(el.jenisPeriode)) {
-      el.jenisPeriode.addEventListener('change', (event) => {
+      el.jenisPeriode.addEventListener("change", (event) => {
         const type = event.target.value;
 
         state.periodType = type;
@@ -1871,48 +1871,48 @@
     /* ---------- Tampilkan Rekap ---------- */
 
     if (elementExists(el.tampilkanRekapButton)) {
-      el.tampilkanRekapButton.addEventListener('click', loadRekap);
+      el.tampilkanRekapButton.addEventListener("click", loadRekap);
     }
 
     /* ---------- Reset ---------- */
 
     if (elementExists(el.resetFilterButton)) {
-      el.resetFilterButton.addEventListener('click', resetFilter);
+      el.resetFilterButton.addEventListener("click", resetFilter);
     }
 
     /* ---------- Minggu Ini ---------- */
 
     if (elementExists(el.filterMingguIni)) {
-      el.filterMingguIni.addEventListener('click', () =>
-        applyQuickFilter('minggu'),
+      el.filterMingguIni.addEventListener("click", () =>
+        applyQuickFilter("minggu"),
       );
     }
 
     /* ---------- Bulan Ini ---------- */
 
     if (elementExists(el.filterBulanIni)) {
-      el.filterBulanIni.addEventListener('click', () =>
-        applyQuickFilter('bulan'),
+      el.filterBulanIni.addEventListener("click", () =>
+        applyQuickFilter("bulan"),
       );
     }
 
     /* ---------- Tahun Ini ---------- */
 
     if (elementExists(el.filterTahunIni)) {
-      el.filterTahunIni.addEventListener('click', () =>
-        applyQuickFilter('tahun'),
+      el.filterTahunIni.addEventListener("click", () =>
+        applyQuickFilter("tahun"),
       );
     }
 
     /* ---------- Lihat Daftar Laporan ---------- */
 
     if (elementExists(el.lihatDaftarLaporanButton)) {
-      el.lihatDaftarLaporanButton.addEventListener('click', openReportList);
+      el.lihatDaftarLaporanButton.addEventListener("click", openReportList);
     }
 
     /* ---------- Mode Aplikasi ---------- */
 
-    document.addEventListener('modeChanged', (event) => {
+    document.addEventListener("modeChanged", (event) => {
       const isOfficer = Boolean(event.detail?.isOfficerMode);
 
       updateApplicationMode(isOfficer);
@@ -1920,10 +1920,10 @@
 
     /* ---------- Perubahan mode umum ---------- */
 
-    document.addEventListener('setApplicationMode', (event) => {
-      if (event.detail?.mode === 'officer') {
+    document.addEventListener("setApplicationMode", (event) => {
+      if (event.detail?.mode === "officer") {
         updateApplicationMode(true);
-      } else if (event.detail?.mode === 'visitor') {
+      } else if (event.detail?.mode === "visitor") {
         updateApplicationMode(false);
       }
     });
@@ -1941,7 +1941,7 @@
     */
 
     if (!elementExists(el.jenisPeriode)) {
-      console.error('Laporan & Rekap: elemen #jenisPeriode tidak ditemukan.');
+      console.error("Laporan & Rekap: elemen #jenisPeriode tidak ditemukan.");
 
       return;
     }
@@ -1966,13 +1966,13 @@
     if (elementExists(el.exportPdfButton)) {
       el.exportPdfButton.disabled = true;
 
-      el.exportPdfButton.setAttribute('aria-disabled', 'true');
+      el.exportPdfButton.setAttribute("aria-disabled", "true");
     }
 
     if (elementExists(el.exportExcelButton)) {
       el.exportExcelButton.disabled = true;
 
-      el.exportExcelButton.setAttribute('aria-disabled', 'true');
+      el.exportExcelButton.setAttribute("aria-disabled", "true");
     }
 
     /*
@@ -2055,8 +2055,8 @@
      39. JALANKAN APLIKASI
      ===================================================== */
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
     init();
   }

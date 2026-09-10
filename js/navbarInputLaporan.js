@@ -6,21 +6,21 @@
        AWAL SCRIPT GLOBAL / APPLICATION
   ====================================================== */
 
-let isOfficerMode = localStorage.getItem('isOfficerMode') === 'true';
+let isOfficerMode = localStorage.getItem("isOfficerMode") === "true";
 
 /* =====================================================
      SET MODE APLIKASI
   ===================================================== */
 
 function setMode(mode) {
-  isOfficerMode = mode === 'officer';
+  isOfficerMode = mode === "officer";
 
-  localStorage.setItem('isOfficerMode', String(isOfficerMode));
+  localStorage.setItem("isOfficerMode", String(isOfficerMode));
 
   updateGlobalUI();
 
   document.dispatchEvent(
-    new CustomEvent('modeChanged', {
+    new CustomEvent("modeChanged", {
       detail: {
         isOfficerMode: isOfficerMode,
       },
@@ -46,25 +46,25 @@ function updateGlobalUI() {
        AWAL SCRIPT ELEMENT GLOBAL
   ====================================================== */
 
-const menuButton = document.getElementById('menuButton');
+const menuButton = document.getElementById("menuButton");
 
-const closeMenuButton = document.getElementById('closeMenuButton');
+const closeMenuButton = document.getElementById("closeMenuButton");
 
-const sidebar = document.getElementById('sidebar');
+const sidebar = document.getElementById("sidebar");
 
-const menuOverlay = document.getElementById('menuOverlay');
+const menuOverlay = document.getElementById("menuOverlay");
 
-const visitorMenu = document.getElementById('visitorMenu');
+const visitorMenu = document.getElementById("visitorMenu");
 
-const officerMenu = document.getElementById('officerMenu');
+const officerMenu = document.getElementById("officerMenu");
 
-const visitorStatus = document.getElementById('visitorStatus');
+const visitorStatus = document.getElementById("visitorStatus");
 
-const adminStatus = document.getElementById('adminStatus');
+const adminStatus = document.getElementById("adminStatus");
 
-const loginButton = document.getElementById('loginButton');
+const loginButton = document.getElementById("loginButton");
 
-const logoutButton = document.getElementById('logoutButton');
+const logoutButton = document.getElementById("logoutButton");
 
 /* =====================================================
        AKHIR SCRIPT ELEMENT GLOBAL
@@ -85,13 +85,13 @@ function updateNavbarMode(isOfficer) {
       */
 
     if (visitorStatus) {
-      visitorStatus.classList.add('hidden');
-      visitorStatus.classList.remove('flex');
+      visitorStatus.classList.add("hidden");
+      visitorStatus.classList.remove("flex");
     }
 
     if (adminStatus) {
-      adminStatus.classList.remove('hidden');
-      adminStatus.classList.add('flex');
+      adminStatus.classList.remove("hidden");
+      adminStatus.classList.add("flex");
     }
   } else {
     /*
@@ -99,13 +99,13 @@ function updateNavbarMode(isOfficer) {
       */
 
     if (visitorStatus) {
-      visitorStatus.classList.remove('hidden');
-      visitorStatus.classList.add('flex');
+      visitorStatus.classList.remove("hidden");
+      visitorStatus.classList.add("flex");
     }
 
     if (adminStatus) {
-      adminStatus.classList.add('hidden');
-      adminStatus.classList.remove('flex');
+      adminStatus.classList.add("hidden");
+      adminStatus.classList.remove("flex");
     }
   }
 }
@@ -115,18 +115,18 @@ function updateNavbarMode(isOfficer) {
   ===================================================== */
 
 if (loginButton) {
-  loginButton.addEventListener('click', function () {
+  loginButton.addEventListener("click", function () {
     /*
           Ubah mode menjadi Petugas.
         */
 
-    setMode('officer');
+    setMode("officer");
 
     /*
           Minta Sidebar ditutup.
         */
 
-    document.dispatchEvent(new CustomEvent('sidebarCloseRequest'));
+    document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
 
@@ -135,8 +135,8 @@ if (loginButton) {
   ===================================================== */
 
 if (logoutButton) {
-  logoutButton.addEventListener('click', function () {
-    document.dispatchEvent(new CustomEvent('logoutRequest'));
+  logoutButton.addEventListener("click", function () {
+    document.dispatchEvent(new CustomEvent("logoutRequest"));
   });
 }
 
@@ -148,11 +148,11 @@ if (logoutButton) {
      ELEMENT MODAL LOGOUT
   ===================================================== */
 
-const logoutModal = document.getElementById('logoutModal');
+const logoutModal = document.getElementById("logoutModal");
 
-const cancelLogoutButton = document.getElementById('cancelLogoutButton');
+const cancelLogoutButton = document.getElementById("cancelLogoutButton");
 
-const confirmLogoutButton = document.getElementById('confirmLogoutButton');
+const confirmLogoutButton = document.getElementById("confirmLogoutButton");
 
 /* =====================================================
      OPEN LOGOUT MODAL
@@ -163,11 +163,11 @@ function openLogoutModal() {
     return;
   }
 
-  logoutModal.classList.remove('hidden');
+  logoutModal.classList.remove("hidden");
 
-  logoutModal.classList.add('flex');
+  logoutModal.classList.add("flex");
 
-  document.body.classList.add('overflow-hidden');
+  document.body.classList.add("overflow-hidden");
 
   /*
       Fokus ke tombol Batal.
@@ -189,11 +189,11 @@ function closeLogoutModal() {
     return;
   }
 
-  logoutModal.classList.add('hidden');
+  logoutModal.classList.add("hidden");
 
-  logoutModal.classList.remove('flex');
+  logoutModal.classList.remove("flex");
 
-  document.body.classList.remove('overflow-hidden');
+  document.body.classList.remove("overflow-hidden");
 }
 
 /* =====================================================
@@ -203,7 +203,7 @@ function closeLogoutModal() {
      logoutRequest
   ===================================================== */
 
-document.addEventListener('logoutRequest', function () {
+document.addEventListener("logoutRequest", function () {
   openLogoutModal();
 });
 
@@ -212,7 +212,7 @@ document.addEventListener('logoutRequest', function () {
   ===================================================== */
 
 if (cancelLogoutButton) {
-  cancelLogoutButton.addEventListener('click', function () {
+  cancelLogoutButton.addEventListener("click", function () {
     closeLogoutModal();
   });
 }
@@ -224,11 +224,11 @@ if (cancelLogoutButton) {
   ===================================================== */
 
 if (confirmLogoutButton) {
-  confirmLogoutButton.addEventListener('click', function () {
+  confirmLogoutButton.addEventListener("click", function () {
     document.dispatchEvent(
-      new CustomEvent('setApplicationMode', {
+      new CustomEvent("setApplicationMode", {
         detail: {
-          mode: 'visitor',
+          mode: "visitor",
         },
       }),
     );
@@ -239,7 +239,7 @@ if (confirmLogoutButton) {
         Minta Sidebar ditutup.
       */
 
-    document.dispatchEvent(new CustomEvent('sidebarCloseRequest'));
+    document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
 
@@ -248,7 +248,7 @@ if (confirmLogoutButton) {
   ===================================================== */
 
 if (logoutModal) {
-  logoutModal.addEventListener('click', function (event) {
+  logoutModal.addEventListener("click", function (event) {
     if (event.target === logoutModal) {
       closeLogoutModal();
     }
@@ -259,9 +259,9 @@ if (logoutModal) {
      ESCAPE
   ===================================================== */
 
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    if (logoutModal && !logoutModal.classList.contains('hidden')) {
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    if (logoutModal && !logoutModal.classList.contains("hidden")) {
       closeLogoutModal();
     }
   }
@@ -276,8 +276,8 @@ document.addEventListener('keydown', function (event) {
   ===================================================== */
 
 if (menuButton) {
-  menuButton.addEventListener('click', function () {
-    document.dispatchEvent(new CustomEvent('sidebarToggle'));
+  menuButton.addEventListener("click", function () {
+    document.dispatchEvent(new CustomEvent("sidebarToggle"));
   });
 }
 
@@ -285,9 +285,9 @@ if (menuButton) {
      MODE DARI KOMPONEN LAIN
   ===================================================== */
 
-document.addEventListener('setApplicationMode', function (event) {
+document.addEventListener("setApplicationMode", function (event) {
   const mode =
-    event.detail && event.detail.mode ? event.detail.mode : 'visitor';
+    event.detail && event.detail.mode ? event.detail.mode : "visitor";
 
   setMode(mode);
 });
@@ -302,7 +302,7 @@ window.NavbarComponent = {
   },
 
   getMode: function () {
-    return isOfficerMode ? 'officer' : 'visitor';
+    return isOfficerMode ? "officer" : "visitor";
   },
 
   isOfficerMode: function () {
@@ -328,10 +328,64 @@ let isMenuOpen = false;
      OPEN SIDEBAR
   ===================================================== */
 
+// function openSidebar() {
+//   /*
+//       Sidebar mobile saja.
+
+//       Desktop tidak perlu membuka Sidebar
+//       karena Sidebar memang selalu tampil.
+//     */
+
+//   if (window.innerWidth >= 768) {
+//     return;
+//   }
+
+//   if (!sidebar || !menuOverlay) {
+//     return;
+//   }
+
+//   sidebar.classList.remove('-translate-x-full');
+
+//   menuOverlay.classList.remove('hidden');
+
+//   document.body.classList.add('overflow-hidden');
+
+//   isMenuOpen = true;
+
+//   document.dispatchEvent(new CustomEvent('sidebarOpened'));
+// }
+
+// /* =====================================================
+//      CLOSE SIDEBAR
+//   ===================================================== */
+
+// function closeSidebar() {
+//   if (!sidebar || !menuOverlay) {
+//     return;
+//   }
+
+//   sidebar.classList.add('-translate-x-full');
+
+//   menuOverlay.classList.add('hidden');
+
+//   document.body.classList.remove('overflow-hidden');
+
+//   isMenuOpen = false;
+
+//   document.dispatchEvent(new CustomEvent('sidebarClosed'));
+// }
+
 function openSidebar() {
+  if (window.innerWidth < 768) {
+    // Tambahan Code Baru
+    // Simpan Posisi scroll sekarang
+    const scrollY = window.scrollY;
+    document.body.style.top = `${scrollY}px`;
+    document.body.classList.add("overflow-hidden", "fixed", "w-full");
+  }
   /*
       Sidebar mobile saja.
-
+      
       Desktop tidak perlu membuka Sidebar
       karena Sidebar memang selalu tampil.
     */
@@ -344,15 +398,15 @@ function openSidebar() {
     return;
   }
 
-  sidebar.classList.remove('-translate-x-full');
+  sidebar.classList.remove("-translate-x-full");
 
-  menuOverlay.classList.remove('hidden');
+  menuOverlay.classList.remove("hidden");
 
-  document.body.classList.add('overflow-hidden');
+  document.body.classList.add("overflow-hidden");
 
   isMenuOpen = true;
 
-  document.dispatchEvent(new CustomEvent('sidebarOpened'));
+  document.dispatchEvent(new CustomEvent("sidebarOpened"));
 }
 
 /* =====================================================
@@ -364,17 +418,20 @@ function closeSidebar() {
     return;
   }
 
-  sidebar.classList.add('-translate-x-full');
+  const scrollY = document.body.style.top;
 
-  menuOverlay.classList.add('hidden');
+  document.body.style.top = "";
 
-  document.body.classList.remove('overflow-hidden');
+  sidebar.classList.add("-translate-x-full");
+
+  menuOverlay.classList.add("hidden");
+
+  document.body.classList.remove("overflow-hidden", "fixed", "w-full");
 
   isMenuOpen = false;
 
-  document.dispatchEvent(new CustomEvent('sidebarClosed'));
+  document.dispatchEvent(new CustomEvent("sidebarClosed"));
 }
-
 /* =====================================================
      TOGGLE SIDEBAR
   ===================================================== */
@@ -391,7 +448,7 @@ function toggleSidebar() {
      EVENT DARI NAVBAR
   ===================================================== */
 
-document.addEventListener('sidebarToggle', function () {
+document.addEventListener("sidebarToggle", function () {
   toggleSidebar();
 });
 
@@ -399,7 +456,7 @@ document.addEventListener('sidebarToggle', function () {
      EVENT TUTUP DARI NAVBAR
   ===================================================== */
 
-document.addEventListener('sidebarCloseRequest', function () {
+document.addEventListener("sidebarCloseRequest", function () {
   closeSidebar();
 });
 
@@ -408,7 +465,7 @@ document.addEventListener('sidebarCloseRequest', function () {
   ===================================================== */
 
 if (closeMenuButton) {
-  closeMenuButton.addEventListener('click', function () {
+  closeMenuButton.addEventListener("click", function () {
     closeSidebar();
   });
 }
@@ -418,7 +475,7 @@ if (closeMenuButton) {
   ===================================================== */
 
 if (menuOverlay) {
-  menuOverlay.addEventListener('click', function () {
+  menuOverlay.addEventListener("click", function () {
     closeSidebar();
   });
 }
@@ -433,13 +490,13 @@ function updateSidebarMode(isOfficer) {
   }
 
   if (isOfficer) {
-    visitorMenu.classList.add('hidden');
+    visitorMenu.classList.add("hidden");
 
-    officerMenu.classList.remove('hidden');
+    officerMenu.classList.remove("hidden");
   } else {
-    visitorMenu.classList.remove('hidden');
+    visitorMenu.classList.remove("hidden");
 
-    officerMenu.classList.add('hidden');
+    officerMenu.classList.add("hidden");
   }
 }
 
@@ -447,7 +504,7 @@ function updateSidebarMode(isOfficer) {
      EVENT MODE CHANGED
   ===================================================== */
 
-document.addEventListener('modeChanged', function (event) {
+document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
   updateSidebarMode(officer);
@@ -464,11 +521,11 @@ document.addEventListener('modeChanged', function (event) {
 
 function initializeSidebarDropdown() {
   const dropdownButtons = document.querySelectorAll(
-    '.dropdown-button:not(.disabled-dropdown)',
+    ".dropdown-button:not(.disabled-dropdown)",
   );
 
   dropdownButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
+    button.addEventListener("click", function () {
       const dropdownId = button.dataset.dropdown;
 
       if (!dropdownId) {
@@ -481,19 +538,19 @@ function initializeSidebarDropdown() {
         return;
       }
 
-      const chevron = button.querySelector('.dropdown-chevron');
+      const chevron = button.querySelector(".dropdown-chevron");
 
-      const isHidden = dropdown.classList.contains('hidden');
+      const isHidden = dropdown.classList.contains("hidden");
 
       /*
               Tutup dropdown lain.
             */
 
       document
-        .querySelectorAll('.dropdown-content')
+        .querySelectorAll(".dropdown-content")
         .forEach(function (otherDropdown) {
           if (otherDropdown !== dropdown) {
-            otherDropdown.classList.add('hidden');
+            otherDropdown.classList.add("hidden");
           }
         });
 
@@ -502,10 +559,10 @@ function initializeSidebarDropdown() {
             */
 
       document
-        .querySelectorAll('.dropdown-chevron')
+        .querySelectorAll(".dropdown-chevron")
         .forEach(function (otherChevron) {
           if (otherChevron !== chevron) {
-            otherChevron.classList.remove('rotate-180');
+            otherChevron.classList.remove("rotate-180");
           }
         });
 
@@ -514,16 +571,16 @@ function initializeSidebarDropdown() {
             */
 
       if (isHidden) {
-        dropdown.classList.remove('hidden');
+        dropdown.classList.remove("hidden");
 
         if (chevron) {
-          chevron.classList.add('rotate-180');
+          chevron.classList.add("rotate-180");
         }
       } else {
-        dropdown.classList.add('hidden');
+        dropdown.classList.add("hidden");
 
         if (chevron) {
-          chevron.classList.remove('rotate-180');
+          chevron.classList.remove("rotate-180");
         }
       }
     });
@@ -542,8 +599,8 @@ function initializeSidebarLinks() {
     return;
   }
 
-  sidebar.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
+  sidebar.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
       if (window.innerWidth < 768) {
         closeSidebar();
       }
@@ -555,25 +612,25 @@ function initializeSidebarLinks() {
      RESPONSIVE SIDEBAR
   ===================================================== */
 
-window.addEventListener('resize', function () {
+window.addEventListener("resize", function () {
   if (window.innerWidth >= 768) {
     if (menuOverlay) {
-      menuOverlay.classList.add('hidden');
+      menuOverlay.classList.add("hidden");
     }
 
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove("overflow-hidden");
 
     isMenuOpen = false;
   } else {
     if (sidebar) {
-      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.add("-translate-x-full");
     }
 
     if (menuOverlay) {
-      menuOverlay.classList.add('hidden');
+      menuOverlay.classList.add("hidden");
     }
 
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove("overflow-hidden");
 
     isMenuOpen = false;
   }
@@ -583,8 +640,8 @@ window.addEventListener('resize', function () {
      ESCAPE SIDEBAR
   ===================================================== */
 
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape' && isMenuOpen) {
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && isMenuOpen) {
     closeSidebar();
   }
 });
@@ -659,7 +716,7 @@ function initializeApplication() {
       */
 
     if (sidebar) {
-      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.remove("-translate-x-full");
     }
   }
 
@@ -678,8 +735,8 @@ function initializeApplication() {
     setelah DOM siap.
   */
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeApplication);
 } else {
   initializeApplication();
 }

@@ -51,7 +51,7 @@
      =====================================================
      ===================================================== */
 
-let isOfficerMode = localStorage.getItem('isOfficerMode') === 'true';
+let isOfficerMode = localStorage.getItem("isOfficerMode") === "true";
 
 /*
     ID laporan yang sedang dipilih
@@ -70,13 +70,13 @@ let activeMenuId = null;
   ===================================================== */
 
 function setMode(mode) {
-  isOfficerMode = mode === 'officer';
+  isOfficerMode = mode === "officer";
 
   /*
       Simpan mode ke Local Storage.
     */
 
-  localStorage.setItem('isOfficerMode', String(isOfficerMode));
+  localStorage.setItem("isOfficerMode", String(isOfficerMode));
 
   /*
       Update tampilan masing-masing komponen.
@@ -97,7 +97,7 @@ function setMode(mode) {
     */
 
   document.dispatchEvent(
-    new CustomEvent('modeChanged', {
+    new CustomEvent("modeChanged", {
       detail: {
         isOfficerMode: isOfficerMode,
       },
@@ -149,41 +149,41 @@ function updateGlobalUI() {
      =====================================================
      ===================================================== */
 
-const menuButton = document.getElementById('menuButton');
+const menuButton = document.getElementById("menuButton");
 
-const closeMenuButton = document.getElementById('closeMenuButton');
+const closeMenuButton = document.getElementById("closeMenuButton");
 
-const sidebar = document.getElementById('sidebar');
+const sidebar = document.getElementById("sidebar");
 
-const menuOverlay = document.getElementById('menuOverlay');
+const menuOverlay = document.getElementById("menuOverlay");
 
-const visitorMenu = document.getElementById('visitorMenu');
+const visitorMenu = document.getElementById("visitorMenu");
 
-const officerMenu = document.getElementById('officerMenu');
+const officerMenu = document.getElementById("officerMenu");
 
-const visitorStatus = document.getElementById('visitorStatus');
+const visitorStatus = document.getElementById("visitorStatus");
 
-const adminStatus = document.getElementById('adminStatus');
+const adminStatus = document.getElementById("adminStatus");
 
-const loginButton = document.getElementById('loginButton');
+const loginButton = document.getElementById("loginButton");
 
-const logoutButton = document.getElementById('logoutButton');
+const logoutButton = document.getElementById("logoutButton");
 
-const logoutModal = document.getElementById('logoutModal');
+const logoutModal = document.getElementById("logoutModal");
 
-const cancelLogoutButton = document.getElementById('cancelLogoutButton');
+const cancelLogoutButton = document.getElementById("cancelLogoutButton");
 
-const confirmLogoutButton = document.getElementById('confirmLogoutButton');
+const confirmLogoutButton = document.getElementById("confirmLogoutButton");
 
-const actionMenu = document.getElementById('action-menu');
+const actionMenu = document.getElementById("action-menu");
 
-const actionEditButton = document.getElementById('actionEditButton');
+const actionEditButton = document.getElementById("actionEditButton");
 
-const actionDeleteButton = document.getElementById('actionDeleteButton');
+const actionDeleteButton = document.getElementById("actionDeleteButton");
 
-const searchInput = document.getElementById('searchInput');
+const searchInput = document.getElementById("searchInput");
 
-const searchInputDesktop = document.getElementById('searchInputDesktop');
+const searchInputDesktop = document.getElementById("searchInputDesktop");
 
 /* =====================================================
      AKHIR SCRIPT ELEMENT GLOBAL
@@ -207,11 +207,29 @@ const searchInputDesktop = document.getElementById('searchInputDesktop');
        Navbar TIDAK mengatur Sidebar secara langsung.
      =====================================================
      ===================================================== */
-
+document.body.insertAdjacentHTML(
+  "beforeend",
+  `
+  <div style="
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:99999;
+    background:red;
+    color:white;
+    padding:10px;
+    font-size:14px;
+  ">
+    width: ${window.innerWidth}px<br>
+    height: ${window.innerHeight}px<br>
+    DPR: ${window.devicePixelRatio}
+  </div>
+  `,
+);
 /* Awal Tes Navbar ================================================================================== */
 
 function initNavbarScrollHide() {
-  const navbar = document.getElementById('navbar');
+  const navbar = document.getElementById("navbar");
   if (!navbar) return;
 
   let lastY = window.scrollY;
@@ -220,7 +238,7 @@ function initNavbarScrollHide() {
 
   const scrollUpThreshold = 100; // Jarak Scroll ke atas (100px)
 
-  window.addEventListener('scroll', () => {
+  window.addEventListener("scroll", () => {
     // Abaikan logika jika layar Dekstop (>= 768px)
     if (window.innerHeight >= 768) {
       resetToSticky();
@@ -261,7 +279,7 @@ function initNavbarScrollHide() {
   });
 
   // Reset tampilan jika layar di resize ke dekstop
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     if (window.innerWidth >= 768) {
       resetToSticky;
     }
@@ -269,15 +287,15 @@ function initNavbarScrollHide() {
 
   function showFixedNavbar() {
     // Ubah posisi jadi fixed alami melayang dan turunkan navbar ke layar
-    navbar.classList.remove('sticky', 'translate-y-full');
-    navbar.classList.add('fixed', 'top-0', 'translate-y-0');
+    navbar.classList.remove("sticky", "translate-y-full");
+    navbar.classList.add("fixed", "top-0", "translate-y-0");
     isFixedShowing = true;
   }
 
   function resetToSticky() {
     // Kembalikan ke posisi sticky normal (ikut flow dokumen)
-    navbar.classList.remove('fixed', 'translate-y-full');
-    navbar.classList.add('sticky', 'translate-y-0');
+    navbar.classList.remove("fixed", "translate-y-full");
+    navbar.classList.add("sticky", "translate-y-0");
     isFixedShowing = false;
   }
 }
@@ -294,13 +312,13 @@ function updateNavbarMode(isOfficer) {
       */
 
     if (visitorStatus) {
-      visitorStatus.classList.add('hidden');
-      visitorStatus.classList.remove('flex');
+      visitorStatus.classList.add("hidden");
+      visitorStatus.classList.remove("flex");
     }
 
     if (adminStatus) {
-      adminStatus.classList.remove('hidden');
-      adminStatus.classList.add('flex');
+      adminStatus.classList.remove("hidden");
+      adminStatus.classList.add("flex");
     }
   } else {
     /*
@@ -308,13 +326,13 @@ function updateNavbarMode(isOfficer) {
       */
 
     if (visitorStatus) {
-      visitorStatus.classList.remove('hidden');
-      visitorStatus.classList.add('flex');
+      visitorStatus.classList.remove("hidden");
+      visitorStatus.classList.add("flex");
     }
 
     if (adminStatus) {
-      adminStatus.classList.add('hidden');
-      adminStatus.classList.remove('flex');
+      adminStatus.classList.add("hidden");
+      adminStatus.classList.remove("flex");
     }
   }
 }
@@ -324,12 +342,12 @@ function updateNavbarMode(isOfficer) {
   ===================================================== */
 
 if (loginButton) {
-  loginButton.addEventListener('click', function () {
+  loginButton.addEventListener("click", function () {
     /*
           Ubah mode menjadi Petugas.
         */
 
-    setMode('officer');
+    setMode("officer");
 
     /*
           Minta Sidebar ditutup.
@@ -338,7 +356,7 @@ if (loginButton) {
           secara langsung.
         */
 
-    document.dispatchEvent(new CustomEvent('sidebarCloseRequest'));
+    document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
 
@@ -351,8 +369,8 @@ if (loginButton) {
   ===================================================== */
 
 if (logoutButton) {
-  logoutButton.addEventListener('click', function () {
-    document.dispatchEvent(new CustomEvent('logoutRequest'));
+  logoutButton.addEventListener("click", function () {
+    document.dispatchEvent(new CustomEvent("logoutRequest"));
   });
 }
 
@@ -363,8 +381,8 @@ if (logoutButton) {
   ===================================================== */
 
 if (menuButton) {
-  menuButton.addEventListener('click', function () {
-    document.dispatchEvent(new CustomEvent('sidebarToggle'));
+  menuButton.addEventListener("click", function () {
+    document.dispatchEvent(new CustomEvent("sidebarToggle"));
   });
 }
 
@@ -378,9 +396,9 @@ if (menuButton) {
      Maka aplikasi mengubah mode melalui setMode().
   ===================================================== */
 
-document.addEventListener('setApplicationMode', function (event) {
+document.addEventListener("setApplicationMode", function (event) {
   const mode =
-    event.detail && event.detail.mode ? event.detail.mode : 'visitor';
+    event.detail && event.detail.mode ? event.detail.mode : "visitor";
 
   setMode(mode);
 });
@@ -396,7 +414,7 @@ function syncSearchInput(sourceInput, targetInput) {
     return;
   }
 
-  sourceInput.addEventListener('input', function () {
+  sourceInput.addEventListener("input", function () {
     targetInput.value = sourceInput.value;
 
     /*
@@ -405,7 +423,7 @@ function syncSearchInput(sourceInput, targetInput) {
         */
 
     document.dispatchEvent(
-      new CustomEvent('searchChanged', {
+      new CustomEvent("searchChanged", {
         detail: {
           keyword: sourceInput.value,
         },
@@ -435,7 +453,7 @@ window.NavbarComponent = {
   },
 
   getMode: function () {
-    return isOfficerMode ? 'officer' : 'visitor';
+    return isOfficerMode ? "officer" : "visitor";
   },
 
   isOfficerMode: function () {
@@ -492,15 +510,15 @@ function openSidebar() {
     return;
   }
 
-  sidebar.classList.remove('-translate-x-full');
+  sidebar.classList.remove("-translate-x-full");
 
-  menuOverlay.classList.remove('hidden');
+  menuOverlay.classList.remove("hidden");
 
-  document.body.classList.add('overflow-hidden');
+  document.body.classList.add("overflow-hidden");
 
   isMenuOpen = true;
 
-  document.dispatchEvent(new CustomEvent('sidebarOpened'));
+  document.dispatchEvent(new CustomEvent("sidebarOpened"));
 }
 
 /* =====================================================
@@ -512,15 +530,15 @@ function closeSidebar() {
     return;
   }
 
-  sidebar.classList.add('-translate-x-full');
+  sidebar.classList.add("-translate-x-full");
 
-  menuOverlay.classList.add('hidden');
+  menuOverlay.classList.add("hidden");
 
-  document.body.classList.remove('overflow-hidden');
+  document.body.classList.remove("overflow-hidden");
 
   isMenuOpen = false;
 
-  document.dispatchEvent(new CustomEvent('sidebarClosed'));
+  document.dispatchEvent(new CustomEvent("sidebarClosed"));
 }
 
 /* =====================================================
@@ -539,7 +557,7 @@ function toggleSidebar() {
      EVENT DARI NAVBAR
   ===================================================== */
 
-document.addEventListener('sidebarToggle', function () {
+document.addEventListener("sidebarToggle", function () {
   toggleSidebar();
 });
 
@@ -547,7 +565,7 @@ document.addEventListener('sidebarToggle', function () {
      EVENT TUTUP DARI NAVBAR
   ===================================================== */
 
-document.addEventListener('sidebarCloseRequest', function () {
+document.addEventListener("sidebarCloseRequest", function () {
   closeSidebar();
 });
 
@@ -556,7 +574,7 @@ document.addEventListener('sidebarCloseRequest', function () {
   ===================================================== */
 
 if (closeMenuButton) {
-  closeMenuButton.addEventListener('click', function () {
+  closeMenuButton.addEventListener("click", function () {
     closeSidebar();
   });
 }
@@ -566,7 +584,7 @@ if (closeMenuButton) {
   ===================================================== */
 
 if (menuOverlay) {
-  menuOverlay.addEventListener('click', function () {
+  menuOverlay.addEventListener("click", function () {
     closeSidebar();
   });
 }
@@ -581,13 +599,13 @@ function updateSidebarMode(isOfficer) {
   }
 
   if (isOfficer) {
-    visitorMenu.classList.add('hidden');
+    visitorMenu.classList.add("hidden");
 
-    officerMenu.classList.remove('hidden');
+    officerMenu.classList.remove("hidden");
   } else {
-    visitorMenu.classList.remove('hidden');
+    visitorMenu.classList.remove("hidden");
 
-    officerMenu.classList.add('hidden');
+    officerMenu.classList.add("hidden");
   }
 }
 
@@ -595,7 +613,7 @@ function updateSidebarMode(isOfficer) {
      EVENT MODE CHANGED
   ===================================================== */
 
-document.addEventListener('modeChanged', function (event) {
+document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
   updateSidebarMode(officer);
@@ -612,11 +630,11 @@ document.addEventListener('modeChanged', function (event) {
 
 function initializeSidebarDropdown() {
   const dropdownButtons = document.querySelectorAll(
-    '.dropdown-button:not(.disabled-dropdown)',
+    ".dropdown-button:not(.disabled-dropdown)",
   );
 
   dropdownButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
+    button.addEventListener("click", function () {
       const dropdownId = button.dataset.dropdown;
 
       if (!dropdownId) {
@@ -629,19 +647,19 @@ function initializeSidebarDropdown() {
         return;
       }
 
-      const chevron = button.querySelector('.dropdown-chevron');
+      const chevron = button.querySelector(".dropdown-chevron");
 
-      const isHidden = dropdown.classList.contains('hidden');
+      const isHidden = dropdown.classList.contains("hidden");
 
       /*
               Tutup dropdown lain.
             */
 
       document
-        .querySelectorAll('.dropdown-content')
+        .querySelectorAll(".dropdown-content")
         .forEach(function (otherDropdown) {
           if (otherDropdown !== dropdown) {
-            otherDropdown.classList.add('hidden');
+            otherDropdown.classList.add("hidden");
           }
         });
 
@@ -650,10 +668,10 @@ function initializeSidebarDropdown() {
             */
 
       document
-        .querySelectorAll('.dropdown-chevron')
+        .querySelectorAll(".dropdown-chevron")
         .forEach(function (otherChevron) {
           if (otherChevron !== chevron) {
-            otherChevron.classList.remove('rotate-180');
+            otherChevron.classList.remove("rotate-180");
           }
         });
 
@@ -662,16 +680,16 @@ function initializeSidebarDropdown() {
             */
 
       if (isHidden) {
-        dropdown.classList.remove('hidden');
+        dropdown.classList.remove("hidden");
 
         if (chevron) {
-          chevron.classList.add('rotate-180');
+          chevron.classList.add("rotate-180");
         }
       } else {
-        dropdown.classList.add('hidden');
+        dropdown.classList.add("hidden");
 
         if (chevron) {
-          chevron.classList.remove('rotate-180');
+          chevron.classList.remove("rotate-180");
         }
       }
     });
@@ -690,8 +708,8 @@ function initializeSidebarLinks() {
     return;
   }
 
-  sidebar.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
+  sidebar.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
       if (window.innerWidth < 768) {
         closeSidebar();
       }
@@ -703,25 +721,25 @@ function initializeSidebarLinks() {
      RESPONSIVE SIDEBAR
   ===================================================== */
 
-window.addEventListener('resize', function () {
+window.addEventListener("resize", function () {
   if (window.innerWidth >= 768) {
     if (menuOverlay) {
-      menuOverlay.classList.add('hidden');
+      menuOverlay.classList.add("hidden");
     }
 
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove("overflow-hidden");
 
     isMenuOpen = false;
   } else {
     if (sidebar) {
-      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.add("-translate-x-full");
     }
 
     if (menuOverlay) {
-      menuOverlay.classList.add('hidden');
+      menuOverlay.classList.add("hidden");
     }
 
-    document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove("overflow-hidden");
 
     isMenuOpen = false;
   }
@@ -731,8 +749,8 @@ window.addEventListener('resize', function () {
      ESCAPE SIDEBAR
   ===================================================== */
 
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape' && isMenuOpen) {
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && isMenuOpen) {
     closeSidebar();
   }
 });
@@ -791,11 +809,11 @@ function openLogoutModal() {
     return;
   }
 
-  logoutModal.classList.remove('hidden');
+  logoutModal.classList.remove("hidden");
 
-  logoutModal.classList.add('flex');
+  logoutModal.classList.add("flex");
 
-  document.body.classList.add('overflow-hidden');
+  document.body.classList.add("overflow-hidden");
 
   /*
       Fokus ke tombol Batal.
@@ -817,11 +835,11 @@ function closeLogoutModal() {
     return;
   }
 
-  logoutModal.classList.add('hidden');
+  logoutModal.classList.add("hidden");
 
-  logoutModal.classList.remove('flex');
+  logoutModal.classList.remove("flex");
 
-  document.body.classList.remove('overflow-hidden');
+  document.body.classList.remove("overflow-hidden");
 }
 
 /* =====================================================
@@ -831,7 +849,7 @@ function closeLogoutModal() {
      logoutRequest
   ===================================================== */
 
-document.addEventListener('logoutRequest', function () {
+document.addEventListener("logoutRequest", function () {
   openLogoutModal();
 });
 
@@ -840,7 +858,7 @@ document.addEventListener('logoutRequest', function () {
   ===================================================== */
 
 if (cancelLogoutButton) {
-  cancelLogoutButton.addEventListener('click', function () {
+  cancelLogoutButton.addEventListener("click", function () {
     closeLogoutModal();
   });
 }
@@ -852,11 +870,11 @@ if (cancelLogoutButton) {
   ===================================================== */
 
 if (confirmLogoutButton) {
-  confirmLogoutButton.addEventListener('click', function () {
+  confirmLogoutButton.addEventListener("click", function () {
     document.dispatchEvent(
-      new CustomEvent('setApplicationMode', {
+      new CustomEvent("setApplicationMode", {
         detail: {
-          mode: 'visitor',
+          mode: "visitor",
         },
       }),
     );
@@ -867,7 +885,7 @@ if (confirmLogoutButton) {
           Minta Sidebar ditutup.
         */
 
-    document.dispatchEvent(new CustomEvent('sidebarCloseRequest'));
+    document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
 
@@ -876,7 +894,7 @@ if (confirmLogoutButton) {
   ===================================================== */
 
 if (logoutModal) {
-  logoutModal.addEventListener('click', function (event) {
+  logoutModal.addEventListener("click", function (event) {
     if (event.target === logoutModal) {
       closeLogoutModal();
     }
@@ -887,11 +905,11 @@ if (logoutModal) {
      ESCAPE LOGOUT MODAL
   ===================================================== */
 
-document.addEventListener('keydown', function (event) {
+document.addEventListener("keydown", function (event) {
   if (
-    event.key === 'Escape' &&
+    event.key === "Escape" &&
     logoutModal &&
-    !logoutModal.classList.contains('hidden')
+    !logoutModal.classList.contains("hidden")
   ) {
     closeLogoutModal();
   }
@@ -929,44 +947,44 @@ window.LogoutModalComponent = {
 
 const lakaData = [
   {
-    id: 'L/03/VIII/2024',
-    hariTanggal: 'Selasa, 20 Agustus 2024',
-    waktu: '14.30 WIB',
-    lokasi: 'Jl. Raya Baureno - Bojonegoro, Desa Baureno, Kec. Baureno',
+    id: "L/03/VIII/2024",
+    hariTanggal: "Selasa, 20 Agustus 2024",
+    waktu: "14.30 WIB",
+    lokasi: "Jl. Raya Baureno - Bojonegoro, Desa Baureno, Kec. Baureno",
     lr: 2,
     lb: 0,
     md: 0,
-    status: 'Dalam Penanganan',
+    status: "Dalam Penanganan",
   },
   {
-    id: 'L/02/VIII/2024',
-    hariTanggal: 'Senin, 19 Agustus 2024',
-    waktu: '09.15 WIB',
-    lokasi: 'Jl. Raya Baureno - Dander, Depan Pasar Baureno',
+    id: "L/02/VIII/2024",
+    hariTanggal: "Senin, 19 Agustus 2024",
+    waktu: "09.15 WIB",
+    lokasi: "Jl. Raya Baureno - Dander, Depan Pasar Baureno",
     lr: 1,
     lb: 1,
     md: 0,
-    status: 'Selesai',
+    status: "Selesai",
   },
   {
-    id: 'L/01/VIII/2024',
-    hariTanggal: 'Minggu, 18 Agustus 2024',
-    waktu: '16.45 WIB',
-    lokasi: 'Jl. Raya Baureno - Kanor, Desa Kedungsumber',
+    id: "L/01/VIII/2024",
+    hariTanggal: "Minggu, 18 Agustus 2024",
+    waktu: "16.45 WIB",
+    lokasi: "Jl. Raya Baureno - Kanor, Desa Kedungsumber",
     lr: 0,
     lb: 1,
     md: 1,
-    status: 'Limpah Polres',
+    status: "Limpah Polres",
   },
   {
-    id: 'L/31/VII/2024',
-    hariTanggal: 'Sabtu, 17 Agustus 2024',
-    waktu: '11.20 WIB',
-    lokasi: 'Jl. Raya Baureno - Sugihwaras, Depan Balai Desa Sugihwaras',
+    id: "L/31/VII/2024",
+    hariTanggal: "Sabtu, 17 Agustus 2024",
+    waktu: "11.20 WIB",
+    lokasi: "Jl. Raya Baureno - Sugihwaras, Depan Balai Desa Sugihwaras",
     lr: 1,
     lb: 0,
     md: 0,
-    status: 'Dalam Penanganan',
+    status: "Dalam Penanganan",
   },
 ];
 
@@ -982,19 +1000,19 @@ const lakaData = [
      ===================================================== */
 
 function getStatusDot(statusText) {
-  const status = (statusText || '').toLowerCase().trim();
-  if (status === 'selesai') return 'bg-emerald-500';
-  if (status === 'dalam penanganan') return 'bg-amber-600';
-  if (status === 'limpah polres') return 'bg-rose-600';
-  return 'bg-slate-300';
+  const status = (statusText || "").toLowerCase().trim();
+  if (status === "selesai") return "bg-emerald-500";
+  if (status === "dalam penanganan") return "bg-amber-600";
+  if (status === "limpah polres") return "bg-rose-600";
+  return "bg-slate-300";
 }
 
 function getStatusText(statusText) {
-  const status = (statusText || '').toLowerCase().trim();
-  if (status === 'selesai') return 'text-emerald-600';
-  if (status === 'dalam penanganan') return 'text-amber-600';
-  if (status === 'limpah polres') return 'text-rose-600';
-  return 'text-slate-500';
+  const status = (statusText || "").toLowerCase().trim();
+  if (status === "selesai") return "text-emerald-600";
+  if (status === "dalam penanganan") return "text-amber-600";
+  if (status === "limpah polres") return "text-rose-600";
+  return "text-slate-500";
 }
 
 /* =====================================================
@@ -1017,19 +1035,19 @@ function getStatusText(statusText) {
      ===================================================== */
 
 function renderLakaList(data = lakaData) {
-  const container = document.getElementById('laka-list');
+  const container = document.getElementById("laka-list");
 
-  const emptyState = document.getElementById('empty-state');
+  const emptyState = document.getElementById("empty-state");
 
   if (!container) {
     return;
   }
 
   if (!data || data.length === 0) {
-    container.innerHTML = '';
+    container.innerHTML = "";
 
     if (emptyState) {
-      emptyState.classList.remove('hidden');
+      emptyState.classList.remove("hidden");
     }
 
     if (window.lucide) {
@@ -1040,7 +1058,7 @@ function renderLakaList(data = lakaData) {
   }
 
   if (emptyState) {
-    emptyState.classList.add('hidden');
+    emptyState.classList.add("hidden");
   }
 
   container.innerHTML = data
@@ -1249,7 +1267,7 @@ function renderLakaList(data = lakaData) {
 
             `;
     })
-    .join('');
+    .join("");
 
   /*
       Render icon Lucide setelah HTML
@@ -1293,9 +1311,9 @@ function updateLakaMode(isOfficer) {
     */
 
   document
-    .querySelectorAll('.visitor-detail-button')
+    .querySelectorAll(".visitor-detail-button")
     .forEach(function (button) {
-      button.classList.toggle('hidden', isOfficer);
+      button.classList.toggle("hidden", isOfficer);
     });
 
   /*
@@ -1303,9 +1321,9 @@ function updateLakaMode(isOfficer) {
     */
 
   document
-    .querySelectorAll('.officer-detail-button')
+    .querySelectorAll(".officer-detail-button")
     .forEach(function (button) {
-      button.classList.toggle('hidden', !isOfficer);
+      button.classList.toggle("hidden", !isOfficer);
     });
 
   /*
@@ -1313,9 +1331,9 @@ function updateLakaMode(isOfficer) {
     */
 
   document
-    .querySelectorAll('.officer-action-button')
+    .querySelectorAll(".officer-action-button")
     .forEach(function (button) {
-      button.classList.toggle('hidden', !isOfficer);
+      button.classList.toggle("hidden", !isOfficer);
     });
 
   /*
@@ -1332,7 +1350,7 @@ function updateLakaMode(isOfficer) {
     Dengarkan perubahan mode global.
   */
 
-document.addEventListener('modeChanged', function (event) {
+document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
   updateLakaMode(officer);
@@ -1385,7 +1403,7 @@ function toggleActionMenu(event, id, button) {
       tutup menu.
     */
 
-  if (activeMenuId === id && !actionMenu.classList.contains('hidden')) {
+  if (activeMenuId === id && !actionMenu.classList.contains("hidden")) {
     closeActionMenu();
 
     return;
@@ -1402,7 +1420,7 @@ function toggleActionMenu(event, id, button) {
       agar ukurannya dapat dihitung.
     */
 
-  actionMenu.classList.remove('hidden');
+  actionMenu.classList.remove("hidden");
 
   const rect = button.getBoundingClientRect();
 
@@ -1451,14 +1469,14 @@ function toggleActionMenu(event, id, button) {
 
 function closeActionMenu() {
   if (actionMenu) {
-    actionMenu.classList.add('hidden');
+    actionMenu.classList.add("hidden");
 
     /*
         Bersihkan posisi lama.
       */
 
-    actionMenu.style.top = '';
-    actionMenu.style.left = '';
+    actionMenu.style.top = "";
+    actionMenu.style.left = "";
   }
 
   activeMenuId = null;
@@ -1472,7 +1490,7 @@ function closeActionMenu() {
      tetap dapat bekerja.
   ===================================================== */
 
-document.addEventListener('click', function (event) {
+document.addEventListener("click", function (event) {
   /*
         Tombol titik tiga.
       */
@@ -1513,7 +1531,7 @@ document.addEventListener('click', function (event) {
         Klik di luar Action Menu.
       */
 
-  if (!event.target.closest('#action-menu')) {
+  if (!event.target.closest("#action-menu")) {
     closeActionMenu();
   }
 });
@@ -1523,7 +1541,7 @@ document.addEventListener('click', function (event) {
   ===================================================== */
 
 if (actionEditButton) {
-  actionEditButton.addEventListener('click', function () {
+  actionEditButton.addEventListener("click", function () {
     handleEdit();
   });
 }
@@ -1533,7 +1551,7 @@ if (actionEditButton) {
   ===================================================== */
 
 if (actionDeleteButton) {
-  actionDeleteButton.addEventListener('click', function () {
+  actionDeleteButton.addEventListener("click", function () {
     handleDelete();
   });
 }
@@ -1542,11 +1560,11 @@ if (actionDeleteButton) {
      TUTUP ACTION MENU SAAT RESIZE
   ===================================================== */
 
-window.addEventListener('resize', function () {
+window.addEventListener("resize", function () {
   closeActionMenu();
 });
 
-window.addEventListener('scroll', () => closeActionMenu(), true);
+window.addEventListener("scroll", () => closeActionMenu(), true);
 
 /* =====================================================
      AKHIR SCRIPT ACTION MENU LAKA
@@ -1646,11 +1664,11 @@ function handleDelete() {
      =====================================================
      ===================================================== */
 
-const lihatSemuaButton = document.getElementById('btn-lihat-semua');
+const lihatSemuaButton = document.getElementById("btn-lihat-semua");
 
 if (lihatSemuaButton) {
-  lihatSemuaButton.addEventListener('click', function () {
-    alert('Membuka seluruh daftar Laka Lantas.');
+  lihatSemuaButton.addEventListener("click", function () {
+    alert("Membuka seluruh daftar Laka Lantas.");
   });
 }
 
@@ -1694,19 +1712,19 @@ const RekapStatusData = {
 
 function updateRekapStatus(data = RekapStatusData) {
   const elements = {
-    totalKejadian: ['totalKejadian', 'totalKejadianDesktop'],
+    totalKejadian: ["totalKejadian", "totalKejadianDesktop"],
 
-    korbanLR: ['korbanLR', 'korbanLRDesktop'],
+    korbanLR: ["korbanLR", "korbanLRDesktop"],
 
-    korbanLB: ['korbanLB', 'korbanLBDesktop'],
+    korbanLB: ["korbanLB", "korbanLBDesktop"],
 
-    korbanMD: ['korbanMD', 'korbanMDDesktop'],
+    korbanMD: ["korbanMD", "korbanMDDesktop"],
 
-    dalamPenanganan: ['statusDalamPenanganan', 'statusDalamDesktop'],
+    dalamPenanganan: ["statusDalamPenanganan", "statusDalamDesktop"],
 
-    RJ: ['statusRJ', 'statusRJDesktop'],
+    RJ: ["statusRJ", "statusRJDesktop"],
 
-    limpahPolres: ['statusLimpahPolres', 'statusLimpahDesktop'],
+    limpahPolres: ["statusLimpahPolres", "statusLimpahDesktop"],
   };
 
   Object.keys(elements).forEach(function (key) {
@@ -1853,7 +1871,7 @@ function initializeApplication() {
       */
 
     if (sidebar) {
-      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.remove("-translate-x-full");
     }
   }
 
@@ -1872,8 +1890,8 @@ function initializeApplication() {
     setelah DOM siap.
   */
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApplication);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeApplication);
 } else {
   initializeApplication();
 }

@@ -51,17 +51,17 @@ const InputLaporanConfig = {
      internal seperti ambilTKP(), ambilKendaraan(), dll.
   */
   BACKEND_FUNCTION: {
-    PROSES_WHATSAPP: 'prosesLaporanWhatsApp',
+    PROSES_WHATSAPP: "prosesLaporanWhatsApp",
 
-    AMBIL_PETUGAS: 'ambilDaftarPetugas',
+    AMBIL_PETUGAS: "ambilDaftarPetugas",
 
-    SIMPAN_LAPORAN: 'simpanLaporan',
+    SIMPAN_LAPORAN: "simpanLaporan",
   },
 
   /*
      Halaman tujuan setelah laporan berhasil disimpan.
   */
-  HALAMAN_LAKA_LANTAS: 'laka-lantas.html',
+  HALAMAN_LAKA_LANTAS: "laka-lantas.html",
 };
 
 /* ============================================================
@@ -71,89 +71,89 @@ const InputLaporanConfig = {
 const InputLaporanElements = {
   /* ---------- HEADER ---------- */
 
-  btnBackPrevious: document.getElementById('btn-back-previous'),
+  btnBackPrevious: document.getElementById("btn-back-previous"),
 
-  pageTitle: document.getElementById('page-title'),
+  pageTitle: document.getElementById("page-title"),
 
-  pageSubtitle: document.getElementById('page-subtitle'),
+  pageSubtitle: document.getElementById("page-subtitle"),
 
   /* ---------- VIEW ---------- */
 
-  viewSelectionCards: document.getElementById('view-selection-cards'),
+  viewSelectionCards: document.getElementById("view-selection-cards"),
 
-  viewInputWA: document.getElementById('view-input-wa'),
+  viewInputWA: document.getElementById("view-input-wa"),
 
-  viewFormReview: document.getElementById('view-form-review'),
+  viewFormReview: document.getElementById("view-form-review"),
 
   /* ---------- PILIHAN INPUT ---------- */
 
-  cardSelectWA: document.getElementById('card-select-wa'),
+  cardSelectWA: document.getElementById("card-select-wa"),
 
-  cardSelectManual: document.getElementById('card-select-manual'),
+  cardSelectManual: document.getElementById("card-select-manual"),
 
   /* ---------- WHATSAPP ---------- */
 
-  textareaRawWA: document.getElementById('textarea-raw-wa'),
+  textareaRawWA: document.getElementById("textarea-raw-wa"),
 
-  btnProsesLaporan: document.getElementById('btn-proses-laporan'),
+  btnProsesLaporan: document.getElementById("btn-proses-laporan"),
 
-  alertWarningPaste: document.getElementById('alert-warning-paste'),
+  alertWarningPaste: document.getElementById("alert-warning-paste"),
 
-  bannerSuccessParse: document.getElementById('banner-success-parse'),
+  bannerSuccessParse: document.getElementById("banner-success-parse"),
 
   /* ---------- FORM ---------- */
 
-  formLaporanUtama: document.getElementById('form-laporan-utama'),
+  formLaporanUtama: document.getElementById("form-laporan-utama"),
 
-  inputIdLaporan: document.getElementById('input-id-laporan'),
+  inputIdLaporan: document.getElementById("input-id-laporan"),
 
-  inputNoUrut: document.getElementById('input-no-urut'),
+  inputNoUrut: document.getElementById("input-no-urut"),
 
-  inputWaktuInput: document.getElementById('input-waktu-input'),
+  inputWaktuInput: document.getElementById("input-waktu-input"),
 
-  inputTKP: document.getElementById('input-tkp'),
+  inputTKP: document.getElementById("input-tkp"),
 
-  inputTanggalKejadian: document.getElementById('input-tanggal-kejadian'),
+  inputTanggalKejadian: document.getElementById("input-tanggal-kejadian"),
 
-  selectHariKejadian: document.getElementById('select-hari-kejadian'),
+  selectHariKejadian: document.getElementById("select-hari-kejadian"),
 
-  inputJamKejadian: document.getElementById('input-jam-kejadian'),
+  inputJamKejadian: document.getElementById("input-jam-kejadian"),
 
-  textareaKronologiFinal: document.getElementById('textarea-kronologi-final'),
+  textareaKronologiFinal: document.getElementById("textarea-kronologi-final"),
 
-  inputKorbanLR: document.getElementById('input-korban-lr'),
+  inputKorbanLR: document.getElementById("input-korban-lr"),
 
-  inputKorbanLB: document.getElementById('input-korban-lb'),
+  inputKorbanLB: document.getElementById("input-korban-lb"),
 
-  inputKorbanMD: document.getElementById('input-korban-md'),
+  inputKorbanMD: document.getElementById("input-korban-md"),
 
-  inputKermatRupiah: document.getElementById('input-kermat-rupiah'),
+  inputKermatRupiah: document.getElementById("input-kermat-rupiah"),
 
-  selectStatusPenanganan: document.getElementById('select-status-penanganan'),
+  selectStatusPenanganan: document.getElementById("select-status-penanganan"),
 
   /* ---------- DYNAMIC ---------- */
 
-  containerListKendaraan: document.getElementById('container-list-kendaraan'),
+  containerListKendaraan: document.getElementById("container-list-kendaraan"),
 
-  containerListPengendara: document.getElementById('container-list-pengendara'),
+  containerListPengendara: document.getElementById("container-list-pengendara"),
 
-  containerListSaksi: document.getElementById('container-list-saksi'),
+  containerListSaksi: document.getElementById("container-list-saksi"),
 
-  containerTagsPetugas: document.getElementById('container-tags-petugas'),
+  containerTagsPetugas: document.getElementById("container-tags-petugas"),
 
   /* ---------- BUTTON ---------- */
 
-  btnAddKendaraan: document.getElementById('btn-add-kendaraan'),
+  btnAddKendaraan: document.getElementById("btn-add-kendaraan"),
 
-  btnAddPengendara: document.getElementById('btn-add-pengendara'),
+  btnAddPengendara: document.getElementById("btn-add-pengendara"),
 
-  btnAddSaksi: document.getElementById('btn-add-saksi'),
+  btnAddSaksi: document.getElementById("btn-add-saksi"),
 
-  btnAddPetugas: document.getElementById('btn-add-petugas'),
+  btnAddPetugas: document.getElementById("btn-add-petugas"),
 
-  btnKirimLaporan: document.getElementById('btn-kirim-laporan'),
+  btnKirimLaporan: document.getElementById("btn-kirim-laporan"),
 
-  btnBatalForm: document.getElementById('btn-batal-form'),
+  btnBatalForm: document.getElementById("btn-batal-form"),
 };
 
 /* ============================================================
@@ -168,7 +168,7 @@ const InputLaporanState = {
      whatsapp
      form
   */
-  currentView: 'selection',
+  currentView: "selection",
 
   /*
      Cara input yang sedang digunakan.
@@ -176,7 +176,7 @@ const InputLaporanState = {
      whatsapp
      manual
   */
-  inputMethod: 'whatsapp',
+  inputMethod: "whatsapp",
 
   /*
      Data terakhir yang diterima dari backend.
@@ -211,8 +211,8 @@ const InputLaporanState = {
 /*
    Mengambil value secara aman.
 */
-function ambilNilai(data, keys, defaultValue = '') {
-  if (!data || typeof data !== 'object') {
+function ambilNilai(data, keys, defaultValue = "") {
+  if (!data || typeof data !== "object") {
     return defaultValue;
   }
 
@@ -239,7 +239,7 @@ function ambilArray(data, keys) {
      Jika backend mengirim satu object,
      ubah menjadi array satu item.
   */
-  if (value && typeof value === 'object') {
+  if (value && typeof value === "object") {
     return [value];
   }
 
@@ -247,7 +247,7 @@ function ambilArray(data, keys) {
      Jika backend mengirim string,
      jadikan satu item.
   */
-  if (typeof value === 'string' && value.trim() !== '') {
+  if (typeof value === "string" && value.trim() !== "") {
     return [value];
   }
 
@@ -259,10 +259,10 @@ function ambilArray(data, keys) {
 */
 function nilaiKeString(value) {
   if (value === undefined || value === null) {
-    return '';
+    return "";
   }
 
-  if (typeof value === 'object') {
+  if (typeof value === "object") {
     return JSON.stringify(value);
   }
 
@@ -278,11 +278,11 @@ function escapeHTML(value) {
   const text = nilaiKeString(value);
 
   return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 /* ============================================================
@@ -304,29 +304,29 @@ function showInputView(viewName) {
      Semua view disembunyikan terlebih dahulu.
   */
   if (elements.viewSelectionCards) {
-    elements.viewSelectionCards.classList.remove('hidden');
+    elements.viewSelectionCards.classList.remove("hidden");
   }
 
   if (elements.viewInputWA) {
-    elements.viewInputWA.classList.add('hidden');
+    elements.viewInputWA.classList.add("hidden");
   }
 
   if (elements.viewFormReview) {
-    elements.viewFormReview.classList.add('hidden');
+    elements.viewFormReview.classList.add("hidden");
   }
 
   /*
      Tentukan VIEW yang aktif.
   */
   switch (viewName) {
-    case 'selection':
+    case "selection":
       if (elements.viewSelectionCards) {
-        elements.viewSelectionCards.classList.remove('hidden');
+        elements.viewSelectionCards.classList.remove("hidden");
       }
 
-      InputLaporanState.currentView = 'selection';
+      InputLaporanState.currentView = "selection";
 
-      updatePageHeader('INPUT LAPORAN LAKA LANTAS', 'Pilih cara input laporan');
+      updatePageHeader("INPUT LAPORAN LAKA LANTAS", "Pilih cara input laporan");
 
       /*
          Tombol kembali tidak diperlukan
@@ -336,36 +336,36 @@ function showInputView(viewName) {
 
       break;
 
-    case 'whatsapp':
+    case "whatsapp":
       if (elements.viewInputWA) {
-        elements.viewInputWA.classList.remove('hidden');
+        elements.viewInputWA.classList.remove("hidden");
       }
 
-      InputLaporanState.currentView = 'whatsapp';
+      InputLaporanState.currentView = "whatsapp";
 
       updatePageHeader(
-        'INPUT DARI WHATSAPP',
-        'Tempel laporan WhatsApp untuk diproses',
+        "INPUT DARI WHATSAPP",
+        "Tempel laporan WhatsApp untuk diproses",
       );
 
       showBackButton();
 
       break;
 
-    case 'form':
+    case "form":
       if (elements.viewFormReview) {
-        elements.viewFormReview.classList.remove('hidden');
+        elements.viewFormReview.classList.remove("hidden");
       }
 
-      InputLaporanState.currentView = 'form';
+      InputLaporanState.currentView = "form";
 
       updatePageHeader(
-        InputLaporanState.inputMethod === 'manual'
-          ? 'INPUT MANUAL LAPORAN'
-          : 'REVIEW LAPORAN',
-        InputLaporanState.inputMethod === 'manual'
-          ? 'Isi data laporan secara manual'
-          : 'Periksa dan edit hasil parsing sebelum dikirim',
+        InputLaporanState.inputMethod === "manual"
+          ? "INPUT MANUAL LAPORAN"
+          : "REVIEW LAPORAN",
+        InputLaporanState.inputMethod === "manual"
+          ? "Isi data laporan secara manual"
+          : "Periksa dan edit hasil parsing sebelum dikirim",
       );
 
       showBackButton();
@@ -378,7 +378,7 @@ function showInputView(viewName) {
   */
   window.scrollTo({
     top: 0,
-    behavior: 'smooth',
+    behavior: "smooth",
   });
 
   /*
@@ -410,7 +410,7 @@ function showBackButton() {
     return;
   }
 
-  InputLaporanElements.btnBackPrevious.classList.remove('hidden');
+  InputLaporanElements.btnBackPrevious.classList.remove("hidden");
 }
 
 /*
@@ -421,7 +421,7 @@ function hideBackButton() {
     return;
   }
 
-  InputLaporanElements.btnBackPrevious.classList.add('hidden');
+  InputLaporanElements.btnBackPrevious.classList.add("hidden");
 }
 
 /* ============================================================
@@ -446,103 +446,103 @@ function updateInputMethodActiveState(method) {
   /*
      RESET KEDUA CARD
   */
-  wa.classList.remove('border-blue-600', 'bg-blue-50', 'shadow-sm');
+  wa.classList.remove("border-blue-600", "bg-blue-50", "shadow-sm");
 
-  wa.classList.add('border-slate-200', 'bg-white');
+  wa.classList.add("border-slate-200", "bg-white");
 
-  manual.classList.remove('border-blue-600', 'bg-blue-50', 'shadow-sm');
+  manual.classList.remove("border-blue-600", "bg-blue-50", "shadow-sm");
 
-  manual.classList.add('border-slate-200', 'bg-white');
+  manual.classList.add("border-slate-200", "bg-white");
 
   /*
      RESET WARNA TEKS
   */
-  const waTitle = wa.querySelector('h3');
-  const waText = wa.querySelector('p');
-  const waIcon = wa.querySelector('.icon-wrapper');
+  const waTitle = wa.querySelector("h3");
+  const waText = wa.querySelector("p");
+  const waIcon = wa.querySelector(".icon-wrapper");
 
-  const manualTitle = manual.querySelector('h3');
-  const manualText = manual.querySelector('p');
-  const manualIcon = manual.querySelector('.icon-wrapper');
+  const manualTitle = manual.querySelector("h3");
+  const manualText = manual.querySelector("p");
+  const manualIcon = manual.querySelector(".icon-wrapper");
 
   if (waTitle) {
-    waTitle.classList.remove('text-blue-600');
-    waTitle.classList.add('text-slate-800');
+    waTitle.classList.remove("text-blue-600");
+    waTitle.classList.add("text-slate-800");
   }
 
   if (waText) {
-    waText.classList.remove('text-blue-500');
-    waText.classList.add('text-slate-500');
+    waText.classList.remove("text-blue-500");
+    waText.classList.add("text-slate-500");
   }
 
   if (waIcon) {
-    waIcon.classList.remove('text-blue-600');
-    waIcon.classList.add('text-slate-700');
+    waIcon.classList.remove("text-blue-600");
+    waIcon.classList.add("text-slate-700");
   }
 
   if (manualTitle) {
-    manualTitle.classList.remove('text-blue-600');
-    manualTitle.classList.add('text-slate-800');
+    manualTitle.classList.remove("text-blue-600");
+    manualTitle.classList.add("text-slate-800");
   }
 
   if (manualText) {
-    manualText.classList.remove('text-blue-500');
-    manualText.classList.add('text-slate-500');
+    manualText.classList.remove("text-blue-500");
+    manualText.classList.add("text-slate-500");
   }
 
   if (manualIcon) {
-    manualIcon.classList.remove('text-blue-600');
-    manualIcon.classList.add('text-slate-700');
+    manualIcon.classList.remove("text-blue-600");
+    manualIcon.classList.add("text-slate-700");
   }
 
   /*
      AKTIF WHATSAPP
   */
-  if (method === 'whatsapp') {
-    wa.classList.remove('border-slate-200', 'bg-white');
+  if (method === "whatsapp") {
+    wa.classList.remove("border-slate-200", "bg-white");
 
-    wa.classList.add('border-blue-600', 'bg-blue-50', 'shadow-sm');
+    wa.classList.add("border-blue-600", "bg-blue-50", "shadow-sm");
 
     if (waTitle) {
-      waTitle.classList.remove('text-slate-800');
-      waTitle.classList.add('text-blue-600');
+      waTitle.classList.remove("text-slate-800");
+      waTitle.classList.add("text-blue-600");
     }
 
     if (waText) {
-      waText.classList.remove('text-slate-500');
-      waText.classList.add('text-blue-500');
+      waText.classList.remove("text-slate-500");
+      waText.classList.add("text-blue-500");
     }
 
     if (waIcon) {
-      waIcon.classList.remove('text-slate-700');
-      waIcon.classList.add('text-blue-600');
+      waIcon.classList.remove("text-slate-700");
+      waIcon.classList.add("text-blue-600");
     }
   }
 
   /*
      AKTIF MANUAL
   */
-  if (method === 'manual') {
-    manual.classList.remove('border-slate-200', 'bg-white');
+  if (method === "manual") {
+    manual.classList.remove("border-slate-200", "bg-white");
 
-    manual.classList.add('border-blue-600', 'bg-blue-50', 'shadow-sm');
+    manual.classList.add("border-blue-600", "bg-blue-50", "shadow-sm");
 
     if (manualTitle) {
-      manualTitle.classList.remove('text-slate-800');
+      manualTitle.classList.remove("text-slate-800");
 
-      manualTitle.classList.add('text-blue-600');
+      manualTitle.classList.add("text-blue-600");
     }
 
     if (manualText) {
-      manualText.classList.remove('text-slate-500');
+      manualText.classList.remove("text-slate-500");
 
-      manualText.classList.add('text-blue-500');
+      manualText.classList.add("text-blue-500");
     }
 
     if (manualIcon) {
-      manualIcon.classList.remove('text-slate-700');
+      manualIcon.classList.remove("text-slate-700");
 
-      manualIcon.classList.add('text-blue-600');
+      manualIcon.classList.add("text-blue-600");
     }
   }
 }
@@ -552,16 +552,16 @@ function updateInputMethodActiveState(method) {
    ============================================================ */
 
 function pilihInputWhatsApp() {
-  InputLaporanState.inputMethod = 'whatsapp';
+  InputLaporanState.inputMethod = "whatsapp";
 
   InputLaporanState.parsedFromWhatsApp = false;
 
-  updateInputMethodActiveState('whatsapp');
+  updateInputMethodActiveState("whatsapp");
 
   /*
      Pastikan halaman WhatsApp benar-benar tampil.
   */
-  showInputView('whatsapp');
+  showInputView("whatsapp");
 }
 
 /* ============================================================
@@ -569,11 +569,11 @@ function pilihInputWhatsApp() {
    ============================================================ */
 
 function pilihInputManual() {
-  InputLaporanState.inputMethod = 'manual';
+  InputLaporanState.inputMethod = "manual";
 
   InputLaporanState.parsedFromWhatsApp = false;
 
-  updateInputMethodActiveState('manual');
+  updateInputMethodActiveState("manual");
 
   /*
      Form manual harus benar-benar muncul.
@@ -594,7 +594,7 @@ function pilihInputManual() {
   /*
      Tampilkan form.
   */
-  showInputView('form');
+  showInputView("form");
 }
 
 /* ============================================================
@@ -621,13 +621,13 @@ function kembaliKeHalamanSebelumnya() {
   /*
      Jika sedang di FORM.
   */
-  if (currentView === 'form') {
+  if (currentView === "form") {
     /*
        Jika masuk form dari WhatsApp,
        kembali ke halaman WhatsApp.
     */
-    if (InputLaporanState.inputMethod === 'whatsapp') {
-      showInputView('whatsapp');
+    if (InputLaporanState.inputMethod === "whatsapp") {
+      showInputView("whatsapp");
 
       return;
     }
@@ -636,9 +636,9 @@ function kembaliKeHalamanSebelumnya() {
        Jika form manual,
        kembali ke halaman pilihan input.
     */
-    showInputView('selection');
+    showInputView("selection");
 
-    updateInputMethodActiveState('manual');
+    updateInputMethodActiveState("manual");
 
     return;
   }
@@ -647,10 +647,10 @@ function kembaliKeHalamanSebelumnya() {
      Jika sedang di halaman WhatsApp,
      kembali ke pilihan input.
   */
-  if (currentView === 'whatsapp') {
-    showInputView('selection');
+  if (currentView === "whatsapp") {
+    showInputView("selection");
 
-    updateInputMethodActiveState('whatsapp');
+    updateInputMethodActiveState("whatsapp");
 
     return;
   }
@@ -663,7 +663,7 @@ function kembaliKeHalamanSebelumnya() {
      pages/laka-lantas-input.html,
      history.back() adalah pilihan paling aman.
   */
-  if (currentView === 'selection') {
+  if (currentView === "selection") {
     if (window.history.length > 1) {
       window.history.back();
     } else {
@@ -691,7 +691,7 @@ function prosesLaporanWhatsApp() {
      Jangan proses jika kosong.
   */
   if (!rawText) {
-    tampilkanAlert('warning', 'Laporan WhatsApp belum diisi.');
+    tampilkanAlert("warning", "Laporan WhatsApp belum diisi.");
 
     textarea.focus();
 
@@ -701,7 +701,7 @@ function prosesLaporanWhatsApp() {
   /*
      Kunci tombol.
   */
-  setButtonLoading(button, true, '⏳ MEMPROSES...');
+  setButtonLoading(button, true, "⏳ MEMPROSES...");
 
   sembunyikanAlert();
 
@@ -717,7 +717,7 @@ function prosesLaporanWhatsApp() {
         handleProcessWhatsAppError(error);
       })
       .finally(function () {
-        setButtonLoading(button, false, '⚙ PROSES LAPORAN');
+        setButtonLoading(button, false, "⚙ PROSES LAPORAN");
       });
 
     return;
@@ -726,10 +726,10 @@ function prosesLaporanWhatsApp() {
   /*
      MODE APPS SCRIPT ASLI
   */
-  if (typeof google === 'undefined' || !google.script || !google.script.run) {
-    handleProcessWhatsAppError('google.script.run tidak tersedia.');
+  if (typeof google === "undefined" || !google.script || !google.script.run) {
+    handleProcessWhatsAppError("google.script.run tidak tersedia.");
 
-    setButtonLoading(button, false, '⚙ PROSES LAPORAN');
+    setButtonLoading(button, false, "⚙ PROSES LAPORAN");
 
     return;
   }
@@ -738,12 +738,12 @@ function prosesLaporanWhatsApp() {
     .withSuccessHandler(function (response) {
       handleProcessWhatsAppSuccess(response);
 
-      setButtonLoading(button, false, '⚙ PROSES LAPORAN');
+      setButtonLoading(button, false, "⚙ PROSES LAPORAN");
     })
     .withFailureHandler(function (error) {
       handleProcessWhatsAppError(error);
 
-      setButtonLoading(button, false, '⚙ PROSES LAPORAN');
+      setButtonLoading(button, false, "⚙ PROSES LAPORAN");
     })
     [InputLaporanConfig.BACKEND_FUNCTION.PROSES_WHATSAPP](rawText);
 }
@@ -763,7 +763,7 @@ function handleProcessWhatsAppSuccess(response) {
 
   if (!normalized.success) {
     handleProcessWhatsAppError(
-      normalized.message || 'Laporan tidak berhasil diproses.',
+      normalized.message || "Laporan tidak berhasil diproses.",
     );
 
     return;
@@ -793,12 +793,12 @@ function handleProcessWhatsAppSuccess(response) {
   /*
      Pindah ke FORM REVIEW.
   */
-  showInputView('form');
+  showInputView("form");
 
   tampilkanAlert(
-    'success',
+    "success",
     normalized.message ||
-      'Data laporan berhasil diproses. Periksa kembali sebelum dikirim.',
+      "Data laporan berhasil diproses. Periksa kembali sebelum dikirim.",
   );
 }
 
@@ -807,20 +807,20 @@ function handleProcessWhatsAppSuccess(response) {
    ============================================================ */
 
 function handleProcessWhatsAppError(error) {
-  console.error('[InputLaporan] Proses WhatsApp gagal:', error);
+  console.error("[InputLaporan] Proses WhatsApp gagal:", error);
 
   let message =
-    'Laporan gagal diproses. Silakan periksa kembali data yang ditempel.';
+    "Laporan gagal diproses. Silakan periksa kembali data yang ditempel.";
 
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     message = error;
   }
 
-  if (error && typeof error === 'object' && error.message) {
+  if (error && typeof error === "object" && error.message) {
     message = error.message;
   }
 
-  tampilkanAlert('error', message);
+  tampilkanAlert("error", message);
 }
 
 /* ============================================================
@@ -831,11 +831,11 @@ function normalisasiResponseBackend(response) {
   /*
      Jika response sudah object.
   */
-  if (response && typeof response === 'object') {
+  if (response && typeof response === "object") {
     return {
       success: response.success !== false,
 
-      message: response.message || '',
+      message: response.message || "",
 
       data: response.data !== undefined ? response.data : response,
     };
@@ -844,7 +844,7 @@ function normalisasiResponseBackend(response) {
   /*
      Jika backend mengirim JSON string.
   */
-  if (typeof response === 'string') {
+  if (typeof response === "string") {
     try {
       const parsed = JSON.parse(response);
 
@@ -852,7 +852,7 @@ function normalisasiResponseBackend(response) {
     } catch (error) {
       return {
         success: false,
-        message: 'Response backend bukan JSON yang valid.',
+        message: "Response backend bukan JSON yang valid.",
         data: null,
       };
     }
@@ -860,7 +860,7 @@ function normalisasiResponseBackend(response) {
 
   return {
     success: false,
-    message: 'Response backend kosong atau tidak valid.',
+    message: "Response backend kosong atau tidak valid.",
     data: null,
   };
 }
@@ -883,21 +883,21 @@ function isiFormDariJSON(data) {
   */
 
   elements.inputIdLaporan.value = ambilNilai(data, [
-    'idLaporan',
-    'id_laporan',
-    'id',
+    "idLaporan",
+    "id_laporan",
+    "id",
   ]);
 
   elements.inputNoUrut.value = ambilNilai(data, [
-    'noUrut',
-    'no_urut',
-    'nomorUrut',
+    "noUrut",
+    "no_urut",
+    "nomorUrut",
   ]);
 
   elements.inputWaktuInput.value = ambilNilai(data, [
-    'waktuInput',
-    'waktu_input',
-    'tanggalInput',
+    "waktuInput",
+    "waktu_input",
+    "tanggalInput",
   ]);
 
   /*
@@ -906,23 +906,23 @@ function isiFormDariJSON(data) {
      --------------------------------------------
   */
 
-  elements.inputTKP.value = ambilNilai(data, ['tkp', 'TKP']);
+  elements.inputTKP.value = ambilNilai(data, ["tkp", "TKP"]);
 
   elements.inputTanggalKejadian.value = ambilNilai(data, [
-    'tanggalKejadian',
-    'tanggal_kejadian',
-    'tanggal',
+    "tanggalKejadian",
+    "tanggal_kejadian",
+    "tanggal",
   ]);
 
   setSelectValue(
     elements.selectHariKejadian,
-    ambilNilai(data, ['hariKejadian', 'hari_kejadian', 'hari']),
+    ambilNilai(data, ["hariKejadian", "hari_kejadian", "hari"]),
   );
 
   elements.inputJamKejadian.value = ambilNilai(data, [
-    'jamKejadian',
-    'jam_kejadian',
-    'jam',
+    "jamKejadian",
+    "jam_kejadian",
+    "jam",
   ]);
 
   /*
@@ -932,9 +932,9 @@ function isiFormDariJSON(data) {
   */
 
   elements.textareaKronologiFinal.value = ambilNilai(data, [
-    'kronologi',
-    'kronologiKejadian',
-    'kronologi_kejadian',
+    "kronologi",
+    "kronologiKejadian",
+    "kronologi_kejadian",
   ]);
 
   /*
@@ -945,19 +945,19 @@ function isiFormDariJSON(data) {
 
   elements.inputKorbanLR.value = ambilNilai(
     data,
-    ['korbanLR', 'korbanLr', 'lr'],
+    ["korbanLR", "korbanLr", "lr"],
     0,
   );
 
   elements.inputKorbanLB.value = ambilNilai(
     data,
-    ['korbanLB', 'korbanLb', 'lb'],
+    ["korbanLB", "korbanLb", "lb"],
     0,
   );
 
   elements.inputKorbanMD.value = ambilNilai(
     data,
-    ['korbanMD', 'korbanMd', 'md'],
+    ["korbanMD", "korbanMd", "md"],
     0,
   );
 
@@ -968,10 +968,10 @@ function isiFormDariJSON(data) {
   */
 
   elements.inputKermatRupiah.value = ambilNilai(data, [
-    'kermat',
-    'kermatRupiah',
-    'kerugianMaterial',
-    'kerugian_material',
+    "kermat",
+    "kermatRupiah",
+    "kerugianMaterial",
+    "kerugian_material",
   ]);
 
   /*
@@ -981,9 +981,9 @@ function isiFormDariJSON(data) {
   */
 
   const status = ambilNilai(data, [
-    'statusPenanganan',
-    'status_penanganan',
-    'status',
+    "statusPenanganan",
+    "status_penanganan",
+    "status",
   ]);
 
   setStatusPenanganan(status);
@@ -995,9 +995,9 @@ function isiFormDariJSON(data) {
   */
 
   const kendaraan = ambilArray(data, [
-    'kendaraan',
-    'kendaraanTerlibat',
-    'kendaraanYangTerlibat',
+    "kendaraan",
+    "kendaraanTerlibat",
+    "kendaraanYangTerlibat",
   ]);
 
   renderListKendaraan(kendaraan);
@@ -1008,7 +1008,7 @@ function isiFormDariJSON(data) {
      --------------------------------------------
   */
 
-  const pengendara = ambilArray(data, ['pengendara', 'dataPengendara']);
+  const pengendara = ambilArray(data, ["pengendara", "dataPengendara"]);
 
   renderListPengendara(pengendara);
 
@@ -1018,7 +1018,7 @@ function isiFormDariJSON(data) {
      --------------------------------------------
   */
 
-  const saksi = ambilArray(data, ['saksi', 'saksiSaksi']);
+  const saksi = ambilArray(data, ["saksi", "saksiSaksi"]);
 
   renderListSaksi(saksi);
 
@@ -1028,7 +1028,7 @@ function isiFormDariJSON(data) {
      --------------------------------------------
   */
 
-  const petugas = ambilArray(data, ['petugas', 'petugasYangMenangani']);
+  const petugas = ambilArray(data, ["petugas", "petugasYangMenangani"]);
 
   InputLaporanState.selectedPetugas = normalizePetugasArray(petugas);
 
@@ -1044,7 +1044,7 @@ function setSelectValue(selectElement, value) {
     return;
   }
 
-  if (value === undefined || value === null || value === '') {
+  if (value === undefined || value === null || value === "") {
     return;
   }
 
@@ -1075,15 +1075,15 @@ function setStatusPenanganan(status) {
   */
 
   if (
-    normalized === 'selesai' ||
-    normalized === 'selesai / damai' ||
-    normalized === 'selesai/damai'
+    normalized === "selesai" ||
+    normalized === "selesai / damai" ||
+    normalized === "selesai/damai"
   ) {
-    normalized = 'Selesai / Damai';
-  } else if (normalized === 'limpah polres' || normalized === 'pelimpahan') {
-    normalized = 'Pelimpahan';
-  } else if (normalized === 'dalam penanganan') {
-    normalized = 'Dalam Penanganan';
+    normalized = "Selesai / Damai";
+  } else if (normalized === "limpah polres" || normalized === "pelimpahan") {
+    normalized = "Pelimpahan";
+  } else if (normalized === "dalam penanganan") {
+    normalized = "Dalam Penanganan";
   }
 
   setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
@@ -1100,7 +1100,7 @@ function renderListKendaraan(kendaraanList = []) {
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   if (!kendaraanList.length) {
     tambahKendaraan();
@@ -1113,17 +1113,17 @@ function renderListKendaraan(kendaraanList = []) {
   });
 }
 
-function tambahKendaraan(data = '', index = null) {
+function tambahKendaraan(data = "", index = null) {
   const container = InputLaporanElements.containerListKendaraan;
 
   if (!container) {
     return;
   }
 
-  const item = document.createElement('div');
+  const item = document.createElement("div");
 
   item.className =
-    'dynamic-item-kendaraan border border-slate-200 rounded-lg p-2 bg-slate-50';
+    "dynamic-item-kendaraan border border-slate-200 rounded-lg p-2 bg-slate-50";
 
   const value = ambilDataItemString(data);
 
@@ -1165,7 +1165,7 @@ function renderListPengendara(pengendaraList = []) {
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   if (!pengendaraList.length) {
     tambahPengendara();
@@ -1178,17 +1178,17 @@ function renderListPengendara(pengendaraList = []) {
   });
 }
 
-function tambahPengendara(data = '', index = null) {
+function tambahPengendara(data = "", index = null) {
   const container = InputLaporanElements.containerListPengendara;
 
   if (!container) {
     return;
   }
 
-  const item = document.createElement('div');
+  const item = document.createElement("div");
 
   item.className =
-    'dynamic-item-pengendara border border-slate-200 rounded-lg p-2 bg-slate-50';
+    "dynamic-item-pengendara border border-slate-200 rounded-lg p-2 bg-slate-50";
 
   const value = ambilDataItemString(data);
 
@@ -1230,7 +1230,7 @@ function renderListSaksi(saksiList = []) {
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   if (!saksiList.length) {
     tambahSaksi();
@@ -1243,17 +1243,17 @@ function renderListSaksi(saksiList = []) {
   });
 }
 
-function tambahSaksi(data = '', index = null) {
+function tambahSaksi(data = "", index = null) {
   const container = InputLaporanElements.containerListSaksi;
 
   if (!container) {
     return;
   }
 
-  const item = document.createElement('div');
+  const item = document.createElement("div");
 
   item.className =
-    'dynamic-item-saksi border border-slate-200 rounded-lg p-2 bg-slate-50';
+    "dynamic-item-saksi border border-slate-200 rounded-lg p-2 bg-slate-50";
 
   const value = ambilDataItemString(data);
 
@@ -1290,13 +1290,13 @@ function tambahSaksi(data = '', index = null) {
 
 function ambilDataItemString(item) {
   if (item === undefined || item === null) {
-    return '';
+    return "";
   }
 
   /*
      Jika backend mengirim string.
   */
-  if (typeof item === 'string') {
+  if (typeof item === "string") {
     return item;
   }
 
@@ -1304,10 +1304,10 @@ function ambilDataItemString(item) {
      Jika backend mengirim object,
      cari property umum.
   */
-  if (typeof item === 'object') {
+  if (typeof item === "object") {
     return ambilNilai(
       item,
-      ['nama', 'name', 'identitas', 'keterangan', 'data', 'uraian', 'value'],
+      ["nama", "name", "identitas", "keterangan", "data", "uraian", "value"],
       JSON.stringify(item),
     );
   }
@@ -1351,8 +1351,8 @@ function ambilDaftarPetugas() {
   /*
      Apps Script asli.
   */
-  if (typeof google === 'undefined' || !google.script || !google.script.run) {
-    handleGetPetugasError('google.script.run tidak tersedia.');
+  if (typeof google === "undefined" || !google.script || !google.script.run) {
+    handleGetPetugasError("google.script.run tidak tersedia.");
 
     return;
   }
@@ -1375,7 +1375,7 @@ function handleGetPetugasSuccess(response) {
 
   if (!normalized.success) {
     handleGetPetugasError(
-      normalized.message || 'Daftar petugas gagal diambil.',
+      normalized.message || "Daftar petugas gagal diambil.",
     );
 
     return;
@@ -1391,7 +1391,7 @@ function handleGetPetugasSuccess(response) {
   */
   const petugasArray = Array.isArray(data)
     ? data
-    : ambilArray(data, ['petugas', 'daftarPetugas', 'dataPetugas']);
+    : ambilArray(data, ["petugas", "daftarPetugas", "dataPetugas"]);
 
   InputLaporanState.daftarPetugas = normalizePetugasArray(petugasArray);
 
@@ -1404,7 +1404,7 @@ function handleGetPetugasSuccess(response) {
    Error daftar petugas.
 */
 function handleGetPetugasError(error) {
-  console.error('[InputLaporan] Gagal mengambil petugas:', error);
+  console.error("[InputLaporan] Gagal mengambil petugas:", error);
 
   /*
      Tidak menghapus form.
@@ -1412,7 +1412,7 @@ function handleGetPetugasError(error) {
      Petugas tetap dapat mengisi data lain.
   */
 
-  tampilkanAlert('warning', 'Daftar petugas belum berhasil dimuat.');
+  tampilkanAlert("warning", "Daftar petugas belum berhasil dimuat.");
 }
 
 /* ============================================================
@@ -1426,27 +1426,27 @@ function normalizePetugasArray(list = []) {
 
   return list
     .map(function (item) {
-      if (typeof item === 'string') {
+      if (typeof item === "string") {
         return {
           id: item,
           nama: item,
         };
       }
 
-      if (item && typeof item === 'object') {
+      if (item && typeof item === "object") {
         return {
           id: ambilNilai(item, [
-            'id',
-            'idPetugas',
-            'id_personil',
-            'idPersonil',
+            "id",
+            "idPetugas",
+            "id_personil",
+            "idPersonil",
           ]),
 
           nama: ambilNilai(item, [
-            'nama',
-            'namaPetugas',
-            'namaPersonil',
-            'name',
+            "nama",
+            "namaPetugas",
+            "namaPersonil",
+            "name",
           ]),
         };
       }
@@ -1479,23 +1479,23 @@ function renderPetugasSelector() {
   );
 
   if (!selector) {
-    selector = document.createElement('select');
+    selector = document.createElement("select");
 
-    selector.dataset.role = 'petugas-selector';
+    selector.dataset.role = "petugas-selector";
 
     selector.className =
-      'w-full text-xs p-2 border border-slate-300 rounded bg-white mt-2';
+      "w-full text-xs p-2 border border-slate-300 rounded bg-white mt-2";
 
-    const defaultOption = document.createElement('option');
+    const defaultOption = document.createElement("option");
 
-    defaultOption.value = '';
+    defaultOption.value = "";
 
-    defaultOption.textContent = '-- Pilih Petugas --';
+    defaultOption.textContent = "-- Pilih Petugas --";
 
     selector.appendChild(defaultOption);
 
     InputLaporanState.daftarPetugas.forEach(function (petugas) {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
 
       option.value = petugas.id;
 
@@ -1504,7 +1504,7 @@ function renderPetugasSelector() {
       selector.appendChild(option);
     });
 
-    selector.addEventListener('change', function () {
+    selector.addEventListener("change", function () {
       const id = selector.value;
 
       if (!id) {
@@ -1531,7 +1531,7 @@ function renderPetugasSelector() {
         renderSelectedPetugas();
       }
 
-      selector.value = '';
+      selector.value = "";
     });
 
     container.parentElement.appendChild(selector);
@@ -1549,14 +1549,14 @@ function renderSelectedPetugas() {
     return;
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   if (!InputLaporanState.selectedPetugas.length) {
-    const empty = document.createElement('span');
+    const empty = document.createElement("span");
 
-    empty.className = 'text-[10px] text-slate-400';
+    empty.className = "text-[10px] text-slate-400";
 
-    empty.textContent = 'Belum ada petugas dipilih';
+    empty.textContent = "Belum ada petugas dipilih";
 
     container.appendChild(empty);
 
@@ -1564,10 +1564,10 @@ function renderSelectedPetugas() {
   }
 
   InputLaporanState.selectedPetugas.forEach(function (petugas) {
-    const chip = document.createElement('span');
+    const chip = document.createElement("span");
 
     chip.className =
-      'inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-2 py-1 text-[10px]';
+      "inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-2 py-1 text-[10px]";
 
     chip.innerHTML = `
         <span>${escapeHTML(petugas.nama)}</span>
@@ -1613,7 +1613,7 @@ function ambilDataForm() {
     */
     idLaporan: elements.inputIdLaporan.value.trim(),
 
-    noUrut: elements.inputNoUrut.value.trim(),
+    // noUrut: elements.inputNoUrut.value.trim(),
 
     waktuInput: elements.inputWaktuInput.value.trim(),
 
@@ -1689,7 +1689,7 @@ function ambilListKendaraan() {
       return input.value.trim();
     })
     .filter(function (value) {
-      return value !== '';
+      return value !== "";
     });
 }
 
@@ -1709,7 +1709,7 @@ function ambilListPengendara() {
       return input.value.trim();
     })
     .filter(function (value) {
-      return value !== '';
+      return value !== "";
     });
 }
 
@@ -1729,7 +1729,7 @@ function ambilListSaksi() {
       return input.value.trim();
     })
     .filter(function (value) {
-      return value !== '';
+      return value !== "";
     });
 }
 
@@ -1744,33 +1744,33 @@ function validasiForm(data) {
      Field utama.
   */
   if (!data.tkp) {
-    errors.push('TKP belum diisi.');
+    errors.push("TKP belum diisi.");
   }
 
   if (!data.tanggalKejadian) {
-    errors.push('Tanggal kejadian belum diisi.');
+    errors.push("Tanggal kejadian belum diisi.");
   }
 
   if (!data.jamKejadian) {
-    errors.push('Jam kejadian belum diisi.');
+    errors.push("Jam kejadian belum diisi.");
   }
 
   if (!data.kronologi) {
-    errors.push('Kronologi kejadian belum diisi.');
+    errors.push("Kronologi kejadian belum diisi.");
   }
 
   /*
      Petugas.
   */
   if (!data.petugas.length) {
-    errors.push('Petugas yang menangani belum dipilih.');
+    errors.push("Petugas yang menangani belum dipilih.");
   }
 
   /*
      Status.
   */
   if (!data.statusPenanganan) {
-    errors.push('Status penanganan belum dipilih.');
+    errors.push("Status penanganan belum dipilih.");
   }
 
   return errors;
@@ -1791,7 +1791,7 @@ function kirimLaporan() {
   const errors = validasiForm(data);
 
   if (errors.length) {
-    tampilkanAlert('error', errors.join(' '));
+    tampilkanAlert("error", errors.join(" "));
 
     return;
   }
@@ -1804,7 +1804,7 @@ function kirimLaporan() {
   /*
      Kunci tombol.
   */
-  setButtonLoading(button, true, '⏳ MENYIMPAN...');
+  setButtonLoading(button, true, "⏳ MENYIMPAN...");
 
   sembunyikanAlert();
 
@@ -1820,7 +1820,7 @@ function kirimLaporan() {
         handleSaveReportError(error);
       })
       .finally(function () {
-        setButtonLoading(button, false, '🚀 KIRIM LAPORAN');
+        setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
       });
 
     return;
@@ -1829,10 +1829,10 @@ function kirimLaporan() {
   /*
      APPS SCRIPT ASLI
   */
-  if (typeof google === 'undefined' || !google.script || !google.script.run) {
-    handleSaveReportError('google.script.run tidak tersedia.');
+  if (typeof google === "undefined" || !google.script || !google.script.run) {
+    handleSaveReportError("google.script.run tidak tersedia.");
 
-    setButtonLoading(button, false, '🚀 KIRIM LAPORAN');
+    setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
 
     return;
   }
@@ -1841,12 +1841,12 @@ function kirimLaporan() {
     .withSuccessHandler(function (response) {
       handleSaveReportSuccess(response);
 
-      setButtonLoading(button, false, '🚀 KIRIM LAPORAN');
+      setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
     })
     .withFailureHandler(function (error) {
       handleSaveReportError(error);
 
-      setButtonLoading(button, false, '🚀 KIRIM LAPORAN');
+      setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
     })
     [InputLaporanConfig.BACKEND_FUNCTION.SIMPAN_LAPORAN](data);
 }
@@ -1859,12 +1859,12 @@ function handleSaveReportSuccess(response) {
   const normalized = normalisasiResponseBackend(response);
 
   if (!normalized.success) {
-    handleSaveReportError(normalized.message || 'Laporan gagal disimpan.');
+    handleSaveReportError(normalized.message || "Laporan gagal disimpan.");
 
     return;
   }
 
-  tampilkanAlert('success', normalized.message || 'Laporan berhasil disimpan.');
+  tampilkanAlert("success", normalized.message || "Laporan berhasil disimpan.");
 
   /*
      Berikan sedikit waktu agar user
@@ -1880,19 +1880,19 @@ function handleSaveReportSuccess(response) {
    ============================================================ */
 
 function handleSaveReportError(error) {
-  console.error('[InputLaporan] Simpan laporan gagal:', error);
+  console.error("[InputLaporan] Simpan laporan gagal:", error);
 
-  let message = 'Laporan gagal disimpan. Data form tetap dipertahankan.';
+  let message = "Laporan gagal disimpan. Data form tetap dipertahankan.";
 
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     message = error;
   }
 
-  if (error && typeof error === 'object' && error.message) {
+  if (error && typeof error === "object" && error.message) {
     message = error.message;
   }
 
-  tampilkanAlert('error', message);
+  tampilkanAlert("error", message);
 }
 
 /* ============================================================
@@ -1905,41 +1905,41 @@ function resetFormLaporan() {
   /*
      Field informasi.
   */
-  elements.inputIdLaporan.value = '';
+  elements.inputIdLaporan.value = "";
 
-  elements.inputNoUrut.value = '';
+  elements.inputNoUrut.value = "";
 
-  elements.inputWaktuInput.value = '';
+  elements.inputWaktuInput.value = "";
 
   /*
      Waktu & tempat.
   */
-  elements.inputTKP.value = '';
+  elements.inputTKP.value = "";
 
-  elements.inputTanggalKejadian.value = '';
+  elements.inputTanggalKejadian.value = "";
 
-  elements.inputJamKejadian.value = '';
+  elements.inputJamKejadian.value = "";
 
   /*
      Hari.
   */
   if (elements.selectHariKejadian) {
-    elements.selectHariKejadian.value = 'Senin';
+    elements.selectHariKejadian.value = "Senin";
   }
 
   /*
      Array.
   */
   if (elements.containerListKendaraan) {
-    elements.containerListKendaraan.innerHTML = '';
+    elements.containerListKendaraan.innerHTML = "";
   }
 
   if (elements.containerListPengendara) {
-    elements.containerListPengendara.innerHTML = '';
+    elements.containerListPengendara.innerHTML = "";
   }
 
   if (elements.containerListSaksi) {
-    elements.containerListSaksi.innerHTML = '';
+    elements.containerListSaksi.innerHTML = "";
   }
 
   /*
@@ -1954,7 +1954,7 @@ function resetFormLaporan() {
   /*
      Kronologi.
   */
-  elements.textareaKronologiFinal.value = '';
+  elements.textareaKronologiFinal.value = "";
 
   /*
      Korban.
@@ -1968,12 +1968,12 @@ function resetFormLaporan() {
   /*
      Kermat.
   */
-  elements.inputKermatRupiah.value = '';
+  elements.inputKermatRupiah.value = "";
 
   /*
      Status default.
   */
-  elements.selectStatusPenanganan.value = 'Dalam Penanganan';
+  elements.selectStatusPenanganan.value = "Dalam Penanganan";
 
   /*
      Petugas.
@@ -2003,10 +2003,10 @@ function batalForm() {
      kembali ke halaman WhatsApp.
   */
   if (
-    InputLaporanState.inputMethod === 'whatsapp' &&
+    InputLaporanState.inputMethod === "whatsapp" &&
     InputLaporanState.parsedFromWhatsApp
   ) {
-    showInputView('whatsapp');
+    showInputView("whatsapp");
 
     return;
   }
@@ -2014,11 +2014,11 @@ function batalForm() {
   /*
      Manual kembali ke selection.
   */
-  showInputView('selection');
+  showInputView("selection");
 
-  updateInputMethodActiveState('whatsapp');
+  updateInputMethodActiveState("whatsapp");
 
-  InputLaporanState.inputMethod = 'whatsapp';
+  InputLaporanState.inputMethod = "whatsapp";
 
   InputLaporanState.parsedFromWhatsApp = false;
 
@@ -2031,13 +2031,13 @@ function batalForm() {
 
 function showBannerSuccessParse() {
   if (InputLaporanElements.bannerSuccessParse) {
-    InputLaporanElements.bannerSuccessParse.classList.remove('hidden');
+    InputLaporanElements.bannerSuccessParse.classList.remove("hidden");
   }
 }
 
 function hideBannerSuccessParse() {
   if (InputLaporanElements.bannerSuccessParse) {
-    InputLaporanElements.bannerSuccessParse.classList.add('hidden');
+    InputLaporanElements.bannerSuccessParse.classList.add("hidden");
   }
 }
 
@@ -2056,16 +2056,16 @@ function tampilkanAlert(type, message) {
      tinggal diarahkan ke container tersebut.
   */
 
-  const existing = document.getElementById('input-laporan-alert');
+  const existing = document.getElementById("input-laporan-alert");
 
   let alertElement = existing;
 
   if (!alertElement) {
-    alertElement = document.createElement('div');
+    alertElement = document.createElement("div");
 
-    alertElement.id = 'input-laporan-alert';
+    alertElement.id = "input-laporan-alert";
 
-    alertElement.className = 'mb-4 p-3 rounded-xl text-xs border';
+    alertElement.className = "mb-4 p-3 rounded-xl text-xs border";
 
     /*
        Letakkan di atas selection / content.
@@ -2083,43 +2083,43 @@ function tampilkanAlert(type, message) {
      Reset class.
   */
   alertElement.classList.remove(
-    'bg-emerald-50',
-    'border-emerald-200',
-    'text-emerald-800',
-    'bg-red-50',
-    'border-red-200',
-    'text-red-800',
-    'bg-amber-50',
-    'border-amber-200',
-    'text-amber-800',
+    "bg-emerald-50",
+    "border-emerald-200",
+    "text-emerald-800",
+    "bg-red-50",
+    "border-red-200",
+    "text-red-800",
+    "bg-amber-50",
+    "border-amber-200",
+    "text-amber-800",
   );
 
-  if (type === 'success') {
+  if (type === "success") {
     alertElement.classList.add(
-      'bg-emerald-50',
-      'border-emerald-200',
-      'text-emerald-800',
+      "bg-emerald-50",
+      "border-emerald-200",
+      "text-emerald-800",
     );
-  } else if (type === 'error') {
-    alertElement.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
+  } else if (type === "error") {
+    alertElement.classList.add("bg-red-50", "border-red-200", "text-red-800");
   } else {
     alertElement.classList.add(
-      'bg-amber-50',
-      'border-amber-200',
-      'text-amber-800',
+      "bg-amber-50",
+      "border-amber-200",
+      "text-amber-800",
     );
   }
 
-  alertElement.textContent = message || '';
+  alertElement.textContent = message || "";
 
-  alertElement.classList.remove('hidden');
+  alertElement.classList.remove("hidden");
 }
 
 function sembunyikanAlert() {
-  const alertElement = document.getElementById('input-laporan-alert');
+  const alertElement = document.getElementById("input-laporan-alert");
 
   if (alertElement) {
-    alertElement.classList.add('hidden');
+    alertElement.classList.add("hidden");
   }
 }
 
@@ -2142,15 +2142,15 @@ function setButtonLoading(button, loading, loadingText) {
 
     button.disabled = true;
 
-    button.classList.add('opacity-70', 'cursor-not-allowed');
+    button.classList.add("opacity-70", "cursor-not-allowed");
 
     button.textContent = loadingText;
   } else {
     button.disabled = false;
 
-    button.classList.remove('opacity-70', 'cursor-not-allowed');
+    button.classList.remove("opacity-70", "cursor-not-allowed");
 
-    button.textContent = button.dataset.originalText || loadingText || '';
+    button.textContent = button.dataset.originalText || loadingText || "";
   }
 }
 
@@ -2159,8 +2159,8 @@ function setButtonLoading(button, loading, loadingText) {
    ============================================================ */
 
 function initializeDynamicItemEvents() {
-  document.addEventListener('click', function (event) {
-    const actionButton = event.target.closest('[data-action]');
+  document.addEventListener("click", function (event) {
+    const actionButton = event.target.closest("[data-action]");
 
     if (!actionButton) {
       return;
@@ -2171,8 +2171,8 @@ function initializeDynamicItemEvents() {
     /*
          Hapus kendaraan.
       */
-    if (action === 'hapus-kendaraan') {
-      const item = actionButton.closest('.dynamic-item-kendaraan');
+    if (action === "hapus-kendaraan") {
+      const item = actionButton.closest(".dynamic-item-kendaraan");
 
       if (item) {
         item.remove();
@@ -2184,8 +2184,8 @@ function initializeDynamicItemEvents() {
     /*
          Hapus pengendara.
       */
-    if (action === 'hapus-pengendara') {
-      const item = actionButton.closest('.dynamic-item-pengendara');
+    if (action === "hapus-pengendara") {
+      const item = actionButton.closest(".dynamic-item-pengendara");
 
       if (item) {
         item.remove();
@@ -2197,8 +2197,8 @@ function initializeDynamicItemEvents() {
     /*
          Hapus saksi.
       */
-    if (action === 'hapus-saksi') {
-      const item = actionButton.closest('.dynamic-item-saksi');
+    if (action === "hapus-saksi") {
+      const item = actionButton.closest(".dynamic-item-saksi");
 
       if (item) {
         item.remove();
@@ -2210,7 +2210,7 @@ function initializeDynamicItemEvents() {
     /*
          Hapus petugas.
       */
-    if (action === 'hapus-petugas') {
+    if (action === "hapus-petugas") {
       hapusPetugas(actionButton.dataset.id);
 
       return;
@@ -2236,31 +2236,31 @@ function jalankanDummyProsesWhatsApp(rawText) {
       resolve({
         success: true,
 
-        message: 'Dummy: laporan berhasil diproses.',
+        message: "Dummy: laporan berhasil diproses.",
 
         data: {
-          idLaporan: 'L/DUMMY/001',
+          idLaporan: "L/DUMMY/001",
 
-          noUrut: '001',
+          noUrut: "001",
 
-          waktuInput: 'Dummy',
+          waktuInput: "Dummy",
 
-          tkp: 'Jl. Raya Baureno - Bojonegoro',
+          tkp: "Jl. Raya Baureno - Bojonegoro",
 
-          tanggalKejadian: '09/09/2026',
+          tanggalKejadian: "09/09/2026",
 
-          hariKejadian: 'Rabu',
+          hariKejadian: "Rabu",
 
-          jamKejadian: '08:30',
+          jamKejadian: "08:30",
 
           kendaraan: [
-            'Sepeda motor Honda Beat N 1234 AB',
-            'Mobil Toyota Avanza S 5678 CD',
+            "Sepeda motor Honda Beat N 1234 AB",
+            "Mobil Toyota Avanza S 5678 CD",
           ],
 
-          pengendara: ['Aipda Contoh / 35 tahun', 'Budi / 30 tahun'],
+          pengendara: ["Aipda Contoh / 35 tahun", "Budi / 30 tahun"],
 
-          saksi: ['Saksi Contoh 1', 'Saksi Contoh 2'],
+          saksi: ["Saksi Contoh 1", "Saksi Contoh 2"],
 
           kronologi: rawText,
 
@@ -2270,11 +2270,11 @@ function jalankanDummyProsesWhatsApp(rawText) {
 
           korbanMD: 0,
 
-          kermat: 'Rp 2.500.000',
+          kermat: "Rp 2.500.000",
 
           petugas: [],
 
-          statusPenanganan: 'Dalam Penanganan',
+          statusPenanganan: "Dalam Penanganan",
         },
       });
     }, 800);
@@ -2291,22 +2291,22 @@ function jalankanDummyDaftarPetugas() {
       resolve({
         success: true,
 
-        message: 'Dummy: daftar petugas berhasil.',
+        message: "Dummy: daftar petugas berhasil.",
 
         data: [
           {
-            id: 'P001',
-            nama: 'Aipda Petugas Satu',
+            id: "P001",
+            nama: "Aipda Petugas Satu",
           },
 
           {
-            id: 'P002',
-            nama: 'Bripka Petugas Dua',
+            id: "P002",
+            nama: "Bripka Petugas Dua",
           },
 
           {
-            id: 'P003',
-            nama: 'Briptu Petugas Tiga',
+            id: "P003",
+            nama: "Briptu Petugas Tiga",
           },
         ],
       });
@@ -2320,20 +2320,20 @@ function jalankanDummyDaftarPetugas() {
 
 function jalankanDummySimpanLaporan(data) {
   return new Promise(function (resolve) {
-    console.log('[DUMMY SAVE] Data laporan:', data);
+    console.log("[DUMMY SAVE] Data laporan:", data);
 
     setTimeout(function () {
       resolve({
         success: true,
 
-        message: 'Dummy: laporan berhasil disimpan.',
+        message: "Dummy: laporan berhasil disimpan.",
 
         data: {
-          idLaporan: data.idLaporan || 'L/DUMMY/001',
+          idLaporan: data.idLaporan || "L/DUMMY/001",
 
-          noUrut: data.noUrut || '001',
+          noUrut: data.noUrut || "001",
 
-          waktuInput: data.waktuInput || 'Dummy',
+          waktuInput: data.waktuInput || "Dummy",
         },
       });
     }, 1000);
@@ -2351,7 +2351,7 @@ function initializeInputLaporanEvents() {
      Pilihan WhatsApp.
   */
   if (elements.cardSelectWA) {
-    elements.cardSelectWA.addEventListener('click', function () {
+    elements.cardSelectWA.addEventListener("click", function () {
       pilihInputWhatsApp();
     });
   }
@@ -2360,7 +2360,7 @@ function initializeInputLaporanEvents() {
      Pilihan Manual.
   */
   if (elements.cardSelectManual) {
-    elements.cardSelectManual.addEventListener('click', function () {
+    elements.cardSelectManual.addEventListener("click", function () {
       pilihInputManual();
     });
   }
@@ -2369,7 +2369,7 @@ function initializeInputLaporanEvents() {
      Proses WhatsApp.
   */
   if (elements.btnProsesLaporan) {
-    elements.btnProsesLaporan.addEventListener('click', function () {
+    elements.btnProsesLaporan.addEventListener("click", function () {
       prosesLaporanWhatsApp();
     });
   }
@@ -2378,7 +2378,7 @@ function initializeInputLaporanEvents() {
      Kembali.
   */
   if (elements.btnBackPrevious) {
-    elements.btnBackPrevious.addEventListener('click', function () {
+    elements.btnBackPrevious.addEventListener("click", function () {
       kembaliKeHalamanSebelumnya();
     });
   }
@@ -2387,7 +2387,7 @@ function initializeInputLaporanEvents() {
      Tambah kendaraan.
   */
   if (elements.btnAddKendaraan) {
-    elements.btnAddKendaraan.addEventListener('click', function () {
+    elements.btnAddKendaraan.addEventListener("click", function () {
       tambahKendaraan();
     });
   }
@@ -2396,7 +2396,7 @@ function initializeInputLaporanEvents() {
      Tambah pengendara.
   */
   if (elements.btnAddPengendara) {
-    elements.btnAddPengendara.addEventListener('click', function () {
+    elements.btnAddPengendara.addEventListener("click", function () {
       tambahPengendara();
     });
   }
@@ -2405,7 +2405,7 @@ function initializeInputLaporanEvents() {
      Tambah saksi.
   */
   if (elements.btnAddSaksi) {
-    elements.btnAddSaksi.addEventListener('click', function () {
+    elements.btnAddSaksi.addEventListener("click", function () {
       tambahSaksi();
     });
   }
@@ -2417,7 +2417,7 @@ function initializeInputLaporanEvents() {
      renderPetugasSelector().
   */
   if (elements.btnAddPetugas) {
-    elements.btnAddPetugas.addEventListener('click', function () {
+    elements.btnAddPetugas.addEventListener("click", function () {
       renderPetugasSelector();
 
       const selector =
@@ -2435,7 +2435,7 @@ function initializeInputLaporanEvents() {
      Kirim laporan.
   */
   if (elements.btnKirimLaporan) {
-    elements.btnKirimLaporan.addEventListener('click', function () {
+    elements.btnKirimLaporan.addEventListener("click", function () {
       kirimLaporan();
     });
   }
@@ -2444,7 +2444,7 @@ function initializeInputLaporanEvents() {
      Batal.
   */
   if (elements.btnBatalForm) {
-    elements.btnBatalForm.addEventListener('click', function () {
+    elements.btnBatalForm.addEventListener("click", function () {
       batalForm();
     });
   }
@@ -2458,7 +2458,7 @@ function initializeInputLaporanEvents() {
      Submit form tidak dilakukan oleh browser.
   */
   if (elements.formLaporanUtama) {
-    elements.formLaporanUtama.addEventListener('submit', function (event) {
+    elements.formLaporanUtama.addEventListener("submit", function (event) {
       event.preventDefault();
 
       kirimLaporan();
@@ -2485,7 +2485,7 @@ function initializeInputLaporanEvents() {
    Kita hanya mendengarkan event tersebut
    jika halaman membutuhkan perubahan UI.
 */
-document.addEventListener('modeChanged', function (event) {
+document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
   /*
@@ -2498,10 +2498,9 @@ document.addEventListener('modeChanged', function (event) {
 
        Hanya logging untuk debugging.
     */
-  console.log(
-    '[InputLaporan] Mode berubah:',
-    officer ? 'Petugas' : 'Pengunjung',
-  );
+  if (!officer) {
+    window.location.href = "../index.html";
+  }
 });
 
 /* ============================================================
@@ -2513,7 +2512,7 @@ window.InputLaporanComponent = {
      Buka halaman pilihan input.
   */
   showSelection: function () {
-    showInputView('selection');
+    showInputView("selection");
   },
 
   /*
@@ -2582,14 +2581,14 @@ function initializeInputLaporan() {
      Default:
      WhatsApp aktif.
   */
-  InputLaporanState.inputMethod = 'whatsapp';
+  InputLaporanState.inputMethod = "whatsapp";
 
   InputLaporanState.parsedFromWhatsApp = false;
 
   /*
      Active card WhatsApp.
   */
-  updateInputMethodActiveState('whatsapp');
+  updateInputMethodActiveState("whatsapp");
 
   /*
      Default view:
@@ -2599,7 +2598,7 @@ function initializeInputLaporan() {
 
      View selection adalah halaman awal.
   */
-  showInputView('whatsapp');
+  showInputView("whatsapp");
 
   /*
      Reset form.
@@ -2618,15 +2617,15 @@ function initializeInputLaporan() {
     lucide.createIcons();
   }
 
-  console.log('[InputLaporan] Initialization selesai.');
+  console.log("[InputLaporan] Initialization selesai.");
 }
 
 /* ============================================================
    46. JALANKAN INITIALIZATION
    ============================================================ */
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeInputLaporan);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeInputLaporan);
 } else {
   initializeInputLaporan();
 }

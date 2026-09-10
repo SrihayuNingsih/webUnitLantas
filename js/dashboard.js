@@ -207,25 +207,7 @@ const searchInputDesktop = document.getElementById("searchInputDesktop");
        Navbar TIDAK mengatur Sidebar secara langsung.
      =====================================================
      ===================================================== */
-document.body.insertAdjacentHTML(
-  "beforeend",
-  `
-  <div style="
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:99999;
-    background:red;
-    color:white;
-    padding:10px;
-    font-size:14px;
-  ">
-    width: ${window.innerWidth}px<br>
-    height: ${window.innerHeight}px<br>
-    DPR: ${window.devicePixelRatio}
-  </div>
-  `,
-);
+
 /* Awal Tes Navbar ================================================================================== */
 
 function initNavbarScrollHide() {

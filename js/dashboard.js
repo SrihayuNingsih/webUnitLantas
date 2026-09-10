@@ -62,7 +62,6 @@ let activeMenuId = null;
 
 /* =====================================================
      SET MODE APLIKASI
-     
      Function ini adalah pusat perubahan mode.
      
      Komponen lain tidak perlu mengubah
@@ -164,6 +163,10 @@ const officerMenu = document.getElementById("officerMenu");
 const visitorStatus = document.getElementById("visitorStatus");
 
 const adminStatus = document.getElementById("adminStatus");
+
+const loginStatus = document.getElementById("loginStatus");
+
+const logoutStatus = document.getElementById("logoutStatus");
 
 const loginButton = document.getElementById("loginButton");
 
@@ -578,6 +581,22 @@ if (menuOverlay) {
      UPDATE MODE SIDEBAR
   ===================================================== */
 
+// function updateSidebarMode(isOfficer) {
+//   if (!visitorMenu || !officerMenu) {
+//     return;
+//   }
+
+//   if (isOfficer) {
+//     visitorMenu.classList.add("hidden");
+
+//     officerMenu.classList.remove("hidden");
+//   } else {
+//     visitorMenu.classList.remove("hidden");
+
+//     officerMenu.classList.add("hidden");
+//   }
+// }
+
 function updateSidebarMode(isOfficer) {
   if (!visitorMenu || !officerMenu) {
     return;
@@ -585,12 +604,26 @@ function updateSidebarMode(isOfficer) {
 
   if (isOfficer) {
     visitorMenu.classList.add("hidden");
-
     officerMenu.classList.remove("hidden");
+
+    if (loginStatus) {
+      loginStatus.classList.add("hidden");
+    }
+
+    if (logoutStatus) {
+      logoutStatus.classList.remove("hidden");
+    }
   } else {
     visitorMenu.classList.remove("hidden");
-
     officerMenu.classList.add("hidden");
+
+    if (loginStatus) {
+      loginStatus.classList.remove("hidden");
+    }
+
+    if (logoutStatus) {
+      logoutStatus.classList.add("hidden");
+    }
   }
 }
 

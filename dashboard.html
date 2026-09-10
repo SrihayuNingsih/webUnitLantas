@@ -165,19 +165,6 @@
               >
                 Pengunjung
               </span>
-
-              <button
-                id="loginButton"
-                type="button"
-                aria-label="Login Petugas"
-                title="Login Petugas"
-                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-lantas-900 transition hover:bg-slate-300/20 active:scale-95"
-              >
-                <i
-                  data-lucide="log-in"
-                  class="h-4 w-4 sm:h-4.5 sm:w-4.5 text-blue-300 font-extrabold"
-                ></i>
-              </button>
             </div>
 
             <!-- MODE PETUGAS -->
@@ -201,7 +188,7 @@
                 </div>
               </div>
 
-              <button
+              <!-- <button
                 id="logoutButton"
                 type="button"
                 aria-label="Logout"
@@ -209,7 +196,7 @@
                 class="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
               >
                 <i data-lucide="log-out" class="h-3 w-3"></i>
-              </button>
+              </button> -->
             </div>
           </div>
 
@@ -226,9 +213,7 @@
          AWAL SEARCH MOBILE
     ================================================== -->
 
-        <div
-          class="border-t border-white/10 px-3 py-2 sm:px-5 sm:py-3 md:hidden"
-        >
+        <div class="border-t border-white/10 px-3 py-3 sm:px-5 md:hidden">
           <div class="relative">
             <div
               class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"
@@ -240,7 +225,7 @@
               id="searchInput"
               type="search"
               placeholder="Cari ID laporan, nopol kendaraan, nama, atau informasi . . ."
-              class="h-8 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 pr-4 text-xs text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/50"
+              class="h-10 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 pr-4 text-xs text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/50"
             />
           </div>
         </div>
@@ -566,19 +551,39 @@
     ================================================ -->
 
       <!-- ===============================================
-         AWAL FOOTER SIDEBAR
-    ================================================ -->
-
+     AWAL FOOTER SIDEBAR
+================================================ -->
       <div
-        class="shrink-0 border-t border-white/10 px-4 py-12 md:py-5 md:pb-0 text-center sm:px-5"
+        class="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 px-6 pb-20 pt-3 md:py-5 md:pb-0 sm:px-5"
       >
         <img
           src="assets/images/logo/presisiPutih.png"
           alt="Logo Polri Presisi"
-          class="mx-auto h-12 w-auto object-contain sm:h-16"
+          class="h-10 w-auto object-contain sm:h-16"
         />
+        <div id="loginStatus" class="flex">
+          <button
+            id="loginButton"
+            type="button"
+            aria-label="Login Petugas"
+            title="Login Petugas"
+            class="flex h-7 w-7 shrink-0 items-center justify-center border border-slate-400 rounded-md text-slate-400 transition hover:bg-slate-300/20 hover:text-amber-400 active:scale-95"
+          >
+            <i data-lucide="log-in" class="h-5 w-5 sm:h-[18px] sm:w-[18px]"></i>
+          </button>
+        </div>
+        <div id="logoutStatus" class="hidden">
+          <button
+            id="logoutButton"
+            type="button"
+            aria-label="Logout"
+            title="Logout"
+            class="flex h-7 w-7 items-center justify-center rounded-md border border-slate-400 text-white transition hover:bg-slate-300/20 active:scale-95 sm:h-11"
+          >
+            <i data-lucide="log-out" class="h-3 w-3"></i>
+          </button>
+        </div>
       </div>
-
       <!-- ===============================================
          AKHIR FOOTER SIDEBAR
     ================================================ -->

@@ -57,24 +57,24 @@
 
   <body class="min-h-screen overflow-x-hidden bg-blue-50/50 text-slate-800">
     <!-- =====================================================
-   AWAL KOMPONEN NAVBAR 
+   AWAL KOMPONEN NAVBAR
 ====================================================== -->
 
     <header
       id="navbar"
-      class="relative top-0 z-50 xl:h-[80px] 2xl:h-[100px] w-full border-b border-blue-800/60 bg-blue-950 text-white shadow-md shadow-blue-950/20"
+      class="sticky transition-all duration-300 ease-in-out translate-y-0 top-0 z-50 xl:h-[60px] w-full border-b border-blue-800/60 bg-blue-950 text-white shadow-md shadow-blue-950/20"
     >
       <div class="w-full">
         <!-- =================================================
-       AWAL BARIS UTAMA NAVBAR
-  ================================================== -->
+         AWAL BARIS UTAMA NAVBAR
+    ================================================== -->
 
         <div
-          class="flex min-h-[70px] items-center gap-3 px-3 sm:px-5 md:min-h-[82px] lg:px-8 xl:px-10 2xl:px-12"
+          class="flex min-h-[70px] items-center gap-3 px-3 sm:px-5 md:min-h-[82px] lg:px-8 xl:min-h-[60px] xl:px-10 2xl:px-12"
         >
           <!-- ===============================================
-         AWAL IDENTITAS MOBILE
-    ================================================ -->
+           AWAL IDENTITAS MOBILE
+      ================================================ -->
 
           <div class="flex min-w-0 items-center gap-2 sm:gap-3 md:hidden">
             <!-- HAMBURGER -->
@@ -89,14 +89,14 @@
               <i
                 id="menuIcon"
                 data-lucide="menu"
-                class="h-5 w-5 sm:h-6 sm:w-6"
+                class="h-7 w-7 sm:h-8 sm:w-8"
               ></i>
             </button>
 
             <!-- LOGO -->
 
             <div
-              class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12"
+              class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md sm:h-12 sm:w-12"
             >
               <img
                 src="../assets/images/logo/logoLantas.png"
@@ -109,13 +109,13 @@
 
             <div class="min-w-0 leading-tight">
               <h1
-                class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-sm"
+                class="truncate text-[9px] min-[380px]:text-[11px] font-semibold tracking-wide text-slate-300"
               >
                 UNIT LANTAS
               </h1>
 
               <p
-                class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-base"
+                class="truncate text-[10px] min-[380px]:text-sm font-extrabold tracking-wide text-amber-400"
               >
                 POLSEK BAURENO
               </p>
@@ -123,8 +123,8 @@
           </div>
 
           <!-- ===============================================
-         AKHIR IDENTITAS MOBILE
-    ================================================ -->
+           AKHIR IDENTITAS MOBILE
+      ================================================ -->
 
           <!-- ===============================================
          AWAL JAM BAGIAN KIRI NAVBAR KHUSUS DEKSTOP > 1024PX
@@ -144,56 +144,20 @@
     ================================================ -->
 
           <!-- ===============================================
-         AWAL BAGIAN KANAN NAVBAR
-    ================================================ -->
+           AWAL BAGIAN KANAN NAVBAR
+      ================================================ -->
 
           <div
             class="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-5"
           >
             <!-- MODE PENGUNJUNG -->
 
-            <!-- <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
-          <span
-            class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
-          >
-            Mode Pengunjung
-          </span>
-
-          <button
-            id="loginButton"
-            type="button"
-            aria-label="Login Petugas"
-            title="Login Petugas"
-            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 lg:h-8 sm:gap-2 sm:px-3 sm:text-sm"
-          >
-            <i
-              data-lucide="log-in"
-              class="h-5 w-5 min-[380px]:h-3.5 min-[380px]:w-3.5 sm:h-[10px] sm:w-[10px]"
-            ></i>
-
-            <span class="hidden sm:inline"></span>
-          </button>
-        </div> -->
-
-            <div id="visitorStatus" class="flex items-center gap-3 lg:gap-5">
+            <div id="visitorStatus" class="flex flex-col items-end gap-1">
               <span
-                class="max-w-[55px] text-center text-[9px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[10px] sm:text-sm lg:text-md"
+                class="max-w-[55px] text-center text-[10px] font-semibold leading-tight text-blue-200 min-[380px]:max-w-none min-[380px]:text-[12px] sm:text-sm lg:text-md"
               >
-                Mode Pengunjung
+                Pengunjung
               </span>
-
-              <button
-                id="loginButton"
-                type="button"
-                aria-label="Login Petugas"
-                title="Login Petugas"
-                class="flex h-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-xs font-bold text-lantas-900 shadow-sm transition hover:bg-slate-100 active:scale-95 min-[380px]:px-2 sm:h-8 sm:gap-2 sm:px-3 sm:text-sm"
-              >
-                <!-- Perbaikan class icon di bawah ini -->
-                <i data-lucide="log-in" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></i>
-                <!-- Mengisi teks yang muncul saat layar minimal sm (640px) -->
-                <!-- <span class="hidden sm:inline">Login</span> -->
-              </button>
             </div>
 
             <!-- MODE PETUGAS -->
@@ -210,39 +174,71 @@
                   ></span>
 
                   <span
-                    class="text-[10px] font-medium text-green-300 sm:text-xs lg:text-md xl:text-lg 2xl:text-xl"
+                    class="text-[10px] font-medium text-green-300 sm:text-xs lg:text-sm"
                   >
                     Online
                   </span>
                 </div>
               </div>
 
-              <button
+              <!-- <button
                 id="logoutButton"
                 type="button"
                 aria-label="Logout"
                 title="Logout"
-                class="flex h-8 w-8 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
+                class="flex h-6 w-6 items-center justify-center rounded-md border border-white/15 bg-white/10 text-white transition hover:bg-white/20 active:scale-95 sm:h-11 sm:w-11"
               >
-                <i data-lucide="log-out" class="h-5 w-5"></i>
-              </button>
+                <i data-lucide="log-out" class="h-3 w-3"></i>
+              </button> -->
             </div>
           </div>
 
           <!-- ===============================================
-         AKHIR BAGIAN KANAN NAVBAR
-    ================================================ -->
+           AKHIR BAGIAN KANAN NAVBAR
+      ================================================ -->
         </div>
 
         <!-- =================================================
-       AKHIR BARIS UTAMA NAVBAR
-  ================================================== -->
+         AKHIR BARIS UTAMA NAVBAR
+    ================================================== -->
+
+        <!-- =================================================
+         AWAL SEARCH MOBILE
+    ================================================== -->
+
+        <div class="border-t border-white/10 px-3 py-3 sm:px-5 md:hidden">
+          <div class="relative">
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"
+            >
+              <i data-lucide="search" class="h-3 w-3"></i>
+            </div>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Cari ID laporan, nopol kendaraan, nama, atau informasi . . ."
+              class="h-10 w-full rounded-xl border border-blue-800 bg-blue-900/50 pl-11 pr-4 text-xs text-white outline-none transition placeholder:text-blue-300/70 focus:border-amber-400 focus:bg-blue-900/50"
+            />
+          </div>
+        </div>
+
+        <!-- =================================================
+         AKHIR SEARCH MOBILE
+    ================================================== -->
       </div>
     </header>
+    <!-- ### Yang saya ubah Hanya bagian tinggi **baris utama navbar**: ```html
+    md:min-h-[82px] lg:px-8 xl:min-h-[60px] ``` Sebelumnya: ```html
+    md:min-h-[82px] lg:px-8 xl:px-10 ``` Jadi pada layar `xl` ke atas: * tinggi
+    baris navbar = **60px** * `items-center` tetap aktif * search otomatis
+    berada **tepat di tengah vertikal 60px tersebut** * ukuran search tetap
+    `h-9`, dan `2xl:h-10` * padding search tetap seperti kode Anda * posisi
+    visitor/login tidak saya ubah * tampilan mobile tidak saya ubah. -->
 
     <!-- =====================================================
-   AKHIR KOMPONEN NAVBAR
-====================================================== -->
+       AKHIR KOMPONEN NAVBAR
+  ====================================================== -->
 
     <!-- =====================================================
    AWAL KOMPONEN OVERLAY MOBILE
@@ -258,23 +254,23 @@
 ====================================================== -->
 
     <!-- =====================================================
-   AWAL KOMPONEN SIDEBAR
-====================================================== -->
+       AWAL KOMPONEN SIDEBAR
+  ====================================================== -->
 
     <aside
       id="sidebar"
       class="fixed left-0 top-0 z-[60] flex h-screen w-[290px] max-w-[85vw] -translate-x-full flex-col bg-blue-950 border-r border-blue-800/50 shadow-blue-950/50 text-white shadow-2xl transition-transform duration-300 ease-out md:translate-x-0 md:z-40 md:shadow-none"
     >
       <!-- ===============================================
-     AWAL HEADER SIDEBAR
-================================================ -->
+         AWAL HEADER SIDEBAR
+    ================================================ -->
 
       <div
         class="flex min-h-[82px] shrink-0 items-center justify-between px-4 sm:px-5"
       >
         <div class="flex items-center gap-3">
           <div
-            class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-1 shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14"
+            class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-1 shadow-md min-[380px]:h-10 min-[380px]:w-10 sm:h-12 sm:w-12"
           >
             <img
               src="../assets/images/logo/logoLantas.png"
@@ -285,13 +281,13 @@
 
           <div class="min-w-0 leading-tight">
             <h1
-              class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-xs md:text-sm lg:text-md"
+              class="truncate text-[9px] font-semibold tracking-wide text-slate-300 min-[380px]:text-[10px] sm:text-xs md:text-sm"
             >
               UNIT LANTAS
             </h1>
 
             <p
-              class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-sm md:text-md lg:text-lg"
+              class="truncate text-[9px] font-extrabold tracking-wide text-amber-400 min-[380px]:text-xs sm:text-sm md:text-md"
             >
               POLSEK BAURENO
             </p>
@@ -309,42 +305,41 @@
       </div>
 
       <!-- ===============================================
-     AKHIR HEADER SIDEBAR
-================================================ -->
+         AKHIR HEADER SIDEBAR
+    ================================================ -->
 
       <!-- ===============================================
-     AWAL ISI SIDEBAR
-================================================ -->
+         AWAL ISI SIDEBAR
+    ================================================ -->
 
-      <div class="flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+      <div class="flex-1 px-3 py-4 sm:px-4">
         <!-- =============================================
-       MENU PENGUNJUNG
-  ============================================== -->
+           MENU PENGUNJUNG
+      ============================================== -->
 
-        <nav id="visitorMenu" class="space-y-1">
-          <a
-            href="../dashboard.html"
-            class="menu-link active text-blue-100/90 hover:bg-amber-500/10 hover:text-amber-400"
-          >
+        <nav id="visitorMenu" class="space-y-2">
+          <a href="../dashboard.html" class="menu-link active text-blue-100/90">
             <span class="menu-label">
               <i data-lucide="house" class="h-5 w-5"></i>
-              <span class="lg:text-lg">Beranda</span>
+              <span class="lg:text-md">Beranda</span>
             </span>
           </a>
 
           <a href="../pages/halLakaLantas.html" class="menu-link">
             <span class="menu-label">
               <i data-lucide="car-front" class="h-5 w-5"></i>
-              <span class="lg:text-lg">Laka Lantas</span>
+              <span class="lg:text-md">Laka Lantas</span>
             </span>
           </a>
 
           <div class="menu-development">
             <div class="menu-link development-disabled">
               <span class="menu-label">
-                <i data-lucide="package" class="h-5 w-5"></i>
+                <i data-lucide="package" class="h-5 w-5 text-slate-500"></i>
 
-                <span class="lg:text-lg">Barang Bukti</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Barang Bukti</span
+                >
               </span>
             </div>
 
@@ -356,9 +351,14 @@
           <div class="menu-development">
             <div class="menu-link development-disabled">
               <span class="menu-label">
-                <i data-lucide="package-check" class="h-5 w-5"></i>
+                <i
+                  data-lucide="package-check"
+                  class="h-5 w-5 text-slate-500"
+                ></i>
 
-                <span class="lg:text-lg">Pengambilan BB</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Pengambilan BB</span
+                >
               </span>
             </div>
 
@@ -371,29 +371,35 @@
             <span class="menu-label">
               <i data-lucide="file-chart-column" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Laporan & Rekap</span>
+              <span class="lg:text-md">Laporan & Rekap</span>
             </span>
           </a>
 
-          <a href="../pages/informasi.html" class="menu-link">
+          <a
+            href="#"
+            class="menu-link development-disabled"
+            onclick="return false;"
+          >
             <span class="menu-label">
-              <i data-lucide="info" class="h-5 w-5"></i>
+              <i data-lucide="info" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Informasi</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Informasi</span
+              >
             </span>
           </a>
         </nav>
 
         <!-- =============================================
-       MENU PETUGAS
-  ============================================== -->
+           MENU PETUGAS
+      ============================================== -->
 
         <nav id="officerMenu" class="hidden space-y-1">
           <a href="../dashboard.html" class="menu-link active">
             <span class="menu-label">
               <i data-lucide="house" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Beranda</span>
+              <span class="lg:text-md">Beranda</span>
             </span>
           </a>
 
@@ -408,7 +414,7 @@
               <span class="menu-label">
                 <i data-lucide="car-front" class="h-5 w-5"></i>
 
-                <span class="lg:text-lg">Laka Lantas</span>
+                <span class="lg:text-md">Laka Lantas</span>
               </span>
 
               <i
@@ -445,9 +451,11 @@
               class="menu-link dropdown-button disabled-dropdown"
             >
               <span class="menu-label">
-                <i data-lucide="package" class="h-5 w-5"></i>
+                <i data-lucide="package" class="h-5 w-5 text-slate-500"></i>
 
-                <span class="lg:text-lg">Barang Bukti</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Barang Bukti</span
+                >
               </span>
 
               <i
@@ -470,9 +478,14 @@
               class="menu-link dropdown-button disabled-dropdown"
             >
               <span class="menu-label">
-                <i data-lucide="package-check" class="h-5 w-5"></i>
+                <i
+                  data-lucide="package-check"
+                  class="h-5 w-5 text-slate-500"
+                ></i>
 
-                <span class="lg:text-lg">Pengambilan BB</span>
+                <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                  >Pengambilan BB</span
+                >
               </span>
 
               <i
@@ -490,62 +503,88 @@
             <span class="menu-label">
               <i data-lucide="file-chart-column" class="h-5 w-5"></i>
 
-              <span class="lg:text-lg">Laporan & Rekap</span>
+              <span class="lg:text-md">Laporan & Rekap</span>
             </span>
           </a>
 
           <a href="../pages/daftarPersonil.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="users" class="h-5 w-5"></i>
+              <i data-lucide="users" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Daftar Personil</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Daftar Personil</span
+              >
             </span>
           </a>
 
           <a href="../pages/informasi.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="info" class="h-5 w-5"></i>
+              <i data-lucide="info" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Informasi</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Informasi</span
+              >
             </span>
           </a>
 
           <a href="../pages/pengaturan.html" class="menu-link">
             <span class="menu-label">
-              <i data-lucide="settings" class="h-5 w-5"></i>
+              <i data-lucide="settings" class="h-5 w-5 text-slate-500"></i>
 
-              <span class="lg:text-lg">Pengaturan</span>
+              <span class="lg:text-md text-slate-500 cursor-not-allowed"
+                >Pengaturan</span
+              >
             </span>
           </a>
         </nav>
       </div>
 
       <!-- ===============================================
-     AKHIR ISI SIDEBAR
-================================================ -->
+         AKHIR ISI SIDEBAR
+    ================================================ -->
 
       <!-- ===============================================
      AWAL FOOTER SIDEBAR
 ================================================ -->
-
       <div
-        class="shrink-0 border-t border-white/10 px-4 py-5 text-center sm:px-5"
+        class="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 px-6 pb-20 pt-2 md:py-5 md:pb-3 sm:px-5"
       >
         <img
           src="../assets/images/logo/presisiPutih.png"
           alt="Logo Polri Presisi"
-          class="mx-auto h-12 w-auto object-contain sm:h-16"
+          class="h-10 w-auto object-contain"
         />
+        <div id="loginStatus" class="flex py-2">
+          <button
+            id="loginButton"
+            type="button"
+            aria-label="Login Petugas"
+            title="Login Petugas"
+            class="flex h-7 w-7 shrink-0 items-center justify-center border border-slate-400 rounded-md text-slate-400 transition hover:border-green-300 hover:bg-slate-500/50 hover:text-green-400 active:scale-95"
+          >
+            <i data-lucide="log-in" class="h-5 w-5 sm:h-[18px] sm:w-[18px]"></i>
+          </button>
+        </div>
+        <div id="logoutStatus" class="hidden py-2">
+          <button
+            id="logoutButton"
+            type="button"
+            aria-label="Logout"
+            title="Logout"
+            class="flex h-7 w-7 shrink-0 items-center justify-center border border-slate-400 rounded-md text-slate-400 transition hover:border-amber-400 hover:bg-slate-300/20 hover:text-amber-400 active:scale-95"
+          >
+            <i data-lucide="log-out" class="h-4 w-4"></i>
+          </button>
+        </div>
       </div>
-
       <!-- ===============================================
-     AKHIR FOOTER SIDEBAR
-================================================ -->
+         AKHIR FOOTER SIDEBAR
+    ================================================ -->
     </aside>
 
     <!-- =====================================================
-   AKHIR KOMPONEN SIDEBAR
-====================================================== -->
+       AKHIR KOMPONEN SIDEBAR
+  ====================================================== -->
 
     <!-- =====================================================
    AWAL KOMPONEN MODAL LOGOUT
@@ -625,7 +664,7 @@
              CONTENT WRAPPER
         ====================================================== -->
 
-      <div class="w-full px-4 py-4 sm:px-4 sm:py-4 lg:px-4 lg:py-4">
+      <div class="w-full px-4 py-4">
         <!-- =================================================
                  KEMBALI
             ================================================== -->
@@ -634,10 +673,12 @@
           <button
             id="laporanBackButton"
             type="button"
-            class="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-blue-800 shadow-sm transition duration-200 hover:bg-blue-50 hover:border-blue-300 active:scale-[0.98]"
+            class="group inline-flex items-center gap-2 rounded-xl bg-blue-50/80 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-all duration-200 hover:bg-blue-100 hover:text-blue-800 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
-            <i data-lucide="arrow-left" class="h-4 w-4"></i>
-
+            <i
+              data-lucide="arrow-left"
+              class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1 text-blue-600"
+            ></i>
             <span>Kembali</span>
           </button>
         </div>
@@ -713,7 +754,7 @@
             <div class="grid grid-cols-1 gap-4">
               <!-- Jenis Periode -->
 
-              <div>
+              <div class="relative w-full">
                 <label
                   for="jenisPeriode"
                   class="mb-1.5 block text-sm font-semibold text-slate-700"
@@ -721,25 +762,44 @@
                   Jenis Periode
                 </label>
 
-                <select
-                  id="jenisPeriode"
-                  class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                >
-                  <option value="semua" selected>Semua Periode</option>
+                <div class="relative">
+                  <select
+                    id="jenisPeriode"
+                    class="w-full appearance-none rounded-xl border border-slate-300 bg-white pl-3.5 pr-10 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                  >
+                    <option value="semua" selected>Semua Periode</option>
+                    <option value="bulanan">Bulanan</option>
+                    <option value="tahunan">Tahunan</option>
+                    <option value="rentang">Rentang Tanggal</option>
+                  </select>
 
-                  <option value="bulanan">Bulanan</option>
-
-                  <option value="tahunan">Tahunan</option>
-
-                  <option value="rentang">Rentang Tanggal</option>
-                </select>
+                  <!-- Icon Panah Kustom (Pasti Muncul) -->
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-700"
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               <!-- =====================================
                              BULANAN
                         ====================================== -->
 
-              <div
+              <!-- <div
                 id="periodeBulanan"
                 class="hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4"
               >
@@ -766,9 +826,9 @@
                     <select
                       id="tahunBulanan"
                       class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    >
-                      <!-- Diisi JS -->
-                    </select>
+                    > -->
+              <!-- Diisi JS -->
+              <!-- </select>
                   </div>
 
                   <div>
@@ -798,13 +858,118 @@
                     </select>
                   </div>
                 </div>
+              </div> -->
+
+              <div
+                id="periodeBulanan"
+                class="hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4"
+              >
+                <div class="mb-3 flex items-center gap-2">
+                  <i
+                    data-lucide="calendar-days"
+                    class="h-4 w-4 text-blue-700"
+                  ></i>
+
+                  <h3 class="text-sm font-bold text-blue-900">
+                    Periode Bulanan
+                  </h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <!-- Dropdown Tahun -->
+                  <div>
+                    <label
+                      for="tahunBulanan"
+                      class="mb-1.5 block text-xs font-semibold text-slate-600"
+                    >
+                      Tahun
+                    </label>
+
+                    <div class="relative">
+                      <select
+                        id="tahunBulanan"
+                        class="w-full appearance-none rounded-xl border border-slate-300 bg-white pl-3 pr-9 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      >
+                        <!-- Diisi JS -->
+                      </select>
+
+                      <div
+                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500"
+                      >
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Dropdown Bulan -->
+                  <div>
+                    <label
+                      for="bulanBulanan"
+                      class="mb-1.5 block text-xs font-semibold text-slate-600"
+                    >
+                      Bulan
+                    </label>
+
+                    <div class="relative">
+                      <select
+                        id="bulanBulanan"
+                        class="w-full appearance-none rounded-xl border border-slate-300 bg-white pl-3 pr-9 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      >
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                      </select>
+
+                      <div
+                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500"
+                      >
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- =====================================
                              TAHUNAN
                         ====================================== -->
 
-              <div
+              <!-- <div
                 id="periodeTahunan"
                 class="hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4"
               >
@@ -828,9 +993,9 @@
                     <select
                       id="tahunTahunan"
                       class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    >
-                      <!-- Diisi JS -->
-                    </select>
+                    > -->
+              <!-- Diisi JS -->
+              <!-- </select>
                   </div>
 
                   <div>
@@ -844,6 +1009,76 @@
                       class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-400"
                     >
                       <span>Tidak digunakan</span>
+
+                      <i data-lucide="lock" class="ml-auto h-4 w-4"></i>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <div
+                id="periodeTahunan"
+                class="hidden rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4"
+              >
+                <div class="mb-3 flex items-center gap-2">
+                  <i data-lucide="calendar" class="h-4 w-4 text-blue-700"></i>
+
+                  <h3 class="text-sm font-bold text-blue-900">
+                    Periode Tahunan
+                  </h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <!-- Dropdown Tahun -->
+                  <div>
+                    <label
+                      for="tahunTahunan"
+                      class="mb-1.5 block text-xs font-semibold text-slate-600"
+                    >
+                      Tahun
+                    </label>
+
+                    <div class="relative">
+                      <select
+                        id="tahunTahunan"
+                        class="w-full appearance-none rounded-xl border border-slate-300 bg-white pl-3 pr-9 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      >
+                        <!-- Diisi JS -->
+                      </select>
+
+                      <div
+                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500"
+                      >
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Field Bulan Disabled / Tidak Digunakan -->
+                  <div>
+                    <label
+                      class="mb-1.5 block text-xs font-semibold text-slate-600"
+                    >
+                      Bulan
+                    </label>
+
+                    <div
+                      class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-400"
+                    >
+                      <span>Semua Bulan (Jan - Des)</span>
 
                       <i data-lucide="lock" class="ml-auto h-4 w-4"></i>
                     </div>
@@ -931,7 +1166,7 @@
                 <button
                   id="resetFilterButton"
                   type="button"
-                  class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-800 active:scale-[0.98]"
+                  class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-base font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-800 active:scale-[0.98]"
                 >
                   <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
 
@@ -943,7 +1178,7 @@
                 <button
                   id="tampilkanRekapButton"
                   type="button"
-                  class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-800 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:from-blue-900 hover:to-blue-800 active:scale-[0.98]"
+                  class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-800 to-blue-700 px-5 py-2.5 text-base font-semibold text-white shadow-sm transition hover:from-blue-900 hover:to-blue-800 active:scale-[0.98]"
                 >
                   <i data-lucide="search" class="h-4 w-4"></i>
 
@@ -969,7 +1204,7 @@
             </div>
 
             <div>
-              <h2 class="text-sm font-bold text-blue-950 sm:text-base">
+              <h2 class="text-sm font-bold text-blue-950 sm:text-lg">
                 FILTER CEPAT
               </h2>
 
@@ -983,7 +1218,7 @@
             <button
               id="filterMingguIni"
               type="button"
-              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
+              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-base font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
             >
               <i data-lucide="calendar-check" class="h-4 w-4"></i>
 
@@ -993,7 +1228,7 @@
             <button
               id="filterBulanIni"
               type="button"
-              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
+              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-base font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
             >
               <i data-lucide="calendar-days" class="h-4 w-4"></i>
 
@@ -1003,7 +1238,7 @@
             <button
               id="filterTahunIni"
               type="button"
-              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
+              class="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-4 py-2.5 text-base font-semibold text-blue-800 transition hover:bg-blue-100 active:scale-[0.98]"
             >
               <i data-lucide="calendar-range" class="h-4 w-4"></i>
 
@@ -1089,18 +1324,18 @@
             </p>
           </div>
 
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-5">
             <!-- =========================================
                          TOTAL KEJADIAN
                     ========================================== -->
 
             <article
-              class="overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 p-4 shadow-md sm:col-span-2 lg:col-span-1"
+              class="overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 p-4 shadow-md sm:col-span-2"
             >
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-blue-100"
+                    class="text-sm font-semibold uppercase tracking-wide text-blue-100"
                   >
                     Total Kejadian
                   </p>
@@ -1126,28 +1361,28 @@
                     ========================================== -->
 
             <article
-              class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"
+              class="rounded-2xl border border-emerald-200 bg-white p-4 shadow-sm"
             >
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
                   >
                     Luka Ringan
                   </p>
 
                   <p
                     id="korbanLRLaporan"
-                    class="mt-2 text-2xl font-bold text-blue-800 sm:text-3xl"
+                    class="mt-2 text-2xl font-bold text-emerald-700 sm:text-3xl"
                   >
                     0
                   </p>
 
-                  <p class="mt-0.5 text-xs text-slate-500">LR</p>
+                  <p class="mt-0.5 text-sm text-slate-500">LR</p>
                 </div>
 
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"
                 >
                   <i data-lucide="user-round" class="h-5 w-5"></i>
                 </div>
@@ -1159,28 +1394,28 @@
                     ========================================== -->
 
             <article
-              class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"
+              class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm"
             >
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
                   >
                     Luka Berat
                   </p>
 
                   <p
                     id="korbanLBLaporan"
-                    class="mt-2 text-2xl font-bold text-blue-800 sm:text-3xl"
+                    class="mt-2 text-2xl font-bold text-amber-400 sm:text-3xl"
                   >
                     0
                   </p>
 
-                  <p class="mt-0.5 text-xs text-slate-500">LB</p>
+                  <p class="mt-0.5 text-sm text-slate-500">LB</p>
                 </div>
 
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700"
                 >
                   <i data-lucide="user-round-check" class="h-5 w-5"></i>
                 </div>
@@ -1192,28 +1427,28 @@
                     ========================================== -->
 
             <article
-              class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm"
+              class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm"
             >
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
                   >
                     Meninggal Dunia
                   </p>
 
                   <p
                     id="korbanMDLaporan"
-                    class="mt-2 text-2xl font-bold text-blue-900 sm:text-3xl"
+                    class="mt-2 text-2xl font-bold text-rose-800 sm:text-3xl"
                   >
                     0
                   </p>
 
-                  <p class="mt-0.5 text-xs text-slate-500">MD</p>
+                  <p class="mt-0.5 text-sm text-slate-500">MD</p>
                 </div>
 
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-800"
                 >
                   <i data-lucide="user-x" class="h-5 w-5"></i>
                 </div>
@@ -1237,7 +1472,7 @@
 
                   <p
                     id="kerugianMaterialLaporan"
-                    class="mt-2 truncate text-xl font-bold text-blue-950 sm:text-2xl"
+                    class="mt-2 truncate text-xl font-bold text-blue-900 sm:text-2xl"
                   >
                     Rp 0
                   </p>
@@ -1269,35 +1504,6 @@
           </div>
 
           <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
-            <!-- Dalam Penanganan -->
-
-            <article
-              class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700"
-                >
-                  <i data-lucide="clock-3" class="h-5 w-5"></i>
-                </div>
-
-                <div>
-                  <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
-                  >
-                    Dalam Penanganan
-                  </p>
-
-                  <p
-                    id="statusDalamPenangananLaporan"
-                    class="mt-1 text-2xl font-bold text-amber-700"
-                  >
-                    0
-                  </p>
-                </div>
-              </div>
-            </article>
-
             <!-- RJ -->
 
             <article
@@ -1312,7 +1518,7 @@
 
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
                   >
                     RJ / Kekeluargaan
                   </p>
@@ -1326,29 +1532,57 @@
                 </div>
               </div>
             </article>
+            <!-- Dalam Penanganan -->
+
+            <article
+              class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700"
+                >
+                  <i data-lucide="clock-3" class="h-5 w-5"></i>
+                </div>
+
+                <div>
+                  <p
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
+                  >
+                    Dalam Penanganan
+                  </p>
+
+                  <p
+                    id="statusDalamPenangananLaporan"
+                    class="mt-1 text-2xl font-bold text-amber-400"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </article>
 
             <!-- Limpah -->
 
             <article
-              class="rounded-2xl border border-blue-200 bg-white p-4 shadow-sm"
+              class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm"
             >
               <div class="flex items-center gap-3">
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-800"
                 >
                   <i data-lucide="arrow-up-right" class="h-5 w-5"></i>
                 </div>
 
                 <div>
                   <p
-                    class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    class="text-sm font-semibold uppercase tracking-wide text-slate-500"
                   >
                     Limpah ke Polres
                   </p>
 
                   <p
                     id="statusLimpahPolresLaporan"
-                    class="mt-1 text-2xl font-bold text-blue-800"
+                    class="mt-1 text-2xl font-bold text-rose-800"
                   >
                     0
                   </p>

@@ -223,7 +223,7 @@ const lakaData = [
     kermat: 1800000,
     saksi: [],
     kronologi: "",
-    status: "",
+    status: "Limpah Polres",
     petugas: "",
   },
 
@@ -429,7 +429,7 @@ const lakaData = [
     saksi: [],
     kronologi:
       "Sepeda motor menabrak kendaraan yang berhenti di pinggir jalan.",
-    status: null,
+    status: "Selesai",
     petugas: "Bripka Rudi Hartono",
   },
 

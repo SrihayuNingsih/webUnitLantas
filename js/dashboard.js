@@ -1,99 +1,25 @@
 /* =====================================================
-       AWAL JAVASCRIPT APLIKASI
-  ====================================================== */
+   JAVASCRIPT APLIKASI DASHBOARD
+   ===================================================== */
 
 /* =====================================================
-     =====================================================
-     
-       JAVASCRIPT TES GABUNG KOMPONEN
-       
-       Fungsi file ini:
-       - Menggabungkan seluruh JavaScript komponen
-       - Menjadi bahan pengujian di VS Code
-       - Setelah stabil, script akan dipecah kembali
-         menjadi file JavaScript masing-masing komponen
-       
-       STRUKTUR:
-       1. Global / Application
-       2. Element Global
-       3. Navbar
-       4. Sidebar
-       5. Sidebar Dropdown
-       6. Sidebar Responsive
-       7. Logout Modal
-       8. Data Laka
-       9. Helper Status Laka
-       10. Render Laka
-       11. Mode Laka
-       12. Action Menu Laka
-       13. Action Laporan
-       14. Tombol Lihat Semua
-       15. Rekap & Status
-       16. Initialization
-       
-     =====================================================
-     ===================================================== */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT GLOBAL / APPLICATION
-       
-       Bagian ini adalah pusat aplikasi.
-       
-       Hanya bagian ini yang memiliki state:
-       isOfficerMode
-       
-       Komponen lain tidak membuat state mode sendiri.
-       
-       Nilai:
-       true  = Petugas
-       false = Pengunjung
-     =====================================================
-     ===================================================== */
+   GLOBAL / APPLICATION
+   ===================================================== */
 
 let isOfficerMode = localStorage.getItem("isOfficerMode") === "true";
-
-/*
-    ID laporan yang sedang dipilih
-    pada Action Menu.
-  */
 
 let activeMenuId = null;
 
 /* =====================================================
-     SET MODE APLIKASI
-     Function ini adalah pusat perubahan mode.
-     
-     Komponen lain tidak perlu mengubah
-     localStorage secara langsung.
-  ===================================================== */
+   SET MODE APLIKASI
+   ===================================================== */
 
 function setMode(mode) {
   isOfficerMode = mode === "officer";
 
-  /*
-      Simpan mode ke Local Storage.
-    */
-
   localStorage.setItem("isOfficerMode", String(isOfficerMode));
 
-  /*
-      Update tampilan masing-masing komponen.
-    */
-
   updateGlobalUI();
-
-  /*
-      Beritahu seluruh komponen bahwa mode berubah.
-      
-      Komponen yang membutuhkan event ini:
-      - Navbar
-      - Sidebar
-      - Laka
-      - Input Laporan
-      - Petugas Piket
-      - komponen lainnya nanti
-    */
 
   document.dispatchEvent(
     new CustomEvent("modeChanged", {
@@ -105,126 +31,63 @@ function setMode(mode) {
 }
 
 /* =====================================================
-     UPDATE UI GLOBAL
-     
-     Function ini hanya memastikan komponen-komponen
-     yang sudah ada langsung mengikuti mode saat ini.
-     
-     Detail tampilan tetap ditangani oleh function
-     masing-masing komponen.
-  ===================================================== */
+   UPDATE UI GLOBAL
+   ===================================================== */
 
 function updateGlobalUI() {
-  /*
-      Navbar
-    */
-
   updateNavbarMode(isOfficerMode);
-
-  /*
-      Sidebar
-    */
-
   updateSidebarMode(isOfficerMode);
-
-  /*
-      Laka Terbaru
-    */
-
   updateLakaMode(isOfficerMode);
 }
 
 /* =====================================================
-     AKHIR SCRIPT GLOBAL / APPLICATION
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT ELEMENT GLOBAL
-       
-       Semua element yang digunakan oleh JavaScript
-       diambil di satu tempat.
-     =====================================================
-     ===================================================== */
+   ELEMENT GLOBAL
+   ===================================================== */
 
 const menuButton = document.getElementById("menuButton");
-
 const closeMenuButton = document.getElementById("closeMenuButton");
-
 const sidebar = document.getElementById("sidebar");
-
 const menuOverlay = document.getElementById("menuOverlay");
 
 const visitorMenu = document.getElementById("visitorMenu");
-
 const officerMenu = document.getElementById("officerMenu");
 
 const visitorStatus = document.getElementById("visitorStatus");
-
 const adminStatus = document.getElementById("adminStatus");
 
 const loginStatus = document.getElementById("loginStatus");
-
 const logoutStatus = document.getElementById("logoutStatus");
 
 const loginButton = document.getElementById("loginButton");
-
 const logoutButton = document.getElementById("logoutButton");
 
 const logoutModal = document.getElementById("logoutModal");
-
 const cancelLogoutButton = document.getElementById("cancelLogoutButton");
-
 const confirmLogoutButton = document.getElementById("confirmLogoutButton");
 
 const actionMenu = document.getElementById("action-menu");
-
 const actionEditButton = document.getElementById("actionEditButton");
-
 const actionDeleteButton = document.getElementById("actionDeleteButton");
 
 const searchInput = document.getElementById("searchInput");
-
 const searchInputDesktop = document.getElementById("searchInputDesktop");
 
 /* =====================================================
-     AKHIR SCRIPT ELEMENT GLOBAL
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT NAVBAR
-       
-       Komponen:
-       Navbar
-       
-       Tanggung jawab:
-       - Menampilkan mode Visitor / Petugas
-       - Login
-       - Logout request
-       - Hamburger request
-       - Search
-       
-       Navbar TIDAK mengatur Sidebar secara langsung.
-     =====================================================
-     ===================================================== */
-
-/* Awal Tes Navbar ================================================================================== */
+   NAVBAR
+   ===================================================== */
 
 function initNavbarScrollHide() {
   const navbar = document.getElementById("navbar");
+
   if (!navbar) return;
 
   let lastY = window.scrollY;
   let turnPoint = lastY;
   let isFixedShowing = false;
 
-  const scrollUpThreshold = 100; // Jarak Scroll ke atas (100px)
+  const scrollUpThreshold = 100;
 
   window.addEventListener("scroll", () => {
-    // Abaikan logika jika layar Dekstop (>= 768px)
     if (window.innerHeight >= 768) {
       resetToSticky();
       return;
@@ -232,26 +95,19 @@ function initNavbarScrollHide() {
 
     const currentY = window.scrollY;
     const isScrollingDown = currentY > lastY;
-    const pageOneHeight = window.innerHeight; // Batas tinggi halaman 1 (100vh)
+    const pageOneHeight = window.innerHeight;
 
-    // Kondisi 1: Dihalaman Pertama
     if (currentY < pageOneHeight) {
-      // Selalu kembalikan ke sticky alami
       resetToSticky();
       turnPoint = currentY;
-    }
-
-    // Kondisi 2: Di halaman kedua dan seterusnya
-    else {
+    } else {
       if (isScrollingDown) {
-        // Saat scroll kebawah, lepas mode fixed melayang, biarkan navbar naik dan hilang mengikuti sticky alami
         if (isFixedShowing) {
           resetToSticky();
         }
-        // Catat posisi Y terdalam saat scroll ke bawah sebagai titik balik
+
         turnPoint = currentY;
       } else {
-        // Saat scroll keatas: Cek apakah selisihnya sudah 100px dari titik balik
         if (turnPoint - currentY >= scrollUpThreshold) {
           if (isFixedShowing) {
             showFixedNavbar();
@@ -263,39 +119,33 @@ function initNavbarScrollHide() {
     lastY = currentY;
   });
 
-  // Reset tampilan jika layar di resize ke dekstop
   window.addEventListener("resize", () => {
     if (window.innerWidth >= 768) {
-      resetToSticky;
+      resetToSticky();
     }
   });
 
   function showFixedNavbar() {
-    // Ubah posisi jadi fixed alami melayang dan turunkan navbar ke layar
     navbar.classList.remove("sticky", "translate-y-full");
     navbar.classList.add("fixed", "top-0", "translate-y-0");
+
     isFixedShowing = true;
   }
 
   function resetToSticky() {
-    // Kembalikan ke posisi sticky normal (ikut flow dokumen)
     navbar.classList.remove("fixed", "translate-y-full");
     navbar.classList.add("sticky", "translate-y-0");
+
     isFixedShowing = false;
   }
 }
-/* Akhir Tes Navbar ================================================================================= */
 
 /* =====================================================
-     UPDATE MODE NAVBAR
-  ===================================================== */
+   UPDATE MODE NAVBAR
+   ===================================================== */
 
 function updateNavbarMode(isOfficer) {
   if (isOfficer) {
-    /*
-        MODE PETUGAS
-      */
-
     if (visitorStatus) {
       visitorStatus.classList.add("hidden");
       visitorStatus.classList.remove("flex");
@@ -306,10 +156,6 @@ function updateNavbarMode(isOfficer) {
       adminStatus.classList.add("flex");
     }
   } else {
-    /*
-        MODE PENGUNJUNG
-      */
-
     if (visitorStatus) {
       visitorStatus.classList.remove("hidden");
       visitorStatus.classList.add("flex");
@@ -323,35 +169,20 @@ function updateNavbarMode(isOfficer) {
 }
 
 /* =====================================================
-     LOGIN PETUGAS
-  ===================================================== */
+   LOGIN PETUGAS
+   ===================================================== */
 
 if (loginButton) {
   loginButton.addEventListener("click", function () {
-    /*
-          Ubah mode menjadi Petugas.
-        */
-
     setMode("officer");
-
-    /*
-          Minta Sidebar ditutup.
-          
-          Navbar tidak memanggil closeSidebar()
-          secara langsung.
-        */
 
     document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
 
 /* =====================================================
-     LOGOUT REQUEST
-     
-     Navbar hanya mengirim request.
-     
-     Modal Logout yang menangani konfirmasi.
-  ===================================================== */
+   LOGOUT REQUEST
+   ===================================================== */
 
 if (logoutButton) {
   logoutButton.addEventListener("click", function () {
@@ -360,10 +191,8 @@ if (logoutButton) {
 }
 
 /* =====================================================
-     HAMBURGER
-     
-     Navbar hanya mengirim request ke Sidebar.
-  ===================================================== */
+   HAMBURGER
+   ===================================================== */
 
 if (menuButton) {
   menuButton.addEventListener("click", function () {
@@ -372,14 +201,8 @@ if (menuButton) {
 }
 
 /* =====================================================
-     MODE DARI KOMPONEN LAIN
-     
-     Misalnya Logout Modal meminta:
-     
-     setApplicationMode
-     
-     Maka aplikasi mengubah mode melalui setMode().
-  ===================================================== */
+   MODE DARI KOMPONEN LAIN
+   ===================================================== */
 
 document.addEventListener("setApplicationMode", function (event) {
   const mode =
@@ -389,10 +212,8 @@ document.addEventListener("setApplicationMode", function (event) {
 });
 
 /* =====================================================
-     SYNC SEARCH INPUT
-     
-     Search mobile dan desktop disinkronkan.
-  ===================================================== */
+   SYNC SEARCH INPUT
+   ===================================================== */
 
 function syncSearchInput(sourceInput, targetInput) {
   if (!sourceInput || !targetInput) {
@@ -401,11 +222,6 @@ function syncSearchInput(sourceInput, targetInput) {
 
   sourceInput.addEventListener("input", function () {
     targetInput.value = sourceInput.value;
-
-    /*
-          Beritahu komponen yang membutuhkan
-          data pencarian.
-        */
 
     document.dispatchEvent(
       new CustomEvent("searchChanged", {
@@ -417,20 +233,12 @@ function syncSearchInput(sourceInput, targetInput) {
   });
 }
 
-/*
-    Sinkronisasi dua arah.
-  */
-
 syncSearchInput(searchInput, searchInputDesktop);
-
 syncSearchInput(searchInputDesktop, searchInput);
 
 /* =====================================================
-     PUBLIC API NAVBAR
-     
-     Dipertahankan supaya nanti komponen lain
-     masih bisa berkomunikasi dengan Navbar.
-  ===================================================== */
+   PUBLIC API NAVBAR
+   ===================================================== */
 
 window.NavbarComponent = {
   setMode: function (mode) {
@@ -447,52 +255,19 @@ window.NavbarComponent = {
 };
 
 /* =====================================================
-     AKHIR SCRIPT NAVBAR
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT SIDEBAR
-       
-       Komponen:
-       Sidebar
-       
-       Tanggung jawab:
-       - Buka Sidebar mobile
-       - Tutup Sidebar
-       - Toggle Sidebar
-       - Mode Visitor / Petugas
-       - Overlay
-       - Tombol close
-       - Escape
-     =====================================================
-     ===================================================== */
-
-/* =====================================================
-     STATE SIDEBAR
-  ===================================================== */
+   SIDEBAR
+   ===================================================== */
 
 let isMenuOpen = false;
 
-/* =====================================================
-     OPEN SIDEBAR
-  ===================================================== */
-
 function openSidebar() {
   if (window.innerWidth < 768) {
-    // Tambahan Code Baru
-    // Simpan Posisi scroll sekarang
     const scrollY = window.scrollY;
+
     document.body.style.top = `${scrollY}px`;
+
     document.body.classList.add("overflow-hidden", "fixed", "w-full");
   }
-  /*
-      Sidebar mobile saja.
-      
-      Desktop tidak perlu membuka Sidebar
-      karena Sidebar memang selalu tampil.
-    */
 
   if (window.innerWidth >= 768) {
     return;
@@ -503,7 +278,6 @@ function openSidebar() {
   }
 
   sidebar.classList.remove("-translate-x-full");
-
   menuOverlay.classList.remove("hidden");
 
   document.body.classList.add("overflow-hidden");
@@ -513,21 +287,14 @@ function openSidebar() {
   document.dispatchEvent(new CustomEvent("sidebarOpened"));
 }
 
-/* =====================================================
-     CLOSE SIDEBAR
-  ===================================================== */
-
 function closeSidebar() {
   if (!sidebar || !menuOverlay) {
     return;
   }
 
-  const scrollY = document.body.style.top;
-
   document.body.style.top = "";
 
   sidebar.classList.add("-translate-x-full");
-
   menuOverlay.classList.add("hidden");
 
   document.body.classList.remove("overflow-hidden", "fixed", "w-full");
@@ -536,10 +303,6 @@ function closeSidebar() {
 
   document.dispatchEvent(new CustomEvent("sidebarClosed"));
 }
-
-/* =====================================================
-     TOGGLE SIDEBAR
-  ===================================================== */
 
 function toggleSidebar() {
   if (isMenuOpen) {
@@ -550,34 +313,22 @@ function toggleSidebar() {
 }
 
 /* =====================================================
-     EVENT DARI NAVBAR
-  ===================================================== */
+   EVENT SIDEBAR
+   ===================================================== */
 
 document.addEventListener("sidebarToggle", function () {
   toggleSidebar();
 });
 
-/* =====================================================
-     EVENT TUTUP DARI NAVBAR
-  ===================================================== */
-
 document.addEventListener("sidebarCloseRequest", function () {
   closeSidebar();
 });
-
-/* =====================================================
-     TOMBOL CLOSE SIDEBAR
-  ===================================================== */
 
 if (closeMenuButton) {
   closeMenuButton.addEventListener("click", function () {
     closeSidebar();
   });
 }
-
-/* =====================================================
-     OVERLAY
-  ===================================================== */
 
 if (menuOverlay) {
   menuOverlay.addEventListener("click", function () {
@@ -586,24 +337,8 @@ if (menuOverlay) {
 }
 
 /* =====================================================
-     UPDATE MODE SIDEBAR
-  ===================================================== */
-
-// function updateSidebarMode(isOfficer) {
-//   if (!visitorMenu || !officerMenu) {
-//     return;
-//   }
-
-//   if (isOfficer) {
-//     visitorMenu.classList.add("hidden");
-
-//     officerMenu.classList.remove("hidden");
-//   } else {
-//     visitorMenu.classList.remove("hidden");
-
-//     officerMenu.classList.add("hidden");
-//   }
-// }
+   UPDATE MODE SIDEBAR
+   ===================================================== */
 
 function updateSidebarMode(isOfficer) {
   if (!visitorMenu || !officerMenu) {
@@ -635,10 +370,6 @@ function updateSidebarMode(isOfficer) {
   }
 }
 
-/* =====================================================
-     EVENT MODE CHANGED
-  ===================================================== */
-
 document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
@@ -646,13 +377,8 @@ document.addEventListener("modeChanged", function (event) {
 });
 
 /* =====================================================
-     DROPDOWN SIDEBAR
-     
-     Functionality:
-     - Membuka dropdown
-     - Menutup dropdown lain
-     - Memutar chevron
-  ===================================================== */
+   SIDEBAR DROPDOWN
+   ===================================================== */
 
 function initializeSidebarDropdown() {
   const dropdownButtons = document.querySelectorAll(
@@ -677,10 +403,6 @@ function initializeSidebarDropdown() {
 
       const isHidden = dropdown.classList.contains("hidden");
 
-      /*
-              Tutup dropdown lain.
-            */
-
       document
         .querySelectorAll(".dropdown-content")
         .forEach(function (otherDropdown) {
@@ -689,10 +411,6 @@ function initializeSidebarDropdown() {
           }
         });
 
-      /*
-              Reset chevron lain.
-            */
-
       document
         .querySelectorAll(".dropdown-chevron")
         .forEach(function (otherChevron) {
@@ -700,10 +418,6 @@ function initializeSidebarDropdown() {
             otherChevron.classList.remove("rotate-180");
           }
         });
-
-      /*
-              Toggle dropdown.
-            */
 
       if (isHidden) {
         dropdown.classList.remove("hidden");
@@ -723,11 +437,8 @@ function initializeSidebarDropdown() {
 }
 
 /* =====================================================
-     LINK SIDEBAR
-     
-     Jika link dipilih pada mobile,
-     Sidebar otomatis ditutup.
-  ===================================================== */
+   LINK SIDEBAR
+   ===================================================== */
 
 function initializeSidebarLinks() {
   if (!sidebar) {
@@ -744,8 +455,8 @@ function initializeSidebarLinks() {
 }
 
 /* =====================================================
-     RESPONSIVE SIDEBAR
-  ===================================================== */
+   RESPONSIVE SIDEBAR
+   ===================================================== */
 
 window.addEventListener("resize", function () {
   if (window.innerWidth >= 768) {
@@ -772,8 +483,8 @@ window.addEventListener("resize", function () {
 });
 
 /* =====================================================
-     ESCAPE SIDEBAR
-  ===================================================== */
+   ESCAPE SIDEBAR
+   ===================================================== */
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape" && isMenuOpen) {
@@ -782,8 +493,8 @@ document.addEventListener("keydown", function (event) {
 });
 
 /* =====================================================
-     PUBLIC API SIDEBAR
-  ===================================================== */
+   PUBLIC API SIDEBAR
+   ===================================================== */
 
 window.SidebarComponent = {
   open: function () {
@@ -804,31 +515,8 @@ window.SidebarComponent = {
 };
 
 /* =====================================================
-     AKHIR SCRIPT SIDEBAR
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT LOGOUT MODAL
-       
-       Komponen:
-       Logout Modal
-       
-       Tanggung jawab:
-       - Membuka modal
-       - Menutup modal
-       - Konfirmasi logout
-       - Klik luar modal
-       - Escape
-       
-       Modal TIDAK mengatur Navbar/Sidebar secara langsung.
-     =====================================================
-     ===================================================== */
-
-/* =====================================================
-     OPEN LOGOUT MODAL
-  ===================================================== */
+   LOGOUT MODAL
+   ===================================================== */
 
 function openLogoutModal() {
   if (!logoutModal) {
@@ -836,14 +524,9 @@ function openLogoutModal() {
   }
 
   logoutModal.classList.remove("hidden");
-
   logoutModal.classList.add("flex");
 
   document.body.classList.add("overflow-hidden");
-
-  /*
-      Fokus ke tombol Batal.
-    */
 
   if (cancelLogoutButton) {
     setTimeout(function () {
@@ -852,48 +535,26 @@ function openLogoutModal() {
   }
 }
 
-/* =====================================================
-     CLOSE LOGOUT MODAL
-  ===================================================== */
-
 function closeLogoutModal() {
   if (!logoutModal) {
     return;
   }
 
   logoutModal.classList.add("hidden");
-
   logoutModal.classList.remove("flex");
 
   document.body.classList.remove("overflow-hidden");
 }
 
-/* =====================================================
-     EVENT LOGOUT REQUEST
-     
-     Navbar mengirim:
-     logoutRequest
-  ===================================================== */
-
 document.addEventListener("logoutRequest", function () {
   openLogoutModal();
 });
-
-/* =====================================================
-     TOMBOL BATAL
-  ===================================================== */
 
 if (cancelLogoutButton) {
   cancelLogoutButton.addEventListener("click", function () {
     closeLogoutModal();
   });
 }
-
-/* =====================================================
-     KONFIRMASI LOGOUT
-     
-     Modal meminta aplikasi kembali ke Visitor.
-  ===================================================== */
 
 if (confirmLogoutButton) {
   confirmLogoutButton.addEventListener("click", function () {
@@ -907,17 +568,9 @@ if (confirmLogoutButton) {
 
     closeLogoutModal();
 
-    /*
-          Minta Sidebar ditutup.
-        */
-
     document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
   });
 }
-
-/* =====================================================
-     KLIK LUAR MODAL
-  ===================================================== */
 
 if (logoutModal) {
   logoutModal.addEventListener("click", function (event) {
@@ -926,10 +579,6 @@ if (logoutModal) {
     }
   });
 }
-
-/* =====================================================
-     ESCAPE LOGOUT MODAL
-  ===================================================== */
 
 document.addEventListener("keydown", function (event) {
   if (
@@ -942,8 +591,8 @@ document.addEventListener("keydown", function (event) {
 });
 
 /* =====================================================
-     PUBLIC API LOGOUT
-  ===================================================== */
+   PUBLIC API LOGOUT
+   ===================================================== */
 
 window.LogoutModalComponent = {
   open: function () {
@@ -956,120 +605,130 @@ window.LogoutModalComponent = {
 };
 
 /* =====================================================
-     AKHIR SCRIPT LOGOUT MODAL
-     =====================================================
-  */
+   HELPER STATUS LAKA
+   Mengikuti halLakaLantas.js
+   ===================================================== */
 
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT DATA LAKA
-       
-       Data sementara untuk pengujian di VS Code.
-       
-       Nanti diganti dengan data dari Apps Script /
-       Google Sheets.
-     =====================================================
-     ===================================================== */
+function getStatusBadge(statusText) {
+  const status = String(statusText || "")
+    .toLowerCase()
+    .trim();
 
-const lakaData = [
-  {
-    id: "L/03/VIII/2024",
-    hariTanggal: "Selasa, 20 Agustus 2024",
-    waktu: "14.30 WIB",
-    lokasi: "Jl. Raya Baureno - Bojonegoro, Desa Baureno, Kec. Baureno",
-    lr: 2,
-    lb: 0,
-    md: 0,
-    status: "Dalam Penanganan",
-  },
-  {
-    id: "L/02/VIII/2024",
-    hariTanggal: "Senin, 19 Agustus 2024",
-    waktu: "09.15 WIB",
-    lokasi: "Jl. Raya Baureno - Dander, Depan Pasar Baureno",
-    lr: 1,
-    lb: 1,
-    md: 0,
-    status: "Selesai",
-  },
-  {
-    id: "L/01/VIII/2024",
-    hariTanggal: "Minggu, 18 Agustus 2024",
-    waktu: "16.45 WIB",
-    lokasi: "Jl. Raya Baureno - Kanor, Desa Kedungsumber",
-    lr: 0,
-    lb: 1,
-    md: 1,
-    status: "Limpah Polres",
-  },
-  {
-    id: "L/31/VII/2024",
-    hariTanggal: "Sabtu, 17 Agustus 2024",
-    waktu: "11.20 WIB",
-    lokasi: "Jl. Raya Baureno - Sugihwaras, Depan Balai Desa Sugihwaras",
-    lr: 1,
-    lb: 0,
-    md: 0,
-    status: "Dalam Penanganan",
-  },
-];
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "border-green-200 bg-green-50 text-green-700";
+  }
 
-/* =====================================================
-     AKHIR SCRIPT DATA LAKA
-     =====================================================
-  */
+  if (status === "dalam penanganan") {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
 
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT HELPER STATUS LAKA
-     =====================================================
-     ===================================================== */
+  if (status === "limpah polres") {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-slate-200 bg-slate-50 text-slate-600";
+}
 
 function getStatusDot(statusText) {
-  const status = (statusText || "").toLowerCase().trim();
-  if (status === "selesai") return "bg-emerald-500";
-  if (status === "dalam penanganan") return "bg-amber-600";
-  if (status === "limpah polres") return "bg-rose-600";
+  const status = String(statusText || "")
+    .toLowerCase()
+    .trim();
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "bg-green-700";
+  }
+
+  if (status === "dalam penanganan") {
+    return "bg-amber-400";
+  }
+
+  if (status === "limpah polres") {
+    return "bg-red-700";
+  }
+
   return "bg-slate-300";
 }
 
 function getStatusText(statusText) {
-  const status = (statusText || "").toLowerCase().trim();
-  if (status === "selesai") return "text-emerald-600";
-  if (status === "dalam penanganan") return "text-amber-600";
-  if (status === "limpah polres") return "text-rose-600";
+  const status = String(statusText || "")
+    .toLowerCase()
+    .trim();
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "text-green-700";
+  }
+
+  if (status === "dalam penanganan") {
+    return "text-amber-400";
+  }
+
+  if (status === "limpah polres") {
+    return "text-red-700";
+  }
+
   return "text-slate-500";
 }
 
-/* =====================================================
-     AKHIR SCRIPT HELPER STATUS LAKA
-     =====================================================
-  */
+function getWaktuKejadian(item) {
+  const bulan = {
+    januari: 0,
+    februari: 1,
+    maret: 2,
+    april: 3,
+    mei: 4,
+    juni: 5,
+    juli: 6,
+    agustus: 7,
+    september: 8,
+    oktober: 9,
+    november: 10,
+    desember: 11,
+  };
+
+  const tanggalText = String(item.hariTanggal || "").trim();
+  const waktuText = String(item.waktu || "").trim();
+
+  const matchTanggal = tanggalText.match(
+    /(?:^[^,]+,\s*)?(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i,
+  );
+
+  const matchWaktu = waktuText.match(/(\d{1,2})[.:](\d{2})/);
+
+  if (!matchTanggal || !matchWaktu) return 0;
+
+  const tanggal = Number(matchTanggal[1]);
+  const bulanIndex = bulan[matchTanggal[2].toLowerCase()];
+  const tahun = Number(matchTanggal[3]);
+  const jam = Number(matchWaktu[1]);
+  const menit = Number(matchWaktu[2]);
+
+  if (bulanIndex === undefined) return 0;
+
+  return new Date(tahun, bulanIndex, tanggal, jam, menit).getTime();
+}
 
 /* =====================================================
-     =====================================================
-       AWAL SCRIPT RENDER LAKA TERBARU
-       
-       Komponen:
-       Laka Lantas Terbaru
-       
-       Function:
-       renderLakaList()
-       
-       Card Laka dibuat di sini.
-     =====================================================
-     ===================================================== */
+   RENDER LAKA DASHBOARD
+
+   SUMBER DATA:
+   lakaData.js
+
+   Tidak ada data Laka lain di dashboard.js.
+   ===================================================== */
 
 function renderLakaList(data = lakaData) {
   const container = document.getElementById("laka-list");
-
   const emptyState = document.getElementById("empty-state");
 
-  if (!container) {
-    return;
-  }
+  if (!container) return;
 
-  if (!data || data.length === 0) {
+  const dataLaka = Array.isArray(data) ? data : [];
+
+  const dataTerbaru = [...dataLaka]
+    .sort((a, b) => getWaktuKejadian(b) - getWaktuKejadian(a))
+    .slice(0, 4);
+
+  if (dataTerbaru.length === 0) {
     container.innerHTML = "";
 
     if (emptyState) {
@@ -1087,294 +746,238 @@ function renderLakaList(data = lakaData) {
     emptyState.classList.add("hidden");
   }
 
-  container.innerHTML = data
+  container.innerHTML = dataTerbaru
     .map(function (item, index) {
-      return `
+      const status = String(item.status || "").trim();
 
-              <article
-                id="laka-card-${index}"
-                data-id="${item.id}"
-                class="rounded-2xl border border-blue-200 bg-blue-50 p-5 shadow-sm transition-all hover:shadow-md"
+      const noLp =
+        ["Selesai", "Selesai/RJ", "RJ"].includes(status) ||
+        status === "Dalam Penanganan"
+          ? "Nihil"
+          : item.noLp || "Belum tersedia";
+
+      return `
+        <article
+          id="laka-card-${index}"
+          data-id="${item.id || index}"
+          class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+        >
+
+          <!-- ID LAPORAN + STATUS -->
+          <div class="flex items-start justify-between gap-4">
+
+            <!-- ID LAPORAN -->
+            <div class="flex min-w-0 shrink-0 items-center gap-2">
+
+              <i
+                data-lucide="file-text"
+                class="h-4 w-4 shrink-0 text-blue-500"
+              ></i>
+
+              <span class="text-[15px] font-bold text-blue-700">
+                ${item.id || "-"}
+              </span>
+
+            </div>
+
+            <!-- STATUS -->
+            <div class="min-w-0 text-right">
+
+              <div
+                class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(item.status)}"
               >
 
-                <!-- =====================================
-                     NOMOR LAPORAN
-                ====================================== -->
+                <span
+                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(item.status)}"
+                ></span>
 
-                <div
-                  class="mb-2.5 flex items-center gap-2"
+                <span
+                  class="break-words text-sm font-medium leading-snug ${getStatusText(item.status)}"
                 >
+                  ${item.status || "Belum ditentukan"}
+                </span>
 
-                  <i
-                    data-lucide="file-text"
-                    class="h-4 w-4 shrink-0 text-slate-400"
-                  ></i>
+              </div>
 
-                  <span
-                    class="text-[15px] font-bold text-blue-500"
-                  >
-                    ${item.id}
-                  </span>
+            </div>
 
-                </div>
+          </div>
 
 
-                <!-- =====================================
-                     TANGGAL & JAM
-                ====================================== -->
+          <!-- NO. LP -->
+          <div class="ml-6 mt-2.5 flex items-center gap-2">
 
-                <div
-                  class="mb-2.5 flex items-center gap-2 text-sm text-slate-600"
-                >
+            <i
+              data-lucide="file-text"
+              class="h-3.5 w-3.5 shrink-0 text-slate-400"
+            ></i>
 
-                  <i
-                    data-lucide="calendar-days"
-                    class="h-4 w-4 shrink-0 text-slate-400"
-                  ></i>
+            <span class="text-xs font-medium text-slate-500">
+              No. LP :
+            </span>
 
-                  <span>
-                    ${item.hariTanggal}
-                    |
-                    ${item.waktu}
-                  </span>
+            <span class="text-sm font-semibold text-slate-700">
+              ${noLp}
+            </span>
 
-                </div>
+          </div>
 
 
-                <!-- =====================================
-                     LOKASI
-                ====================================== -->
+          <!-- WAKTU KEJADIAN -->
+          <div class="mt-5 flex items-center gap-2 text-sm text-slate-600">
 
-                <div
-                  class="mb-2.5 flex items-start gap-2"
-                >
+            <i
+              data-lucide="calendar-days"
+              class="h-4 w-4 shrink-0 text-blue-400"
+            ></i>
 
-                  <i
-                    data-lucide="map-pin"
-                    class="mt-0.5 h-4 w-4 shrink-0 text-slate-400"
-                  ></i>
+            <span>
+              ${item.hariTanggal || "-"} | ${item.waktu || "-"}
+            </span>
 
-                  <p
-                    class="text-sm leading-snug text-slate-600"
-                  >
-                    ${item.lokasi}
-                  </p>
-
-                </div>
+          </div>
 
 
-                <!-- =====================================
-                     KORBAN
-                ====================================== -->
+          <!-- TKP -->
+          <div class="mt-2.5 flex items-start gap-2">
 
-                <div
-                  class="mb-2.5 flex items-center gap-3 text-sm font-medium"
-                >
+            <i
+              data-lucide="map-pin"
+              class="mt-0.5 h-4 w-4 shrink-0 text-blue-400"
+            ></i>
 
-                  <span class="text-slate-600">
-                    LR
-                    <span
-                      class="font-semibold text-blue-600"
-                    >
-                      ${item.lr}
-                    </span>
-                  </span>
+            <p class="text-sm leading-snug text-slate-600">
+              ${item.lokasi || "-"}
+            </p>
 
-                  <span class="text-slate-300">
-                    |
-                  </span>
-
-                  <span class="text-slate-600">
-                    LB
-                    <span
-                      class="font-semibold text-amber-600"
-                    >
-                      ${item.lb}
-                    </span>
-                  </span>
-
-                  <span class="text-slate-300">
-                    |
-                  </span>
-
-                  <span class="text-slate-600">
-                    MD
-                    <span
-                      class="font-semibold text-rose-600"
-                    >
-                      ${item.md}
-                    </span>
-                  </span>
-
-                </div>
+          </div>
 
 
-                <!-- =====================================
-                     STATUS
-                ====================================== -->
+          <!-- KORBAN + ACTION -->
+          <div
+            class="mt-5 flex flex-wrap items-center justify-between gap-3"
+          >
 
-                <div
-                  class="mb-4 flex items-center gap-2"
-                >
+            <!-- LR / LB / MD -->
+            <div
+              class="flex items-center gap-3 text-sm font-medium"
+            >
 
-                  <span
-                    class="h-2.5 w-2.5 rounded-full ${getStatusDot(item.status)}"
-                  ></span>
+              <span class="text-slate-600">
+                LR
+                <span class="font-semibold text-green-700">
+                  ${item.lr ?? 0}
+                </span>
+              </span>
 
-                  <span
-                    class="text-sm font-medium ${getStatusText(item.status)}"
-                  >
-                    ${item.status}
-                  </span>
+              <span class="text-blue-200">|</span>
 
-                </div>
+              <span class="text-slate-600">
+                LB
+                <span class="font-semibold text-amber-400">
+                  ${item.lb ?? 0}
+                </span>
+              </span>
 
+              <span class="text-blue-200">|</span>
 
-                <!-- =====================================
-                     ACTION
-                ====================================== -->
+              <span class="text-slate-600">
+                MD
+                <span class="font-semibold text-red-700">
+                  ${item.md ?? 0}
+                </span>
+              </span>
 
-                <div
-                  class="flex items-center justify-end gap-2 border-t border-slate-100 pt-3"
-                >
-
-                  <!-- MODE PENGUNJUNG -->
-
-                  <button
-                    type="button"
-                    data-action="detail-visitor"
-                    data-id="${item.id}"
-                    class="visitor-detail-button flex items-center gap-1.5 rounded-lg bg-blue-50 px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100"
-                  >
-
-                    Lihat Detail
-
-                    <i
-                      data-lucide="chevron-right"
-                      class="h-4 w-4"
-                    ></i>
-
-                  </button>
+            </div>
 
 
-                  <!-- MODE PETUGAS -->
+            <!-- ACTION -->
+            <div class="flex items-center gap-2">
 
-                  <button
-                    type="button"
-                    data-action="detail-officer"
-                    data-id="${item.id}"
-                    class="officer-detail-button hidden rounded-lg bg-blue-50 px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100"
-                  >
-                    Lihat Detail
-                  </button>
+              <!-- VISITOR -->
+              <button
+                type="button"
+                data-action="detail-visitor-page"
+                data-id="${item.id || index}"
+                class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+              >
+                Lihat Detail
+
+                <i
+                  data-lucide="chevron-right"
+                  class="h-4 w-4"
+                ></i>
+              </button>
 
 
-                  <!-- MENU AKSI PETUGAS -->
+              <!-- OFFICER DETAIL -->
+              <button
+                type="button"
+                data-action="detail-officer-page"
+                data-id="${item.id || index}"
+                class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+              >
+                Lihat Detail
+              </button>
 
-                  <button
-                    type="button"
-                    data-action="menu"
-                    data-id="${item.id}"
-                    data-index="${index}"
-                    class="officer-action-button hidden flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-blue-50 text-slate-500 transition-colors hover:bg-blue-100"
-                    aria-label="Menu aksi"
-                  >
 
-                    <i
-                      data-lucide="more-vertical"
-                      class="h-5 w-5"
-                    ></i>
+              <!-- OFFICER ACTION -->
+              <button
+                type="button"
+                data-action="menu-page"
+                data-id="${item.id || index}"
+                class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                aria-label="Menu aksi"
+              >
+                <i
+                  data-lucide="more-vertical"
+                  class="h-5 w-5"
+                ></i>
+              </button>
 
-                  </button>
+            </div>
 
-                </div>
+          </div>
 
-              </article>
-
-            `;
+        </article>
+      `;
     })
     .join("");
-
-  /*
-      Render icon Lucide setelah HTML
-      berhasil dimasukkan.
-    */
 
   if (window.lucide) {
     lucide.createIcons();
   }
 
-  /*
-      Sesuaikan tombol berdasarkan mode.
-    */
-
   updateLakaMode(isOfficerMode);
 }
 
 /* =====================================================
-     AKHIR SCRIPT RENDER LAKA TERBARU
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT MODE LAKA TERBARU
-       
-       Mengatur tombol Laka berdasarkan mode:
-       
-       Pengunjung:
-       - Lihat Detail + chevron
-       
-       Petugas:
-       - Lihat Detail
-       - Menu titik tiga
-     =====================================================
-     ===================================================== */
+   MODE LAKA
+   ===================================================== */
 
 function updateLakaMode(isOfficer) {
-  /*
-      Tombol detail pengunjung.
-    */
-
   document
-    .querySelectorAll(".visitor-detail-button")
+    .querySelectorAll(".visitor-page-detail-button")
     .forEach(function (button) {
       button.classList.toggle("hidden", isOfficer);
     });
 
-  /*
-      Tombol detail petugas.
-    */
-
   document
-    .querySelectorAll(".officer-detail-button")
+    .querySelectorAll(".officer-page-detail-button")
     .forEach(function (button) {
       button.classList.toggle("hidden", !isOfficer);
     });
 
-  /*
-      Tombol menu titik tiga.
-    */
-
   document
-    .querySelectorAll(".officer-action-button")
+    .querySelectorAll(".officer-page-action-button")
     .forEach(function (button) {
       button.classList.toggle("hidden", !isOfficer);
     });
-
-  /*
-      Jika kembali ke mode pengunjung,
-      menu action yang sedang terbuka harus ditutup.
-    */
 
   if (!isOfficer) {
     closeActionMenu();
   }
 }
-
-/*
-    Dengarkan perubahan mode global.
-  */
 
 document.addEventListener("modeChanged", function (event) {
   const officer = Boolean(event.detail && event.detail.isOfficerMode);
@@ -1383,38 +986,11 @@ document.addEventListener("modeChanged", function (event) {
 });
 
 /* =====================================================
-     AKHIR SCRIPT MODE LAKA TERBARU
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT ACTION MENU LAKA
-       
-       Function utama:
-       toggleActionMenu()
-       
-       CATATAN PENTING:
-       Kita menggunakan function:
-       
-       toggleActionMenu(event, id, button)
-       
-       BUKAN:
-       
-       openActionMenu()
-       
-       Ini mengikuti function komponen Laka
-       yang sudah kita sepakati.
-     =====================================================
-     ===================================================== */
+   ACTION MENU LAKA
+   ===================================================== */
 
 function toggleActionMenu(event, id, button) {
   event.stopPropagation();
-
-  /*
-      Menu hanya boleh digunakan
-      pada mode Petugas.
-    */
 
   if (!isOfficerMode) {
     return;
@@ -1424,27 +1000,12 @@ function toggleActionMenu(event, id, button) {
     return;
   }
 
-  /*
-      Jika menu yang sama diklik lagi,
-      tutup menu.
-    */
-
   if (activeMenuId === id && !actionMenu.classList.contains("hidden")) {
     closeActionMenu();
-
     return;
   }
 
-  /*
-      Simpan ID laporan aktif.
-    */
-
   activeMenuId = id;
-
-  /*
-      Tampilkan menu terlebih dahulu
-      agar ukurannya dapat dihitung.
-    */
 
   actionMenu.classList.remove("hidden");
 
@@ -1456,30 +1017,11 @@ function toggleActionMenu(event, id, button) {
 
   const spaceBelow = window.innerHeight - rect.bottom;
 
-  /*
-      POSISI VERTIKAL
-    */
-
   if (spaceBelow < menuHeight && rect.top > menuHeight) {
-    /*
-        Tampilkan di atas tombol.
-      */
-
     actionMenu.style.top = `${rect.top - menuHeight - 6}px`;
   } else {
-    /*
-        Tampilkan di bawah tombol.
-      */
-
     actionMenu.style.top = `${rect.bottom + 6}px`;
   }
-
-  /*
-      POSISI HORIZONTAL
-      
-      Mencegah menu keluar dari
-      sisi kanan layar.
-    */
 
   const leftPos = Math.min(
     rect.right - menuWidth,
@@ -1489,17 +1031,9 @@ function toggleActionMenu(event, id, button) {
   actionMenu.style.left = `${Math.max(10, leftPos)}px`;
 }
 
-/* =====================================================
-     CLOSE ACTION MENU
-  ===================================================== */
-
 function closeActionMenu() {
   if (actionMenu) {
     actionMenu.classList.add("hidden");
-
-    /*
-        Bersihkan posisi lama.
-      */
 
     actionMenu.style.top = "";
     actionMenu.style.left = "";
@@ -1509,19 +1043,12 @@ function closeActionMenu() {
 }
 
 /* =====================================================
-     EVENT KLIK ACTION MENU
-     
-     Event delegation digunakan supaya
-     tombol yang dibuat oleh renderLakaList()
-     tetap dapat bekerja.
-  ===================================================== */
+   EVENT KLIK ACTION MENU
+   ===================================================== */
 
 document.addEventListener("click", function (event) {
-  /*
-        Tombol titik tiga.
-      */
-
-  const menuButton = event.target.closest('[data-action="menu"]');
+  /* MENU PETUGAS */
+  const menuButton = event.target.closest('[data-action="menu-page"]');
 
   if (menuButton) {
     toggleActionMenu(event, menuButton.dataset.id, menuButton);
@@ -1529,11 +1056,10 @@ document.addEventListener("click", function (event) {
     return;
   }
 
-  /*
-        Detail mode pengunjung.
-      */
-
-  const visitorDetail = event.target.closest('[data-action="detail-visitor"]');
+  /* DETAIL VISITOR */
+  const visitorDetail = event.target.closest(
+    '[data-action="detail-visitor-page"]',
+  );
 
   if (visitorDetail) {
     lihatDetail(visitorDetail.dataset.id);
@@ -1541,11 +1067,10 @@ document.addEventListener("click", function (event) {
     return;
   }
 
-  /*
-        Detail mode petugas.
-      */
-
-  const officerDetail = event.target.closest('[data-action="detail-officer"]');
+  /* DETAIL OFFICER */
+  const officerDetail = event.target.closest(
+    '[data-action="detail-officer-page"]',
+  );
 
   if (officerDetail) {
     lihatDetail(officerDetail.dataset.id);
@@ -1553,18 +1078,15 @@ document.addEventListener("click", function (event) {
     return;
   }
 
-  /*
-        Klik di luar Action Menu.
-      */
-
+  /* KLIK DI LUAR ACTION MENU */
   if (!event.target.closest("#action-menu")) {
     closeActionMenu();
   }
 });
 
 /* =====================================================
-     TOMBOL EDIT
-  ===================================================== */
+   TOMBOL EDIT
+   ===================================================== */
 
 if (actionEditButton) {
   actionEditButton.addEventListener("click", function () {
@@ -1573,8 +1095,8 @@ if (actionEditButton) {
 }
 
 /* =====================================================
-     TOMBOL HAPUS
-  ===================================================== */
+   TOMBOL HAPUS
+   ===================================================== */
 
 if (actionDeleteButton) {
   actionDeleteButton.addEventListener("click", function () {
@@ -1583,8 +1105,8 @@ if (actionDeleteButton) {
 }
 
 /* =====================================================
-     TUTUP ACTION MENU SAAT RESIZE
-  ===================================================== */
+   TUTUP ACTION MENU
+   ===================================================== */
 
 window.addEventListener("resize", function () {
   closeActionMenu();
@@ -1593,28 +1115,12 @@ window.addEventListener("resize", function () {
 window.addEventListener("scroll", () => closeActionMenu(), true);
 
 /* =====================================================
-     AKHIR SCRIPT ACTION MENU LAKA
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT ACTION LAPORAN
-       
-       Function:
-       - lihatDetail()
-       - handleEdit()
-       - handleDelete()
-     =====================================================
-     ===================================================== */
+   ACTION LAPORAN
+   ===================================================== */
 
 function lihatDetail(id) {
   alert(`Membuka detail laporan: ${id}`);
 }
-
-/* =====================================================
-     EDIT LAPORAN
-  ===================================================== */
 
 function handleEdit() {
   if (!activeMenuId) {
@@ -1623,25 +1129,10 @@ function handleEdit() {
 
   const id = activeMenuId;
 
-  /*
-      Tutup menu terlebih dahulu.
-    */
-
   closeActionMenu();
-
-  /*
-      Sementara untuk pengujian.
-      
-      Nanti diganti:
-      membuka form Edit Laporan.
-    */
 
   alert(`Edit laporan: ${id}`);
 }
-
-/* =====================================================
-     HAPUS LAPORAN
-  ===================================================== */
 
 function handleDelete() {
   if (!activeMenuId) {
@@ -1654,13 +1145,8 @@ function handleDelete() {
 
   if (!confirmed) {
     closeActionMenu();
-
     return;
   }
-
-  /*
-      Cari data berdasarkan ID.
-    */
 
   const index = lakaData.findIndex(function (item) {
     return item.id === id;
@@ -1669,26 +1155,16 @@ function handleDelete() {
   if (index !== -1) {
     lakaData.splice(index, 1);
 
-    /*
-        Render ulang daftar.
-      */
-
     renderLakaList();
+    updateRekapStatus();
   }
 
   closeActionMenu();
 }
 
 /* =====================================================
-     AKHIR SCRIPT ACTION LAPORAN
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT TOMBOL LIHAT SEMUA
-     =====================================================
-     ===================================================== */
+   TOMBOL LIHAT SEMUA
+   ===================================================== */
 
 const lihatSemuaButton = document.getElementById("btn-lihat-semua");
 
@@ -1699,44 +1175,65 @@ if (lihatSemuaButton) {
 }
 
 /* =====================================================
-     AKHIR SCRIPT TOMBOL LIHAT SEMUA
-     =====================================================
-  */
+   REKAP & STATUS
 
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT REKAP & STATUS
-       
-       Komponen:
-       - Rekap
-       - Status Penanganan
-       
-       Data sementara untuk pengujian.
-       Nanti data berasal dari Apps Script.
-     =====================================================
-     ===================================================== */
+   DATA LANGSUNG DARI lakaData
+   Tidak ada RekapStatusData.
+   ===================================================== */
 
-const RekapStatusData = {
-  totalKejadian: 12,
+function updateRekapStatus(data = lakaData) {
+  const dataLaka = Array.isArray(data) ? data : [];
 
-  korbanLR: 8,
+  const tahunSekarang = new Date().getFullYear();
 
-  korbanLB: 3,
+  const dataTahunBerjalan = dataLaka.filter(function (item) {
+    const tanggal = String(item.hariTanggal || "").trim();
 
-  korbanMD: 1,
+    const match = tanggal.match(/(\d{4})$/);
 
-  dalamPenanganan: 8,
+    if (!match) return false;
 
-  rj: 3,
+    return Number(match[1]) === tahunSekarang;
+  });
 
-  limpahPolres: 1,
-};
+  const totalKejadian = dataTahunBerjalan.length;
 
-/* =====================================================
-     UPDATE DATA REKAP & STATUS
-  ===================================================== */
+  const korbanLR = dataTahunBerjalan.reduce(function (total, item) {
+    return total + Number(item.lr || 0);
+  }, 0);
 
-function updateRekapStatus(data = RekapStatusData) {
+  const korbanLB = dataTahunBerjalan.reduce(function (total, item) {
+    return total + Number(item.lb || 0);
+  }, 0);
+
+  const korbanMD = dataTahunBerjalan.reduce(function (total, item) {
+    return total + Number(item.md || 0);
+  }, 0);
+
+  /*
+   * Selesai mencakup:
+   * - Selesai
+   * - Selesai/RJ
+   * - RJ
+   */
+  const rj = dataLaka.filter(function (item) {
+    return ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim());
+  }).length;
+
+  const selesai = dataTahunBerjalan.filter(function (item) {
+    return ["Selesai", "Selesai/RJ", "RJ"].includes(
+      String(item.status || "").trim(),
+    );
+  }).length;
+
+  const dalamPenanganan = dataTahunBerjalan.filter(function (item) {
+    return String(item.status || "").trim() === "Dalam Penanganan";
+  }).length;
+
+  const limpahPolres = dataTahunBerjalan.filter(function (item) {
+    return String(item.status || "").trim() === "Limpah Polres";
+  }).length;
+
   const elements = {
     totalKejadian: ["totalKejadian", "totalKejadianDesktop"],
 
@@ -1753,46 +1250,81 @@ function updateRekapStatus(data = RekapStatusData) {
     limpahPolres: ["statusLimpahPolres", "statusLimpahDesktop"],
   };
 
+  const values = {
+    totalKejadian: totalKejadian,
+
+    korbanLR: korbanLR,
+
+    korbanLB: korbanLB,
+
+    korbanMD: korbanMD,
+
+    dalamPenanganan: dalamPenanganan,
+
+    rj: selesai,
+
+    limpahPolres: limpahPolres,
+  };
+
   Object.keys(elements).forEach(function (key) {
     elements[key].forEach(function (id) {
       const element = document.getElementById(id);
 
       if (element) {
-        element.textContent = data[key];
+        element.textContent = values[key];
       }
     });
   });
 }
 
 /* =====================================================
-     PUBLIC API REKAP STATUS
-  ===================================================== */
+   PUBLIC API REKAP STATUS
+   ===================================================== */
 
 window.RekapStatusComponent = {
   update: function (data) {
-    updateRekapStatus(data);
+    updateRekapStatus(data || lakaData);
   },
 
   getData: function () {
+    const dataLaka = Array.isArray(lakaData) ? lakaData : [];
+
     return {
-      ...RekapStatusData,
+      totalKejadian: dataLaka.length,
+
+      korbanLR: dataLaka.reduce(
+        (total, item) => total + Number(item.lr || 0),
+        0,
+      ),
+
+      korbanLB: dataLaka.reduce(
+        (total, item) => total + Number(item.lb || 0),
+        0,
+      ),
+
+      korbanMD: dataLaka.reduce(
+        (total, item) => total + Number(item.md || 0),
+        0,
+      ),
+
+      dalamPenanganan: dataLaka.filter(
+        (item) => String(item.status || "").trim() === "Dalam Penanganan",
+      ).length,
+
+      rj: dataLaka.filter((item) =>
+        ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim()),
+      ).length,
+
+      limpahPolres: dataLaka.filter(
+        (item) => String(item.status || "").trim() === "Limpah Polres",
+      ).length,
     };
   },
 };
 
 /* =====================================================
-     AKHIR SCRIPT REKAP & STATUS
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT PUBLIC API LAKA
-       
-       Disiapkan supaya nanti komponen lain
-       dapat berkomunikasi dengan Laka.
-     =====================================================
-     ===================================================== */
+   PUBLIC API LAKA
+   ===================================================== */
 
 window.LakaComponent = {
   render: function (data) {
@@ -1813,126 +1345,57 @@ window.LakaComponent = {
 };
 
 /* =====================================================
-     AKHIR SCRIPT PUBLIC API LAKA
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AWAL SCRIPT INITIALIZATION
-       
-       Hanya ada SATU proses initialization.
-       
-       Ini penting agar nanti saat script dipecah
-       menjadi komponen, kita tahu titik awal aplikasi.
-     =====================================================
-     ===================================================== */
+   INITIALIZATION
+   ===================================================== */
 
 function initializeApplication() {
-  /*
-      1. Initialize icon.
-    */
-
+  /* 1. Lucide */
   if (window.lucide) {
     lucide.createIcons();
   }
 
-  /*
-  Initialize Tambahan (Scroll Hide Navbar).
-  */
-
+  /* 2. Navbar scroll */
   initNavbarScrollHide();
 
-  /*
-      2. Initialize Sidebar dropdown.
-    */
-
+  /* 3. Sidebar dropdown */
   initializeSidebarDropdown();
 
-  /*
-      3. Initialize link Sidebar.
-    */
-
+  /* 4. Sidebar links */
   initializeSidebarLinks();
 
-  /*
-      4. Render data Laka.
-    */
-
+  /* 5. Render Laka */
   renderLakaList();
 
-  /*
-      5. Terapkan mode yang tersimpan.
-      
-      Ini akan mengatur:
-      - Navbar
-      - Sidebar
-      - Laka
-    */
-
+  /* 6. Terapkan mode */
   updateGlobalUI();
 
-  /*
-      6. Terapkan data Rekap.
-    */
-
+  /* 7. Rekap langsung dari lakaData */
   updateRekapStatus();
 
-  /*
-      7. Pastikan Action Menu tertutup.
-    */
-
+  /* 8. Tutup Action Menu */
   closeActionMenu();
 
-  /*
-      8. Pada mobile, Sidebar harus tertutup
-         ketika aplikasi pertama kali dibuka.
-    */
-
+  /* 9. Kondisi Sidebar awal */
   if (window.innerWidth < 768) {
     closeSidebar();
   } else {
-    /*
-        Pada desktop Sidebar harus tampil.
-      */
-
     if (sidebar) {
       sidebar.classList.remove("-translate-x-full");
     }
   }
 
-  /*
-      9. Render icon sekali lagi
-         setelah seluruh komponen selesai.
-    */
-
+  /* 10. Render icon */
   if (window.lucide) {
     lucide.createIcons();
   }
 }
 
-/*
-    Jalankan initialization
-    setelah DOM siap.
-  */
+/* =====================================================
+   DOM READY
+   ===================================================== */
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeApplication);
 } else {
   initializeApplication();
 }
-
-/* =====================================================
-     AKHIR SCRIPT INITIALIZATION
-     =====================================================
-  */
-
-/* =====================================================
-     =====================================================
-       AKHIR JAVASCRIPT TES GABUNG KOMPONEN
-     =====================================================
-     ===================================================== */
-
-/* =====================================================
-       AKHIR JAVASCRIPT APLIKASI
-  ====================================================== */

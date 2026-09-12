@@ -726,16 +726,19 @@
               <!-- =============================================
              FILTER TAHUN
         ============================================== -->
-              <div>
+              <div
+                class="flex items-center justify-between gap-3 md:border-r md:border-amber-200 md:pr-4"
+              >
                 <label
                   for="filter-tahun"
-                  class="mb-1.5 block text-sm font-semibold text-slate-700"
+                  class="shrink-0 text-sm font-semibold text-slate-700"
                 >
                   Tahun
                 </label>
+
                 <select
                   id="filter-tahun"
-                  class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 >
                   <option value="">Semua Tahun</option>
                   <option value="2026">2026</option>
@@ -747,16 +750,19 @@
               <!-- =============================================
              FILTER BULAN
         ============================================== -->
-              <div>
+              <div
+                class="flex items-center justify-between gap-3 md:border-r md:border-amber-200 md:pr-4"
+              >
                 <label
                   for="filter-bulan"
-                  class="mb-1.5 block text-sm font-semibold text-slate-700"
+                  class="shrink-0 text-sm font-semibold text-slate-700"
                 >
                   Bulan
                 </label>
+
                 <select
                   id="filter-bulan"
-                  class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 >
                   <option value="">Semua Bulan</option>
                   <option value="01">Januari</option>
@@ -777,16 +783,17 @@
               <!-- =============================================
              FILTER WAKTU
         ============================================== -->
-              <div>
+              <div class="flex items-center justify-between gap-3">
                 <label
                   for="filter-waktu"
-                  class="mb-1.5 block text-sm font-semibold text-slate-700"
+                  class="shrink-0 text-sm font-semibold text-slate-700"
                 >
                   Waktu Kejadian
                 </label>
+
                 <select
                   id="filter-waktu"
-                  class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 >
                   <option value="">Semua Waktu</option>
                   <option value="00-06">00:00 – 05:59</option>
@@ -801,71 +808,102 @@
            RENTANG TANGGAL
            ================================================= -->
 
+            <!-- RENTANG TANGGAL + STATUS PENANGANAN -->
             <div class="mt-2 border-t border-blue-50 pt-2">
-              <!-- BUTTON RENTANG TANGGAL -->
-
-              <button
-                id="btn-rentang-tanggal"
-                type="button"
-                class="inline-flex items-center gap-2 rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-              >
-                <i data-lucide="calendar-range" class="h-4 w-4"></i>
-
-                <span>Rentang Tanggal</span>
-
-                <i
-                  id="icon-rentang-tanggal"
-                  data-lucide="chevron-down"
-                  class="h-4 w-4 transition-transform duration-200"
-                ></i>
-              </button>
-
-              <!-- INPUT RENTANG TANGGAL -->
-
-              <div id="rentang-tanggal-container" class="mt-2 hidden">
-                <div
-                  class="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-end"
-                >
-                  <!-- TANGGAL MULAI -->
-
-                  <div>
-                    <label
-                      for="filter-tanggal-mulai"
-                      class="mb-1 block text-sm font-semibold text-slate-700"
-                    >
-                      Tanggal Mulai
-                    </label>
-
-                    <input
-                      id="filter-tanggal-mulai"
-                      type="date"
-                      class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    />
-                  </div>
-
-                  <!-- PEMISAH -->
-
-                  <div
-                    class="hidden pb-2.5 text-sm font-medium text-slate-400 sm:block"
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <!-- RENTANG TANGGAL -->
+                <div>
+                  <button
+                    id="btn-rentang-tanggal"
+                    type="button"
+                    class="inline-flex items-center gap-2 rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                   >
-                    s/d
-                  </div>
+                    <i data-lucide="calendar-range" class="h-4 w-4"></i>
 
-                  <!-- TANGGAL AKHIR -->
+                    <span>Rentang Tanggal</span>
 
-                  <div>
-                    <label
-                      for="filter-tanggal-akhir"
-                      class="mb-1 block text-sm font-semibold text-slate-700"
+                    <i
+                      id="icon-rentang-tanggal"
+                      data-lucide="chevron-down"
+                      class="h-4 w-4 transition-transform duration-200"
+                    ></i>
+                  </button>
+
+                  <div id="rentang-tanggal-container" class="mt-2 hidden">
+                    <div
+                      class="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-end"
                     >
-                      Tanggal Akhir
+                      <!-- TANGGAL MULAI -->
+                      <div>
+                        <label
+                          for="filter-tanggal-mulai"
+                          class="mb-1 block text-sm font-semibold text-slate-700"
+                        >
+                          Tanggal Mulai
+                        </label>
+
+                        <input
+                          id="filter-tanggal-mulai"
+                          type="date"
+                          class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        />
+                      </div>
+
+                      <!-- PEMISAH -->
+                      <div
+                        class="hidden pb-2.5 text-sm font-medium text-slate-400 sm:block"
+                      >
+                        s/d
+                      </div>
+
+                      <!-- TANGGAL AKHIR -->
+                      <div>
+                        <label
+                          for="filter-tanggal-akhir"
+                          class="mb-1 block text-sm font-semibold text-slate-700"
+                        >
+                          Tanggal Akhir
+                        </label>
+
+                        <input
+                          id="filter-tanggal-akhir"
+                          type="date"
+                          class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FILTER STATUS PENANGANAN -->
+                <div class="rounded-xl border border-blue-100 bg-blue-50 p-3">
+                  <div class="flex items-center justify-between gap-3">
+                    <label
+                      for="filter-status"
+                      class="shrink-0 text-sm font-semibold text-blue-800"
+                    >
+                      Status Penanganan
                     </label>
 
-                    <input
-                      id="filter-tanggal-akhir"
-                      type="date"
-                      class="w-full rounded-xl border border-blue-100 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    />
+                    <div class="relative">
+                      <select
+                        id="filter-status"
+                        class="w-44 appearance-none rounded-xl border border-blue-200 bg-white px-3 py-2.5 pr-9 text-sm font-medium text-blue-700 outline-none transition hover:border-blue-300 hover:bg-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                      >
+                        <option value="">Semua Status</option>
+                        <option value="Dalam Penanganan">
+                          Dalam Penanganan
+                        </option>
+                        <option value="Selesai">Selesai/RJ</option>
+                        <option value="Limpah Polres">Limpah Polres</option>
+                      </select>
+
+                      <!-- PENANDA FILTER -->
+                      <i
+                        data-lucide="list-filter"
+                        class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-500"
+                      ></i>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -898,6 +936,10 @@
               </button>
             </div>
           </div>
+
+          <!-- =================================================
+         AKHIR FILTER
+    ================================================= -->
 
           <!-- =================================================
      SORTIR DATA LAKA
@@ -993,31 +1035,6 @@
           <!-- =================================================
      AKHIR LIST SORTIR
 ================================================= -->
-
-          <!-- =================================================
-         LIST LAKA
-    ================================================= -->
-          <div id="laka-page-list" class="space-y-4"></div>
-
-          <!-- =================================================
-         EMPTY STATE
-    ================================================= -->
-          <div
-            id="laka-page-empty"
-            class="hidden rounded-2xl border border-blue-100 bg-white px-6 py-14 text-center shadow-sm"
-          >
-            <div
-              class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-500"
-            >
-              <i data-lucide="file-search" class="h-6 w-6"></i>
-            </div>
-            <h3 class="text-base font-semibold text-slate-800">
-              Data tidak ditemukan
-            </h3>
-            <p class="mt-1 text-sm text-slate-500">
-              Tidak ada laporan yang sesuai dengan filter yang dipilih.
-            </p>
-          </div>
 
           <!-- =================================================
          PAGINATION

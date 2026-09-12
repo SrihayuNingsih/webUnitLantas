@@ -22,6 +22,24 @@ let lakaPageActiveMenuId = null;
 /* =====================================================
          HELPER STATUS LAKA
       ===================================================== */
+
+function getStatusBadge(statusText) {
+  const status = (statusText || "").toLowerCase().trim();
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "border-green-200 bg-green-50 text-green-700";
+  }
+
+  if (status === "dalam penanganan") {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
+
+  if (status === "limpah polres") {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-slate-200 bg-slate-50 text-slate-600";
+}
 function getStatusDot(statusText) {
   const status = (statusText || "").toLowerCase().trim();
   if (status === "selesai") return "bg-green-700";
@@ -274,8 +292,28 @@ function applyLakaFilter() {
   const waktuEl = document.getElementById("filter-waktu");
   const tglMulaiEl = document.getElementById("filter-tanggal-mulai");
   const tglAkhirEl = document.getElementById("filter-tanggal-akhir");
+  const statusEl = document.getElementById("filter-status");
 
   lakaFilteredData = lakaData.filter(function (item) {
+    const status = statusEl ? statusEl.value : "";
+
+    // FILTER STATUS
+    if (status) {
+      const itemStatus = (item.status || "").trim();
+
+      if (
+        status === "Selesai" &&
+        !["Selesai", "Selesai/RJ", "RJ"].includes(itemStatus)
+      ) {
+        return false;
+      }
+
+      if (status !== "Selesai" && itemStatus !== status) {
+        return false;
+      }
+    }
+
+    // FILTER RENTANG TANGGAL
     if (lakaRentangTanggalAktif) {
       const itemDate = parseIndonesianDate(item.hariTanggal);
       if (!itemDate) return false;
@@ -291,6 +329,7 @@ function applyLakaFilter() {
         endDate.setHours(23, 59, 59, 999);
         if (itemDate > endDate) return false;
       }
+
       return true;
     }
 
@@ -300,14 +339,17 @@ function applyLakaFilter() {
 
     if (tahun && getLakaYear(item) !== tahun) return false;
     if (bulan && getLakaMonthNumber(item) !== bulan) return false;
+
     if (waktu) {
       const jam = getLakaHour(item);
       if (jam === null) return false;
+
       if (waktu === "00-06" && (jam < 0 || jam >= 6)) return false;
       if (waktu === "06-12" && (jam < 6 || jam >= 12)) return false;
       if (waktu === "12-18" && (jam < 12 || jam >= 18)) return false;
       if (waktu === "18-24" && (jam < 18 || jam >= 24)) return false;
     }
+
     return true;
   });
 
@@ -326,12 +368,14 @@ function resetLakaFilter() {
   const waktu = document.getElementById("filter-waktu");
   const tglMulai = document.getElementById("filter-tanggal-mulai");
   const tglAkhir = document.getElementById("filter-tanggal-akhir");
+  const status = document.getElementById("filter-status");
 
   if (tahun) tahun.value = "";
   if (bulan) bulan.value = "";
   if (waktu) waktu.value = "";
   if (tglMulai) tglMulai.value = "";
   if (tglAkhir) tglAkhir.value = "";
+  if (status) status.value = "";
 
   if (lakaRentangTanggalAktif && rentangTanggalButton) {
     rentangTanggalButton.click();
@@ -789,69 +833,144 @@ function renderLakaPage() {
     .map(function (item, index) {
       return `
             <article
-              id="laka-page-card-${index}"
-              data-id="${item.id}"
-              class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
-            >
-              <div class="mb-2.5 flex items-center gap-2">
-                <i data-lucide="file-text" class="h-4 w-4 shrink-0 text-blue-500"></i>
-                <span class="text-[15px] font-bold text-blue-700">${item.id}</span>
-              </div>
+  id="laka-page-card-${index}"
+  data-id="${item.id}"
+  class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+>
+  <!-- ID LAPORAN + STATUS -->
+<div class="flex items-start justify-between gap-4">
+  <!-- ID LAPORAN -->
+  <div class="flex min-w-0 shrink-0 items-center gap-2">
+    <i
+      data-lucide="file-text"
+      class="h-4 w-4 shrink-0 text-blue-500"
+    ></i>
 
-              <div class="mb-2.5 flex items-center gap-2 text-sm text-slate-600">
-                <i data-lucide="calendar-days" class="h-4 w-4 shrink-0 text-blue-400"></i>
-                <span>${item.hariTanggal} | ${item.waktu}</span>
-              </div>
+    <span class="text-[15px] font-bold text-blue-700">
+      ${item.id}
+    </span>
+  </div>
 
-              <div class="mb-2.5 flex items-start gap-2">
-                <i data-lucide="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-blue-400"></i>
-                <p class="text-sm leading-snug text-slate-600">${item.lokasi}</p>
-              </div>
+  <!-- STATUS -->
+  <div class="min-w-0 text-right">
+  <div
+    class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(item.status)}"
+  >
+    <span
+      class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(item.status)}"
+    ></span>
 
-              <div class="mb-2.5 flex items-center gap-3 text-sm font-medium">
-                <span class="text-slate-600">LR <span class="font-semibold text-green-700">${item.lr}</span></span>
-                <span class="text-blue-200">|</span>
-                <span class="text-slate-600">LB <span class="font-semibold text-amber-400">${item.lb}</span></span>
-                <span class="text-blue-200">|</span>
-                <span class="text-slate-600">MD <span class="font-semibold text-red-700">${item.md}</span></span>
-              </div>
+    <span
+      class="break-words text-sm font-medium leading-snug ${getStatusText(item.status)}"
+    >
+      ${item.status || "Belum ditentukan"}
+    </span>
+  </div>
+</div>
+</div>
 
-              <div class="mb-4 flex items-center gap-2">
-                <span class="h-2.5 w-2.5 rounded-full ${getStatusDot(item.status)}"></span>
-                <span class="text-sm font-medium ${getStatusText(item.status)}">${item.status}</span>
-              </div>
+<!-- NO. LP -->
+<div class="ml-6 mt-2.5 flex items-center gap-2">
+  <i
+    data-lucide="file-text"
+    class="h-3.5 w-3.5 shrink-0 text-slate-400"
+  ></i>
 
-              <div class="flex items-center justify-end gap-2 border-t border-blue-50 pt-3">
-                <button
-                  type="button"
-                  data-action="detail-visitor-page"
-                  data-id="${item.id}"
-                  class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
-                >
-                  Lihat Detail
-                  <i data-lucide="chevron-right" class="h-4 w-4"></i>
-                </button>
+  <span class="text-xs font-medium text-slate-500">
+    No. LP :
+  </span>
 
-                <button
-                  type="button"
-                  data-action="detail-officer-page"
-                  data-id="${item.id}"
-                  class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
-                >
-                  Lihat Detail
-                </button>
+  <span class="text-sm font-semibold text-slate-700">
+    ${
+      ["Selesai", "Selesai/RJ", "RJ"].includes((item.status || "").trim())
+        ? "Nihil"
+        : (item.status || "").trim() === "Dalam Penanganan"
+          ? "Nihil"
+          : item.noLp || "Belum tersedia"
+    }
+  </span>
+</div>
 
-                <button
-                  type="button"
-                  data-action="menu-page"
-                  data-id="${item.id}"
-                  class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
-                  aria-label="Menu aksi"
-                >
-                  <i data-lucide="more-vertical" class="h-5 w-5"></i>
-                </button>
-              </div>
-            </article>
+  <!-- WAKTU KEJADIAN -->
+  <div class="mt-5 flex items-center gap-2 text-sm text-slate-600">
+    <i
+      data-lucide="calendar-days"
+      class="h-4 w-4 shrink-0 text-blue-400"
+    ></i>
+    <span>${item.hariTanggal} | ${item.waktu}</span>
+  </div>
+
+  <!-- TKP -->
+  <div class="mt-2.5 flex items-start gap-2">
+    <i
+      data-lucide="map-pin"
+      class="mt-0.5 h-4 w-4 shrink-0 text-blue-400"
+    ></i>
+
+    <p class="text-sm leading-snug text-slate-600">
+      ${item.lokasi}
+    </p>
+  </div>
+
+  <!-- KORBAN + DETAIL -->
+  <div
+    class="mt-5 flex flex-wrap items-center justify-between gap-3"
+  >
+    <!-- LR / LB / MD -->
+    <div class="flex items-center gap-3 text-sm font-medium">
+      <span class="text-slate-600">
+        LR
+        <span class="font-semibold text-green-700">${item.lr}</span>
+      </span>
+
+      <span class="text-blue-200">|</span>
+
+      <span class="text-slate-600">
+        LB
+        <span class="font-semibold text-amber-400">${item.lb}</span>
+      </span>
+
+      <span class="text-blue-200">|</span>
+
+      <span class="text-slate-600">
+        MD
+        <span class="font-semibold text-red-700">${item.md}</span>
+      </span>
+    </div>
+
+    <!-- ACTION -->
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        data-action="detail-visitor-page"
+        data-id="${item.id}"
+        class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+      >
+        Lihat Detail
+        <i data-lucide="chevron-right" class="h-4 w-4"></i>
+      </button>
+
+      <button
+        type="button"
+        data-action="detail-officer-page"
+        data-id="${item.id}"
+        class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+      >
+        Lihat Detail
+      </button>
+
+      <button
+        type="button"
+        data-action="menu-page"
+        data-id="${item.id}"
+        class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
+        aria-label="Menu aksi"
+      >
+        <i data-lucide="more-vertical" class="h-5 w-5"></i>
+      </button>
+    </div>
+  </div>
+</article>
           `;
     })
     .join("");

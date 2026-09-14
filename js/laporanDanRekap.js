@@ -919,6 +919,9 @@
 
   function createMockResponseForPeriod(payload) {
     const sourceData = Array.isArray(lakaData) ? lakaData : [];
+    console.log("LAPORAN REKAP - lakaData:", lakaData);
+    console.log("LAPORAN REKAP - jumlah data:", sourceData.length);
+    console.log("LAPORAN REKAP - data pertama:", sourceData[0]);
 
     const type = payload?.periode?.type || "semua";
 
@@ -935,7 +938,7 @@
     }
 
     const filteredData = sourceData.filter((item) => {
-      const itemDate = parseIndonesiaDate(item.hariTanggal);
+      const itemDate = parseIndonesiaDate(item.tanggal);
 
       if (!itemDate) {
         return false;
@@ -956,17 +959,17 @@
       totalKejadian: filteredData.length,
 
       korbanLR: filteredData.reduce(
-        (total, item) => total + safeNumber(item.lr),
+        (total, item) => total + safeNumber(item.jumlahLR),
         0,
       ),
 
       korbanLB: filteredData.reduce(
-        (total, item) => total + safeNumber(item.lb),
+        (total, item) => total + safeNumber(item.jumlahLB),
         0,
       ),
 
       korbanMD: filteredData.reduce(
-        (total, item) => total + safeNumber(item.md),
+        (total, item) => total + safeNumber(item.jumlahMD),
         0,
       ),
 
@@ -993,7 +996,7 @@
     };
 
     const reports = filteredData.map((item) => {
-      const itemDate = parseIndonesiaDate(item.hariTanggal);
+      const itemDate = parseIndonesiaDate(item.tanggal);
 
       return {
         ...item,

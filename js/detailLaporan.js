@@ -388,10 +388,10 @@ function renderSaksi(data) {
               S${index + 1}
             </div>
             <div class="min-w-0">
-              <h3 class="text-xs sm:text-sm font-black text-blue-950 leading-tight">
+              <h3 class="text-sm sm:text-sm font-black text-blue-950 leading-tight">
                 Saksi ${index + 1}
               </h3>
-              <p class="mt-0.5 text-[0.65rem] font-medium text-blue-800/80 leading-tight">
+              <p class="mt-0.5 text-[0.75rem] font-medium text-blue-800/80 leading-tight">
                 Pemberi keterangan
               </p>
             </div>

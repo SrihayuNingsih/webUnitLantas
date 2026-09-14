@@ -364,6 +364,8 @@ function renderSaksi(data) {
 
   const saksi = Array.isArray(data.saksi) ? data.saksi : [];
 
+  console.log("DATA SAKSI:", saksi);
+
   if (!saksi.length) {
     container.innerHTML = `
       <div class="md:col-span-2 rounded-xl border border-dashed border-blue-300/80 bg-blue-100/40 p-4 text-center text-xs font-semibold text-blue-800">

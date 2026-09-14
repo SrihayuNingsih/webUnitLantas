@@ -113,7 +113,7 @@ function setStatusLaporan(status) {
   // RESET CLASS
   // =====================================================
   badge.className =
-    "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold";
+    "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-bold";
 
   dot.className = "h-2 w-2 rounded-full";
 
@@ -156,12 +156,6 @@ function formatRupiah(value) {
 
   return "Rp " + number.toLocaleString("id-ID");
 }
-
-/* =====================================================
-         DATA DEMO
-         HANYA UNTUK PREVIEW SAAT lakaData
-         BELUM TERSEDIA.
-      ====================================================== */
 
 /* =====================================================
          RENDER HEADER
@@ -306,17 +300,17 @@ function renderKendaraan(data) {
           <!-- NOMOR KENDARAAN -->
           <div class="mb-3 flex items-start gap-3">
             <div
-              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700"
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-md font-bold text-blue-700"
             >
               ${index + 1}
             </div>
 
             <div class="min-w-0">
-              <p class="break-words text-sm font-bold text-blue-950">
+              <p class="break-words text-md font-bold text-blue-950">
                 ${safeText(item.kendaraan)}
               </p>
 
-              <p class="mt-1 break-words text-xs font-medium text-slate-500">
+              <p class="mt-1 break-words text-sm font-medium text-slate-500">
                 ${nopolText}
               </p>
             </div>
@@ -324,11 +318,11 @@ function renderKendaraan(data) {
 
           <!-- PENGEMUDI / PENGENDARA / PENGAYUH / PEJALAN KAKI -->
           <div class="border-t border-slate-100 pt-3">
-            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            <p class="text-[12px] font-semibold uppercase tracking-wide text-slate-400">
               ${labelOrang}
             </p>
 
-            <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+            <p class="mt-1 whitespace-pre-line break-words text-sm font-bold text-blue-950">
               ${safeText(dataOrang)}
             </p>
           </div>
@@ -342,7 +336,7 @@ function renderKendaraan(data) {
                     Pembonceng
                   </p>
 
-                  <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+                  <p class="mt-1 whitespace-pre-line break-words text-sm font-bold text-blue-950">
                     ${safeText(item.pembonceng)}
                   </p>
                 </div>
@@ -359,56 +353,6 @@ function renderKendaraan(data) {
 /* =====================================================
          RENDER SAKSI
       ====================================================== */
-
-// function renderSaksi(data) {
-//   const container = document.getElementById("saksiGrid");
-
-//   if (!container) {
-//     return;
-//   }
-
-//   const saksi = Array.isArray(data.saksi) ? data.saksi : [];
-
-//   if (!saksi.length) {
-//     container.innerHTML = `
-//               <div class="empty-state md:col-span-2">
-//                 Tidak ada data saksi yang tersedia.
-//               </div>
-//             `;
-
-//     return;
-//   }
-
-//   container.innerHTML = saksi
-//     .map(
-//       (item, index) => `
-//                 <article class="person-card">
-
-//                   <div class="flex items-start gap-3">
-
-//                     <div class="person-number">
-//                       ${index + 1}
-//                     </div>
-
-//                     <div class="min-w-0 flex-1">
-
-//                       <p class="text-sm font-extrabold text-blue-950">
-//                         Saksi ${index + 1}
-//                       </p>
-
-//                       <p class="mt-2 text-xs font-semibold leading-6 text-blue-900">
-//                         ${safeText(item)}
-//                       </p>
-
-//                     </div>
-
-//                   </div>
-
-//                 </article>
-//               `,
-//     )
-//     .join("");
-// }
 
 /* =====================================================
    RENDER SAKSI (TAILWIND CSS)
@@ -457,7 +401,7 @@ function renderSaksi(data) {
               <p class="text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700">
                 Identitas Saksi
               </p>
-              <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+              <p class="mt-1 whitespace-pre-line break-words text-sm font-bold text-blue-950">
                 ${safeText(item.saksi || item.nama || item)}
               </p>
             </div>
@@ -479,53 +423,6 @@ function renderKronologi(data) {
 /* =====================================================
          RENDER PETUGAS
       ====================================================== */
-
-// function renderPetugas(data) {
-//   const container = document.getElementById("petugasList");
-
-//   if (!container) {
-//     return;
-//   }
-
-//   const petugas = Array.isArray(data.petugas) ? data.petugas : [];
-
-//   if (!petugas.length) {
-//     container.innerHTML = `
-//               <div class="empty-state">
-//                 Belum ada data petugas yang tersedia.
-//               </div>
-//             `;
-
-//     return;
-//   }
-
-//   container.innerHTML = petugas
-//     .map(
-//       (item, index) => `
-//                 <div class="petugas-item">
-
-//                   <div class="petugas-number">
-//                     ${index + 1}
-//                   </div>
-
-//                   <div class="min-w-0">
-
-//                     <p class="text-sm font-extrabold text-blue-950">
-//                       ${safeText(item)}
-//                     </p>
-
-//                     <p class="mt-0.5 text-[11px] font-medium text-blue-800/70">
-//                       Petugas penanganan laporan
-//                     </p>
-
-//                   </div>
-
-//                 </div>
-//               `,
-//     )
-//     .join("");
-// }
-
 /* =====================================================
    RENDER PETUGAS (TAILWIND CSS)
 ====================================================== */
@@ -559,9 +456,9 @@ function renderPetugas(data) {
           
           <div class="min-w-0 flex-1">
             <p class="text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700 leading-tight">
-              Petugas Polsek / Satlantas
+              Piket Lantas
             </p>
-            <p class="mt-0.5 truncate text-xs font-bold text-blue-950">
+            <p class="mt-0.5 truncate text-sm font-bold text-blue-950">
               ${safeText(item.nama || item)}
             </p>
           </div>
@@ -579,30 +476,6 @@ function renderPetugas(data) {
 /* =====================================================
          RENDER DOKUMENTASI
       ====================================================== */
-
-// function renderDokumentasi(data) {
-//   const section = document.getElementById("sectionDokumentasi");
-
-//   const link = document.getElementById("linkDokumentasi");
-
-//   const nama = document.getElementById("namaDokumentasi");
-
-//   if (!section || !link || !nama) {
-//     return;
-//   }
-
-//   if (!data.dokumentasi) {
-//     section.classList.add("hidden");
-
-//     return;
-//   }
-
-//   section.classList.remove("hidden");
-
-//   nama.textContent = safeText(data.dokumentasi.nama);
-
-//   link.href = data.dokumentasi.url || "#";
-// }
 
 function renderDokumentasi(data) {
   const section = document.getElementById("sectionDokumentasi");
@@ -692,39 +565,6 @@ function renderLaporan(data) {
          cari berdasarkan ?id=...
       ====================================================== */
 
-// function ambilDataLaporan() {
-//   const params = new URLSearchParams(window.location.search);
-
-//   const id = params.get("id");
-
-//   /*
-//           Jika global lakaData tersedia,
-//           gunakan data tersebut.
-//         */
-
-//   if (Array.isArray(window.lakaData)) {
-//     const laporan = window.lakaData.find(
-//       (item) =>
-//         String(item.id || item.ID || item.nomorLaporan || "") === String(id),
-//     );
-
-//     if (laporan) {
-//       return normalisasiData(laporan);
-//     }
-//   }
-
-//   /*
-//           Jika data belum tersedia,
-//           gunakan preview.
-//         */
-
-//   return dataPreview;
-// }
-
-/* =====================================================
-   AMBIL DATA LAPORAN (MENGAMBIL DARI window.lakaData)
-====================================================== */
-
 function ambilDataLaporan() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
@@ -743,111 +583,6 @@ function ambilDataLaporan() {
 
   return normalisasiData(null);
 }
-/* =====================================================
-         NORMALISASI DATA
-         Sementara dibuat fleksibel.
-      ====================================================== */
-
-// function normalisasiData(data) {
-//   return {
-//     id: data.id || data.ID || data.nomorLaporan || data.nomor || dataPreview.id,
-
-//     tanggal:
-//       data.tanggal || data.tanggalKejadian || data.date || dataPreview.tanggal,
-
-//     jam: data.jam || data.jamKejadian || data.waktu || dataPreview.jam,
-
-//     waktuInput: data.waktuInput || data.inputTime || dataPreview.waktuInput,
-
-//     status:
-//       data.status ||
-//       data.statusPenanganan ||
-//       data.penanganan ||
-//       dataPreview.status,
-
-//     jumlahLR: data.jumlahLR ?? data.lr ?? data.LR ?? dataPreview.jumlahLR,
-
-//     jumlahLB: data.jumlahLB ?? data.lb ?? data.LB ?? dataPreview.jumlahLB,
-
-//     jumlahMD: data.jumlahMD ?? data.md ?? data.MD ?? dataPreview.jumlahMD,
-
-//     kermat: data.kermat ?? data.kerugianMaterial ?? dataPreview.kermat,
-
-//     tkp: data.tkp || data.lokasi || data.tempatKejadian || dataPreview.tkp,
-
-//     kendaraan: Array.isArray(data.kendaraan)
-//       ? data.kendaraan
-//       : dataPreview.kendaraan,
-
-//     saksi: Array.isArray(data.saksi) ? data.saksi : dataPreview.saksi,
-
-//     kronologi: data.kronologi || data.uraian || dataPreview.kronologi,
-
-//     petugas: Array.isArray(data.petugas) ? data.petugas : dataPreview.petugas,
-
-//     dokumentasi: data.dokumentasi || dataPreview.dokumentasi,
-//   };
-// }
-
-/* =====================================================
-   NORMALISASI DATA (FIXED & SAFE)
-====================================================== */
-
-// function normalisasiData(data) {
-//   // Helper internal untuk mengambil string atau fallback kosong
-//   const getStr = (...keys) => {
-//     for (let k of keys) {
-//       if (
-//         data[k] !== undefined &&
-//         data[k] !== null &&
-//         String(data[k]).trim() !== ""
-//       ) {
-//         return String(data[k]).trim();
-//       }
-//     }
-//     return "-"; // Jika memang kosong di lakaData, tampilkan "-" bukan dataPreview
-//   };
-
-//   // Helper internal untuk angka/jumlah korban
-//   const getNum = (...keys) => {
-//     for (let k of keys) {
-//       if (data[k] !== undefined && data[k] !== null && data[k] !== "") {
-//         const parsed = Number(data[k]);
-//         if (!isNaN(parsed)) return parsed;
-//       }
-//     }
-//     return 0; // Default angka jika kosong adalah 0
-//   };
-
-//   return {
-//     id: getStr("id", "ID", "nomorLaporan", "nomor"),
-//     tanggal: getStr("tanggal", "tanggalKejadian", "date"),
-//     jam: getStr("jam", "jamKejadian", "waktu"),
-//     waktuInput: getStr("waktuInput", "inputTime"),
-//     status: getStr("status", "statusPenanganan", "penanganan"),
-
-//     // Angka korban default ke 0
-//     jumlahLR: getNum("jumlahLR", "lr", "LR"),
-//     jumlahLB: getNum("jumlahLB", "lb", "LB"),
-//     jumlahMD: getNum("jumlahMD", "md", "MD"),
-//     kermat: getNum("kermat", "kerugianMaterial"),
-
-//     tkp: getStr("tkp", "lokasi", "tempatKejadian"),
-//     kronologi: getStr("kronologi", "uraian"),
-
-//     // Array aman
-//     kendaraan: Array.isArray(data.kendaraan) ? data.kendaraan : [],
-//     saksi: Array.isArray(data.saksi) ? data.saksi : [],
-//     petugas: Array.isArray(data.petugas) ? data.petugas : [],
-
-//     // Dokumentasi
-//     dokumentasi: data.dokumentasi || data.linkDrive || null,
-//   };
-// }
-
-/* =====================================================
-   NORMALISASI DATA (MURNI LAKADATA, JIKA KOSONG = KOSONG)
-====================================================== */
 
 /* =====================================================
    NORMALISASI DATA
@@ -922,30 +657,6 @@ function normalisasiData(data) {
 /* =====================================================
    AWAL TAMBAHAN CODE
 ====================================================== */
-/* =====================================================
-   FUNGSI DINAMIS UNTUK MEMBUKA BANYAK DATA
-====================================================== */
-
-// function bukaDetailLaporan(id) {
-//   if (!Array.isArray(lakaData)) return;
-
-//   const targetData = lakaData.find(
-//     (item) =>
-//       String(item.id || item.ID || item.nomorLaporan || "") === String(id),
-//   );
-
-//   if (targetData) {
-//     const dataSiap = normalisasiData(targetData);
-//     renderLaporan(dataSiap);
-
-//     // Buka modal overlay
-//     if (detailLaporanOverlay) {
-//       detailLaporanOverlay.classList.remove("hidden");
-//       detailLaporanOverlay.setAttribute("aria-hidden", "false");
-//       document.body.classList.add("overflow-hidden");
-//     }
-//   }
-// }
 
 /* =====================================================
    AKHIR TAMBAHAN CODE

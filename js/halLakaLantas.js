@@ -681,123 +681,6 @@ function renderLakaPagination() {
 /* =====================================================
    TOGGLE RENTANG TANGGAL
    ===================================================== */
-
-// const rentangTanggalButton = document.getElementById("btn-rentang-tanggal");
-
-// if (rentangTanggalButton) {
-//   rentangTanggalButton.addEventListener("click", function () {
-//     lakaRentangTanggalAktif = !lakaRentangTanggalAktif;
-
-//     const container = document.getElementById("rentang-tanggal-container");
-
-//     const icon = document.getElementById("icon-rentang-tanggal");
-
-//     const filterTahun = document.getElementById("filter-tahun");
-
-//     const filterBulan = document.getElementById("filter-bulan");
-
-//     const filterWaktu = document.getElementById("filter-waktu");
-
-//     if (lakaRentangTanggalAktif) {
-//       /*
-//        * Tampilkan input tanggal
-//        */
-
-//       if (container) {
-//         container.classList.remove("hidden");
-//       }
-
-//       /*
-//        * Disable filter Tahun, Bulan,
-//        * dan Waktu Kejadian
-//        */
-
-//       if (filterTahun) {
-//         filterTahun.disabled = true;
-//       }
-
-//       if (filterBulan) {
-//         filterBulan.disabled = true;
-//       }
-
-//       if (filterWaktu) {
-//         filterWaktu.disabled = true;
-//       }
-
-//       /*
-//        * Putar icon chevron
-//        */
-
-//       if (icon) {
-//         icon.classList.add("rotate-180");
-//       }
-
-//       /*
-//        * Tampilan tombol aktif
-//        */
-
-//       rentangTanggalButton.classList.remove("bg-white", "text-blue-600");
-
-//       rentangTanggalButton.classList.add(
-//         "bg-blue-50",
-//         "text-blue-700",
-//         "border-blue-200",
-//       );
-//     } else {
-//       /*
-//        * Sembunyikan input tanggal
-//        */
-
-//       if (container) {
-//         container.classList.add("hidden");
-//       }
-
-//       /*
-//        * Aktifkan kembali filter
-//        */
-
-//       if (filterTahun) {
-//         filterTahun.disabled = false;
-//       }
-
-//       if (filterBulan) {
-//         filterBulan.disabled = false;
-//       }
-
-//       if (filterWaktu) {
-//         filterWaktu.disabled = false;
-//       }
-
-//       /*
-//        * Kembalikan icon
-//        */
-
-//       if (icon) {
-//         icon.classList.remove("rotate-180");
-//       }
-
-//       /*
-//        * Kembalikan tampilan tombol
-//        */
-
-//       rentangTanggalButton.classList.add("bg-white", "text-blue-600");
-
-//       rentangTanggalButton.classList.remove(
-//         "bg-blue-50",
-//         "text-blue-700",
-//         "border-blue-200",
-//       );
-//     }
-
-//     if (window.lucide) {
-//       lucide.createIcons();
-//     }
-//   });
-// }
-
-/* =====================================================
-   TOGGLE RENTANG TANGGAL
-   ===================================================== */
 const rentangTanggalButton = document.getElementById("btn-rentang-tanggal");
 
 if (rentangTanggalButton) {
@@ -1067,53 +950,6 @@ function updateLakaMode(isOfficer) {
 }
 
 /* =====================================================
-         ACTION MENU HANDLER
-      ===================================================== */
-// function toggleActionMenu(event, id, button) {
-//   event.stopPropagation();
-//   const officer =
-//     typeof isOfficerMode !== "undefined" ? Boolean(isOfficerMode) : false;
-//   if (!officer || !lakaPageActionMenu || !button) return;
-
-//   if (
-//     lakaPageActiveMenuId === id &&
-//     !lakaPageActionMenu.classList.contains("hidden")
-//   ) {
-//     closeActionMenu();
-//     return;
-//   }
-
-//   lakaPageActiveMenuId = id;
-//   lakaPageActionMenu.classList.remove("hidden");
-
-//   const rect = button.getBoundingClientRect();
-//   const menuHeight = lakaPageActionMenu.offsetHeight || 90;
-//   const menuWidth = lakaPageActionMenu.offsetWidth || 176;
-//   const spaceBelow = window.innerHeight - rect.bottom;
-
-//   if (spaceBelow < menuHeight && rect.top > menuHeight) {
-//     lakaPageActionMenu.style.top = `${rect.top - menuHeight - 6}px`;
-//   } else {
-//     lakaPageActionMenu.style.top = `${rect.bottom + 6}px`;
-//   }
-
-//   const leftPos = Math.min(
-//     rect.right - menuWidth,
-//     window.innerWidth - menuWidth - 10,
-//   );
-//   lakaPageActionMenu.style.left = `${Math.max(10, leftPos)}px`;
-// }
-
-// function closeActionMenu() {
-//   if (lakaPageActionMenu) {
-//     lakaPageActionMenu.classList.add("hidden");
-//     lakaPageActionMenu.style.top = "";
-//     lakaPageActionMenu.style.left = "";
-//   }
-//   lakaPageActiveMenuId = null;
-// }
-
-/* =====================================================
    ACTION MENU HANDLER
 ===================================================== */
 function toggleActionMenu(event, id, button) {
@@ -1245,29 +1081,6 @@ function handleEdit() {
   alert(`Edit laporan: ${id}`);
 }
 
-// function handleDelete() {
-//   if (!lakaPageActiveMenuId) return;
-//   const id = lakaPageActiveMenuId;
-//   const confirmed = confirm(`Yakin ingin menghapus laporan ${id}?`);
-//   if (!confirmed) {
-//     closeActionMenu();
-//     return;
-//   }
-
-//   const index = lakaData.findIndex((item) => item.id === id);
-//   if (index !== -1) {
-//     lakaData.splice(index, 1);
-//     lakaFilteredData = [...lakaData];
-//     const totalPages = Math.max(
-//       1,
-//       Math.ceil(lakaFilteredData.length / lakaPageSize),
-//     );
-//     if (lakaPageCurrent > totalPages) lakaPageCurrent = totalPages;
-//     renderLakaPage();
-//   }
-//   closeActionMenu();
-// }
-
 /* =====================================================
          MODAL & AUTH
       ===================================================== */
@@ -1289,21 +1102,6 @@ function confirmLogout() {
     new CustomEvent("modeChanged", { detail: { isOfficerMode: false } }),
   );
 }
-
-// tambahan code button kembali
-
-/* =====================================================
-   TOMBOL KEMBALI HALAMAN LAKA LANTAS
-   ===================================================== */
-// function initLakaPageBackButton() {
-//   const lakaPageButton = document.getElementById("lakaPageButton");
-
-//   if (!lakaPageButton) return;
-
-//   lakaPageButton.addEventListener("click", function () {
-//     window.history.back();
-//   });
-// }
 
 /* =====================================================
          INITIALIZATION & EVENT LISTENERS

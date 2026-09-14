@@ -1,1002 +1,670 @@
-/* ============================================================
-   HALAMAN DETAIL LAPORAN LAKA LANTAS
-   JavaScript Vanilla
-
-   Alur:
-
-   URL
-      ↓
-   ambil ID laporan
-      ↓
-   ambilDataLaporan()
-      ↓
-   JSON
-      ↓
-   normalisasi data
-      ↓
-   renderLaporan()
-      ↓
-   tampil di halaman
-============================================================ */
-
-/* ============================================================
-   1. KONFIGURASI API
-============================================================ */
-
-const API_CONFIG = {
-  /*
-   * Gunakan:
-   *
-   * "mock"
-   * untuk pengujian tampilan lokal.
-   *
-   * Setelah Apps Script siap,
-   * ubah menjadi:
-   *
-   * mode: "api"
-   */
-
-  mode: 'mock',
-
-  /*
-   * Nanti isi dengan URL Web App Apps Script.
-   *
-   * Contoh:
-   *
-   * endpoint:
-   * "https://script.google.com/macros/s/XXXX/exec"
-   */
-
-  endpoint: 'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT',
-};
-
-/* ============================================================
-   2. DATA MOCK
-   Hanya untuk testing tampilan
-============================================================ */
-
-const MOCK_DATA = {
-  idLaporan: 'LAKA-20260821-144950-C1Z7',
-
-  noUrut: '01',
-
-  waktuInput: '21 Agustus 2026, 14:49:50',
-
-  /*
-   * Status ini hanya placeholder tampilan.
-   *
-   * Jika database sebenarnya tidak mempunyai
-   * kolom Status, nanti bagian ini bisa dihapus.
-   */
-
-  status: 'Dalam Penanganan',
-
-  tkp: 'Jl. Raya Baureno, Desa Baureno, Kecamatan Baureno, Kabupaten Bojonegoro',
-
-  waktuKejadian: {
-    hari: 'Jumat',
-    tanggal: '21 Agustus 2026',
-    jam: '13.45 WIB',
-  },
-
-  kendaraan: [
-    {
-      nomor: 1,
-
-      kendaraan: {
-        jenis: 'Sepeda Motor',
-        merk: 'Honda Beat',
-        nomorPolisi: 'S 1234 AB',
-        warna: 'Hitam',
-      },
-
-      pengendara: {
-        nama: 'Amin',
-        umur: '32 Tahun',
-        alamat: 'Desa Baureno',
-        pekerjaan: 'Swasta',
-      },
-
-      pembonceng: [
-        {
-          nama: 'Siti',
-          umur: '29 Tahun',
-          hubungan: 'Istri',
-        },
-      ],
-    },
-
-    {
-      nomor: 2,
-
-      kendaraan: {
-        jenis: 'Sepeda Motor',
-        merk: 'Yamaha NMAX',
-        nomorPolisi: 'S 5678 CD',
-        warna: 'Biru',
-      },
-
-      pengendara: {
-        nama: 'Budi',
-        umur: '28 Tahun',
-        alamat: 'Desa Sraturejo',
-        pekerjaan: 'Wiraswasta',
-      },
-
-      pembonceng: [],
-    },
-  ],
-
-  saksi: [
-    {
-      nomor: 1,
-      nama: 'Slamet',
-      umur: '45 Tahun',
-      alamat: 'Desa Baureno',
-      pekerjaan: 'Petani',
-    },
-
-    {
-      nomor: 2,
-      nama: 'Joko',
-      umur: '38 Tahun',
-      alamat: 'Desa Gunungsari',
-      pekerjaan: 'Swasta',
-    },
-  ],
-
-  kronologi:
-    'Pada hari Jumat tanggal 21 Agustus 2026 sekitar pukul 13.45 WIB telah terjadi kecelakaan lalu lintas di Jl. Raya Baureno. Kendaraan pertama berjalan dari arah barat ke timur. Pada saat bersamaan kendaraan kedua melaju dari arah berlawanan. Sesampainya di lokasi kejadian terjadi benturan antara kedua kendaraan.',
-
-  korban: {
-    lr: 1,
-    lb: 0,
-    md: 0,
-  },
-
-  kermat: 2500000,
-
-  petugas: ['Aipda Ahmad', 'Bripka Budi Santoso', 'Briptu Candra'],
-
-  linkDokumentasi: 'https://drive.google.com/',
-};
-
-/* ============================================================
-   3. HELPER
-============================================================ */
-
-/*
- * Menghindari error jika data kosong/null/undefined.
- */
-
-function nilaiAman(nilai, fallback = '-') {
-  if (nilai === null || nilai === undefined || String(nilai).trim() === '') {
-    return fallback;
-  }
-
-  return nilai;
-}
-
-/*
- * Escape HTML.
- *
- * Penting karena data nantinya berasal dari Google Sheets.
- */
-
-function escapeHTML(nilai) {
-  return String(nilaiAman(nilai, ''))
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-/*
- * Format angka menjadi Rupiah.
- */
-
-function formatRupiah(nilai) {
-  const angka = Number(nilai) || 0;
-
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-  }).format(angka);
-}
-
-/*
- * Mengubah object menjadi array jika diperlukan.
- */
-
-function pastikanArray(data) {
-  if (Array.isArray(data)) {
-    return data;
-  }
-
-  if (data === null || data === undefined || data === '') {
-    return [];
-  }
-
-  return [data];
-}
-
-/* ============================================================
-   4. AMBIL ID LAPORAN DARI URL
-============================================================ */
-
-function ambilIdLaporanDariURL() {
-  const params = new URLSearchParams(window.location.search);
-
-  /*
-   * Mendukung beberapa nama parameter.
-   */
-
-  return (
-    params.get('id') ||
-    params.get('idLaporan') ||
-    params.get('laporan') ||
-    ''
-  ).trim();
-}
-
-/* ============================================================
-   5. AMBIL DATA LAPORAN
-============================================================ */
-
-async function ambilDataLaporan(idLaporan) {
-  /*
-   * MODE MOCK
-   */
-
-  if (API_CONFIG.mode === 'mock') {
-    /*
-     * Kita cek ID.
-     *
-     * Untuk testing:
-     * jika ID kosong, tetap gunakan mock.
-     */
-
-    return {
-      success: true,
-
-      data: {
-        ...MOCK_DATA,
-
-        /*
-         * Jika URL mempunyai ID,
-         * gunakan ID tersebut.
-         */
-
-        idLaporan: idLaporan || MOCK_DATA.idLaporan,
-      },
-    };
-  }
-
-  /* ========================================================
-       MODE API
-    ======================================================== */
-
-  if (!API_CONFIG.endpoint || API_CONFIG.endpoint.includes('GANTI_DENGAN')) {
-    throw new Error('URL Apps Script belum dikonfigurasi.');
-  }
-
-  const url =
-    API_CONFIG.endpoint +
-    '?action=getLaporan&id=' +
-    encodeURIComponent(idLaporan);
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error('Gagal menghubungi server.');
-  }
-
-  const json = await response.json();
-
-  if (!json.success) {
-    throw new Error(json.message || 'Data laporan tidak ditemukan.');
-  }
-
-  return json;
-}
-
-/* ============================================================
-   6. NORMALISASI DATA
-============================================================ */
-
-function normalisasiLaporan(raw) {
-  /*
-   * Fungsi ini menjadi jembatan antara:
-   *
-   * Google Sheets
-   *       ↓
-   * JSON Apps Script
-   *       ↓
-   * UI
-   *
-   * Jadi nama kolom Sheets tidak harus
-   * sama persis dengan nama property UI.
-   */
-
-  const data = raw || {};
-
-  const hasil = {
-    idLaporan: data.idLaporan ?? data['ID Laporan'] ?? '',
-
-    noUrut: data.noUrut ?? data['No Urut'] ?? '',
-
-    waktuInput: data.waktuInput ?? data['Waktu Input'] ?? '',
-
-    status: data.status ?? data['Status'] ?? '',
-
-    tkp: data.tkp ?? data['TKP'] ?? '',
-
-    waktuKejadian: data.waktuKejadian ?? data['Waktu Kejadian'] ?? '',
-
-    kendaraan:
-      data.kendaraan ?? data['Kendaraan yang Terlibat Kecelakaan'] ?? [],
-
-    saksi: data.saksi ?? data['Identitas Saksi-Saksi'] ?? [],
-
-    kronologi: data.kronologi ?? data['Kronologi Kejadian'] ?? '',
-
-    korban: {
-      lr: data.korban?.lr ?? data.LR ?? data['LR'] ?? 0,
-
-      lb: data.korban?.lb ?? data.LB ?? data['LB'] ?? 0,
-
-      md: data.korban?.md ?? data.MD ?? data['MD'] ?? 0,
-    },
-
-    kermat: data.kermat ?? data['Kermat'] ?? 0,
-
-    petugas: data.petugas ?? data['Petugas'] ?? [],
-
-    linkDokumentasi:
-      data.linkDokumentasi ?? data['Link dokumentasi Google Drive'] ?? '',
-  };
-
-  /*
-   * Waktu kejadian bisa berupa object
-   * atau teks biasa.
-   */
-
-  if (hasil.waktuKejadian && typeof hasil.waktuKejadian === 'object') {
-    hasil.waktuKejadian = {
-      hari: hasil.waktuKejadian.hari ?? '',
-
-      tanggal: hasil.waktuKejadian.tanggal ?? '',
-
-      jam: hasil.waktuKejadian.jam ?? '',
-    };
-  }
-
-  return hasil;
-}
-
-/* ============================================================
-   7. RENDER HERO
-============================================================ */
-
-function renderHeader(data) {
-  document.getElementById('laporanId').textContent = nilaiAman(data.idLaporan);
-
-  document.getElementById('waktuInput').textContent = nilaiAman(
-    data.waktuInput,
-  );
-
-  const badge = document.getElementById('statusBadge');
-
-  /*
-   * Jika status tidak tersedia,
-   * jangan tampilkan status palsu.
-   */
-
-  if (
-    data.status === null ||
-    data.status === undefined ||
-    String(data.status).trim() === ''
-  ) {
-    badge.classList.add('hidden');
-
+/* =====================================================
+         ELEMENT
+      ====================================================== */
+
+const detailLaporanOverlay = document.getElementById("detailLaporanOverlay");
+
+const btnTutupDetail = document.getElementById("btnTutupDetail");
+
+const btnTutupDetailBottom = document.getElementById("btnTutupDetailBottom");
+/* =====================================================
+         AWAL TAMBAHAN CODE
+      ====================================================== */
+
+const dataLakaDetail = typeof lakaData !== "undefined" ? lakaData : [];
+/* =====================================================
+   FUNGSI UTAMA: BUKA DETAIL LAPORAN BERDASARKAN ID
+====================================================== */
+
+function bukaDetailLaporan(idLaporan) {
+  // 1. Cek apakah const lakaData sudah terisi
+  if (!Array.isArray(dataLakaDetail) || dataLakaDetail.length === 0) {
+    console.warn("Data lakaData belum dimuat atau kosong.");
     return;
   }
 
-  badge.textContent = data.status;
+  // 2. Cari data yang cocok berdasarkan ID / Nomor Laporan
+  const dataMentah = dataLakaDetail.find(
+    (item) =>
+      String(item.id || item.ID || item.nomorLaporan || "") ===
+      String(idLaporan),
+  );
+
+  if (!dataMentah) {
+    alert("Data laporan dengan ID " + idLaporan + " tidak ditemukan!");
+    return;
+  }
+
+  // 3. Normalisasi data agar siap di-render
+  const dataSiap = normalisasiData(dataMentah);
+
+  // 4. Render seluruh komponen UI
+  renderLaporan(dataSiap);
+
+  // 5. Tampilkan Modal / Overlay Detail
+  if (detailLaporanOverlay) {
+    detailLaporanOverlay.classList.remove("hidden");
+    detailLaporanOverlay.setAttribute("aria-hidden", "false");
+    document.body.classList.add("overflow-hidden");
+  }
+}
+/* =====================================================
+         AKHIR TAMBAHAN CODE
+      ====================================================== */
+
+/* =====================================================
+         TUTUP DETAIL
+         HANYA MENYEMBUNYIKAN OVERLAY.
+         TIDAK NAVIGASI.
+      ====================================================== */
+
+function tutupDetailLaporan() {
+  detailLaporanOverlay.classList.add("hidden");
+
+  detailLaporanOverlay.setAttribute("aria-hidden", "true");
+
+  document.body.classList.remove("overflow-hidden");
 }
 
-/* ============================================================
-   8. RENDER RINGKASAN
-============================================================ */
+btnTutupDetail?.addEventListener("click", tutupDetailLaporan);
+
+btnTutupDetailBottom?.addEventListener("click", tutupDetailLaporan);
+
+/* =====================================================
+         STATUS
+         3 NILAI TERKUNCI
+      ====================================================== */
+
+function setStatusLaporan(status) {
+  const badge = document.getElementById("statusBadge");
+  const dot = document.getElementById("statusBadgeDot");
+  const text = document.getElementById("statusBadgeText");
+
+  if (!badge || !dot || !text) return;
+
+  const statusAsli = String(status || "")
+    .trim()
+    .toLowerCase();
+
+  // =====================================================
+  // NORMALISASI STATUS UNTUK TAMPILAN
+  // =====================================================
+  let statusTampil = status;
+
+  if (
+    statusAsli === "rj" ||
+    statusAsli === "selesai" ||
+    statusAsli === "selesai/rj" ||
+    statusAsli === "selesai / rj"
+  ) {
+    statusTampil = "Selesai";
+  } else if (statusAsli === "dalam penanganan") {
+    statusTampil = "Dalam Penanganan";
+  } else if (statusAsli === "limpah polres") {
+    statusTampil = "Limpah Polres";
+  }
+
+  // =====================================================
+  // TAMPILKAN TEXT STATUS
+  // =====================================================
+  text.textContent = safeText(statusTampil);
+
+  // =====================================================
+  // RESET CLASS
+  // =====================================================
+  badge.className =
+    "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold";
+
+  dot.className = "h-2 w-2 rounded-full";
+
+  // =====================================================
+  // WARNA STATUS
+  // =====================================================
+  if (statusTampil === "Selesai") {
+    badge.classList.add("bg-emerald-200", "text-emerald-700");
+
+    dot.classList.add("bg-emerald-500");
+  } else if (statusTampil === "Dalam Penanganan") {
+    badge.classList.add("bg-amber-100", "text-amber-700");
+
+    dot.classList.add("bg-amber-500");
+  } else if (statusTampil === "Limpah Polres") {
+    badge.classList.add("bg-rose-200", "text-rose-700");
+
+    dot.classList.add("bg-rose-500");
+  } else {
+    badge.classList.add("bg-slate-100", "text-slate-600");
+
+    dot.classList.add("bg-slate-400");
+  }
+}
+
+/* =====================================================
+         HELPER
+      ====================================================== */
+
+function safeText(value) {
+  if (value === null || value === undefined || value === "") {
+    return "-";
+  }
+
+  return String(value);
+}
+
+function formatRupiah(value) {
+  const number = Number(String(value || 0).replace(/[^\d]/g, ""));
+
+  return "Rp " + number.toLocaleString("id-ID");
+}
+
+/* =====================================================
+         DATA DEMO
+         HANYA UNTUK PREVIEW SAAT lakaData
+         BELUM TERSEDIA.
+      ====================================================== */
+
+/* =====================================================
+         RENDER HEADER
+      ====================================================== */
+
+function renderHeader(data) {
+  const laporanId = document.getElementById("laporanId");
+  const laporanIdSecondary = document.getElementById("laporanIdSecondary");
+  const waktuInput = document.getElementById("waktuInput");
+
+  if (laporanId) {
+    laporanId.textContent = safeText(data.id);
+  }
+
+  if (laporanIdSecondary) {
+    laporanIdSecondary.textContent = safeText(data.nomorLP);
+  }
+
+  if (waktuInput) {
+    waktuInput.textContent = safeText(data.waktuInput);
+  }
+
+  setStatusLaporan(data.status);
+}
+/* =====================================================
+         RENDER RINGKASAN
+      ====================================================== */
 
 function renderRingkasan(data) {
-  document.getElementById('jumlahLR').textContent = nilaiAman(
-    data.korban?.lr,
-    0,
-  );
+  document.getElementById("jumlahLR").textContent = safeText(data.jumlahLR);
 
-  document.getElementById('jumlahLB').textContent = nilaiAman(
-    data.korban?.lb,
-    0,
-  );
+  document.getElementById("jumlahLB").textContent = safeText(data.jumlahLB);
 
-  document.getElementById('jumlahMD').textContent = nilaiAman(
-    data.korban?.md,
-    0,
-  );
+  document.getElementById("jumlahMD").textContent = safeText(data.jumlahMD);
 
-  document.getElementById('jumlahKermat').textContent = formatRupiah(
+  document.getElementById("jumlahKermat").textContent = formatRupiah(
     data.kermat,
   );
 }
 
-/* ============================================================
-   9. RENDER WAKTU + LOKASI
-============================================================ */
+/* =====================================================
+         RENDER WAKTU
+      ====================================================== */
 
-function renderWaktuLokasi(data) {
-  const waktuElement = document.getElementById('waktuKejadian');
+function renderWaktu(data) {
+  document.getElementById("tanggalKejadian").textContent = safeText(
+    data.tanggal,
+  );
 
-  /*
-   * Jika object.
-   */
-
-  if (data.waktuKejadian && typeof data.waktuKejadian === 'object') {
-    waktuElement.innerHTML = `
-
-            <div
-                class="
-                    grid
-                    gap-3
-                    sm:grid-cols-3
-                "
-            >
-
-                ${buatInfoWaktu('Hari', data.waktuKejadian.hari)}
-
-                ${buatInfoWaktu('Tanggal', data.waktuKejadian.tanggal)}
-
-                ${buatInfoWaktu('Jam', data.waktuKejadian.jam)}
-
-            </div>
-
-        `;
-  } else {
-    /*
-     * Jika berupa teks biasa.
-     */
-    waktuElement.innerHTML = `
-
-            <div
-                class="
-                    rounded-2xl
-                    border
-                    border-blue-200
-                    bg-blue-50/70
-                    p-4
-                    text-sm
-                    font-semibold
-                    leading-relaxed
-                    text-slate-700
-                "
-            >
-                ${escapeHTML(nilaiAman(data.waktuKejadian))}
-            </div>
-
-        `;
-  }
-
-  document.getElementById('tkp').textContent = nilaiAman(data.tkp);
+  document.getElementById("jamKejadian").textContent = safeText(data.jam);
 }
 
-function buatInfoWaktu(label, value) {
-  return `
+/* =====================================================
+         RENDER LOKASI
+      ====================================================== */
 
-        <div
-            class="
-                rounded-2xl
-                border
-                border-blue-200
-                bg-blue-50/70
-                p-4
-            "
-        >
-
-            <p class="field-label">
-                ${escapeHTML(label)}
-            </p>
-
-            <p
-                class="
-                    mt-1
-                    text-sm
-                    font-bold
-                    text-slate-800
-                "
-            >
-                ${escapeHTML(nilaiAman(value))}
-            </p>
-
-        </div>
-
-    `;
+function renderLokasi(data) {
+  document.getElementById("tkp").textContent = safeText(data.tkp);
 }
 
-/* ============================================================
-   10. RENDER KENDARAAN
-============================================================ */
+/* =====================================================
+         RENDER KENDARAAN
+         DATA KENDARAAN TETAP DIGABUNG.
+         BELUM DIPECAH MENJADI FIELD TERPISAH.
+      ====================================================== */
+
+/* =====================================================
+   RENDER KENDARAAN (TAILWIND CSS)
+====================================================== */
 
 function renderKendaraan(data) {
-  const container = document.getElementById('kendaraanGrid');
+  const container = document.getElementById("kendaraanGrid");
 
-  const kendaraan = pastikanArray(data.kendaraan);
+  if (!container) return;
 
+  const kendaraan = Array.isArray(data.kendaraan) ? data.kendaraan : [];
+
+  // =====================================================
+  // JIKA TIDAK ADA DATA KENDARAAN
+  // =====================================================
   if (kendaraan.length === 0) {
-    container.innerHTML = buatEmptyState('Data kendaraan belum tersedia.');
+    container.innerHTML = `
+      <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <p class="text-sm text-slate-500">
+          Tidak ada data kendaraan.
+        </p>
+      </div>
+    `;
 
     return;
   }
 
+  // =====================================================
+  // RENDER SETIAP KENDARAAN
+  // =====================================================
   container.innerHTML = kendaraan
-    .map((item, index) => buatKartuKendaraan(item, index))
-    .join('');
-}
-
-function buatKartuKendaraan(item, index) {
-  const nomor = item.nomor ?? index + 1;
-
-  const kendaraan = item.kendaraan || item.vehicle || {};
-
-  const pengendara = item.pengendara || item.pengemudi || item.driver || {};
-
-  const pembonceng = pastikanArray(item.pembonceng);
-
-  return `
-
-        <article class="vehicle-card">
-
-            <!-- HEADER KENDARAAN -->
-
-            <div class="vehicle-header">
-
-                <div class="vehicle-number">
-                    ${escapeHTML(nomor)}
-                </div>
-
-                <div>
-
-                    <p class="vehicle-title">
-                        Kendaraan ${escapeHTML(nomor)}
-                    </p>
-
-                    <p
-                        class="
-                            mt-0.5
-                            text-xs
-                            text-slate-500
-                        "
-                    >
-                        Identitas kendaraan
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- DATA KENDARAAN -->
-
-            <div class="vehicle-section">
-
-                <p class="vehicle-section-title">
-                    Kendaraan
-                </p>
-
-
-                ${buatDataRow('Jenis', kendaraan.jenis)}
-
-                ${buatDataRow('Merk / Tipe', kendaraan.merk)}
-
-                ${buatDataRow('Nomor Polisi', kendaraan.nomorPolisi)}
-
-                ${buatDataRow('Warna', kendaraan.warna)}
-
-            </div>
-
-
-            <!-- PENGENDARA -->
-
-            <div class="vehicle-section">
-
-                <p class="vehicle-section-title">
-                    Pengendara / Pengemudi
-                </p>
-
-
-                ${buatDataRow('Nama', pengendara.nama)}
-
-                ${buatDataRow('Umur', pengendara.umur)}
-
-                ${buatDataRow('Alamat', pengendara.alamat)}
-
-                ${buatDataRow('Pekerjaan', pengendara.pekerjaan)}
-
-            </div>
-
-
-            ${
-              pembonceng.length > 0
-                ? `
-
-                        <div class="vehicle-section">
-
-                            <p class="vehicle-section-title">
-                                Pembonceng
-                            </p>
-
-                            <div class="flex flex-col gap-3">
-
-                                ${pembonceng
-                                  .map(
-                                    (orang, pemboncengIndex) => `
-
-                                            <div
-                                                class="
-                                                    rounded-xl
-                                                    border
-                                                    border-blue-200
-                                                    bg-blue-50/60
-                                                    p-3
-                                                "
-                                            >
-
-                                                <div
-                                                    class="
-                                                        mb-2
-                                                        flex
-                                                        items-center
-                                                        gap-2
-                                                    "
-                                                >
-
-                                                    <div
-                                                        class="
-                                                            flex
-                                                            h-7
-                                                            w-7
-                                                            items-center
-                                                            justify-center
-                                                            rounded-lg
-                                                            bg-blue-100
-                                                            text-xs
-                                                            font-bold
-                                                            text-blue-700
-                                                        "
-                                                    >
-                                                        ${pemboncengIndex + 1}
-                                                    </div>
-
-                                                    <span
-                                                        class="
-                                                            text-xs
-                                                            font-bold
-                                                            text-blue-800
-                                                        "
-                                                    >
-                                                        Pembonceng
-                                                    </span>
-
-                                                </div>
-
-
-                                                ${buatDataRow(
-                                                  'Nama',
-                                                  orang.nama,
-                                                )}
-
-                                                ${buatDataRow(
-                                                  'Umur',
-                                                  orang.umur,
-                                                )}
-
-                                                ${buatDataRow(
-                                                  'Hubungan',
-                                                  orang.hubungan,
-                                                )}
-
-                                            </div>
-
-                                        `,
-                                  )
-                                  .join('')}
-
-                            </div>
-
-                        </div>
-
-                    `
-                : ''
-            }
-
-        </article>
-
-    `;
-}
-
-/* ============================================================
-   DATA ROW
-============================================================ */
-
-function buatDataRow(label, value) {
-  return `
-
-        <div class="data-row">
-
-            <span class="data-label">
-                ${escapeHTML(label)}
-            </span>
-
-            <span class="data-value">
-                ${escapeHTML(nilaiAman(value))}
-            </span>
-
-        </div>
-
-    `;
-}
-
-/* ============================================================
-   11. RENDER SAKSI
-============================================================ */
-
-function renderSaksi(data) {
-  const container = document.getElementById('saksiGrid');
-
-  const saksi = pastikanArray(data.saksi);
-
-  if (saksi.length === 0) {
-    container.innerHTML = buatEmptyState('Data saksi belum tersedia.');
-
-    return;
-  }
-
-  container.innerHTML = saksi
-    .map((item, index) => buatKartuSaksi(item, index))
-    .join('');
-}
-
-function buatKartuSaksi(item, index) {
-  const nomor = item.nomor ?? index + 1;
-
-  return `
-
-        <article class="person-card">
-
-            <div
-                class="
-                    mb-3
-                    flex
-                    items-center
-                    gap-3
-                "
-            >
-
-                <div class="person-number">
-                    ${escapeHTML(nomor)}
-                </div>
-
-                <div>
-
-                    <p
-                        class="
-                            text-sm
-                            font-extrabold
-                            text-slate-800
-                        "
-                    >
-                        Saksi ${escapeHTML(nomor)}
-                    </p>
-
-                    <p
-                        class="
-                            text-xs
-                            text-slate-500
-                        "
-                    >
-                        Identitas saksi
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            ${buatDataRow('Nama', item.nama)}
-
-            ${buatDataRow('Umur', item.umur)}
-
-            ${buatDataRow('Alamat', item.alamat)}
-
-            ${buatDataRow('Pekerjaan', item.pekerjaan)}
-
-        </article>
-
-    `;
-}
-
-/* ============================================================
-   12. RENDER KRONOLOGI
-============================================================ */
-
-function renderKronologi(data) {
-  document.getElementById('kronologi').textContent = nilaiAman(data.kronologi);
-}
-
-/* ============================================================
-   13. RENDER PETUGAS
-============================================================ */
-
-function renderPetugas(data) {
-  const container = document.getElementById('petugasList');
-
-  const petugas = pastikanArray(data.petugas);
-
-  if (petugas.length === 0) {
-    container.innerHTML = buatEmptyState('Data petugas belum tersedia.');
-
-    return;
-  }
-
-  container.innerHTML = petugas
     .map((item, index) => {
-      /*
-       * Jika nanti Apps Script mengirim
-       * object petugas, kita juga siap.
-       */
+      const jenisKendaraan = String(item.kendaraan || "").toLowerCase();
 
-      const nama =
-        typeof item === 'object' ? item.nama || item.name || '-' : item;
+      // ---------------------------------------------------
+      // NOMOR POLISI
+      // ---------------------------------------------------
+      const nopol = safeText(item.nopol);
+
+      const nopolText =
+        item.nopol && String(item.nopol).trim() !== ""
+          ? `No. Pol: ${nopol}`
+          : "No. Pol: - (tanpa Nopol)";
+
+      // ---------------------------------------------------
+      // TENTUKAN JENIS ORANG YANG DITAMPILKAN
+      // ---------------------------------------------------
+      let labelOrang = "Pengemudi";
+      let dataOrang = "";
+
+      if (jenisKendaraan.includes("sepeda pancal")) {
+        labelOrang = "Pengayuh";
+        dataOrang = item.pengayuh || "";
+      } else if (jenisKendaraan.includes("pejalan kaki")) {
+        labelOrang = "Pejalan Kaki";
+        dataOrang = item.pejalanKaki || item["pejalan kaki"] || item.nama || "";
+      } else if (jenisKendaraan.includes("sepeda motor")) {
+        labelOrang = "Pengendara";
+        dataOrang = item.pengendara || "";
+      } else {
+        labelOrang = "Pengemudi";
+        dataOrang = item.pengemudi || "";
+      }
+
+      // ---------------------------------------------------
+      // PEMBONCENG
+      // Hanya ditampilkan kalau memang ada
+      // ---------------------------------------------------
+      const pemboncengAda =
+        item.pembonceng !== undefined &&
+        item.pembonceng !== null &&
+        String(item.pembonceng).trim() !== "";
 
       return `
+        <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
 
-                        <div class="petugas-item">
+          <!-- NOMOR KENDARAAN -->
+          <div class="mb-3 flex items-start gap-3">
+            <div
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700"
+            >
+              ${index + 1}
+            </div>
 
-                            <div class="petugas-number">
-                                ${index + 1}
-                            </div>
+            <div class="min-w-0">
+              <p class="break-words text-sm font-bold text-blue-950">
+                ${safeText(item.kendaraan)}
+              </p>
 
-                            <div class="min-w-0">
+              <p class="mt-1 break-words text-xs font-medium text-slate-500">
+                ${nopolText}
+              </p>
+            </div>
+          </div>
 
-                                <p
-                                    class="
-                                        break-words
-                                        text-sm
-                                        font-bold
-                                        text-slate-800
-                                    "
-                                >
-                                    ${escapeHTML(nama)}
-                                </p>
+          <!-- PENGEMUDI / PENGENDARA / PENGAYUH / PEJALAN KAKI -->
+          <div class="border-t border-slate-100 pt-3">
+            <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              ${labelOrang}
+            </p>
 
-                            </div>
+            <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+              ${safeText(dataOrang)}
+            </p>
+          </div>
 
-                        </div>
+          ${
+            pemboncengAda
+              ? `
+                <!-- PEMBONCENG -->
+                <div class="mt-3 border-t border-slate-100 pt-3">
+                  <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                    Pembonceng
+                  </p>
 
-                    `;
+                  <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+                    ${safeText(item.pembonceng)}
+                  </p>
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+      `;
     })
-    .join('');
+    .join("");
 }
 
-/* ============================================================
-   14. RENDER DOKUMENTASI
-============================================================ */
+/* =====================================================
+         RENDER SAKSI
+      ====================================================== */
+
+// function renderSaksi(data) {
+//   const container = document.getElementById("saksiGrid");
+
+//   if (!container) {
+//     return;
+//   }
+
+//   const saksi = Array.isArray(data.saksi) ? data.saksi : [];
+
+//   if (!saksi.length) {
+//     container.innerHTML = `
+//               <div class="empty-state md:col-span-2">
+//                 Tidak ada data saksi yang tersedia.
+//               </div>
+//             `;
+
+//     return;
+//   }
+
+//   container.innerHTML = saksi
+//     .map(
+//       (item, index) => `
+//                 <article class="person-card">
+
+//                   <div class="flex items-start gap-3">
+
+//                     <div class="person-number">
+//                       ${index + 1}
+//                     </div>
+
+//                     <div class="min-w-0 flex-1">
+
+//                       <p class="text-sm font-extrabold text-blue-950">
+//                         Saksi ${index + 1}
+//                       </p>
+
+//                       <p class="mt-2 text-xs font-semibold leading-6 text-blue-900">
+//                         ${safeText(item)}
+//                       </p>
+
+//                     </div>
+
+//                   </div>
+
+//                 </article>
+//               `,
+//     )
+//     .join("");
+// }
+
+/* =====================================================
+   RENDER SAKSI (TAILWIND CSS)
+====================================================== */
+function renderSaksi(data) {
+  const container = document.getElementById("saksiGrid");
+
+  if (!container) return;
+
+  const saksi = Array.isArray(data.saksi) ? data.saksi : [];
+
+  if (!saksi.length) {
+    container.innerHTML = `
+      <div class="md:col-span-2 rounded-xl border border-dashed border-blue-300/80 bg-blue-100/40 p-4 text-center text-xs font-semibold text-blue-800">
+        Tidak ada data saksi yang tersedia.
+      </div>
+    `;
+    return;
+  }
+
+  // Grid col 2 mulai breakpoint md (768px)
+  container.className = "mt-3 grid grid-cols-1 gap-2.5 md:grid-cols-2";
+
+  container.innerHTML = saksi
+    .map(
+      (item, index) => `
+        <article class="overflow-hidden rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 shadow-sm">
+          <!-- Header Card Saksi dengan Nomor (S1, S2, dst.) -->
+          <div class="flex items-center gap-2.5 border-b border-blue-300/50 bg-gradient-to-r from-blue-100/90 to-blue-200/50 p-2.5">
+            <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-blue-400/40 bg-gradient-to-br from-blue-600 to-blue-800 text-[0.7rem] font-black text-white shadow-sm">
+              S${index + 1}
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-xs sm:text-sm font-black text-blue-950 leading-tight">
+                Saksi ${index + 1}
+              </h3>
+              <p class="mt-0.5 text-[0.65rem] font-medium text-blue-800/80 leading-tight">
+                Pemberi keterangan
+              </p>
+            </div>
+          </div>
+
+          <!-- Detail Identitas Saksi -->
+          <div class="p-2.5">
+            <div class="rounded-lg border border-blue-300/40 bg-blue-50/60 p-2">
+              <p class="text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700">
+                Identitas Saksi
+              </p>
+              <p class="mt-1 whitespace-pre-line break-words text-xs font-bold text-blue-950">
+                ${safeText(item.saksi || item.nama || item)}
+              </p>
+            </div>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+/* =====================================================
+         RENDER KRONOLOGI
+      ====================================================== */
+
+function renderKronologi(data) {
+  document.getElementById("kronologi").textContent = safeText(data.kronologi);
+}
+
+/* =====================================================
+         RENDER PETUGAS
+      ====================================================== */
+
+// function renderPetugas(data) {
+//   const container = document.getElementById("petugasList");
+
+//   if (!container) {
+//     return;
+//   }
+
+//   const petugas = Array.isArray(data.petugas) ? data.petugas : [];
+
+//   if (!petugas.length) {
+//     container.innerHTML = `
+//               <div class="empty-state">
+//                 Belum ada data petugas yang tersedia.
+//               </div>
+//             `;
+
+//     return;
+//   }
+
+//   container.innerHTML = petugas
+//     .map(
+//       (item, index) => `
+//                 <div class="petugas-item">
+
+//                   <div class="petugas-number">
+//                     ${index + 1}
+//                   </div>
+
+//                   <div class="min-w-0">
+
+//                     <p class="text-sm font-extrabold text-blue-950">
+//                       ${safeText(item)}
+//                     </p>
+
+//                     <p class="mt-0.5 text-[11px] font-medium text-blue-800/70">
+//                       Petugas penanganan laporan
+//                     </p>
+
+//                   </div>
+
+//                 </div>
+//               `,
+//     )
+//     .join("");
+// }
+
+/* =====================================================
+   RENDER PETUGAS (TAILWIND CSS)
+====================================================== */
+function renderPetugas(data) {
+  const container = document.getElementById("petugasList");
+
+  if (!container) return;
+
+  const petugas = Array.isArray(data.petugas) ? data.petugas : [];
+
+  if (!petugas.length) {
+    container.innerHTML = `
+      <div class="rounded-xl border border-dashed border-blue-300/80 bg-blue-100/40 p-4 text-center text-xs font-semibold text-blue-800">
+        Tidak ada data petugas yang tersedia.
+      </div>
+    `;
+    return;
+  }
+
+  // Ubah wrapper container ke grid col 2 mulai breakpoint md (768px)
+  container.className = "mt-2.5 grid grid-cols-1 gap-2.5 md:grid-cols-2";
+
+  container.innerHTML = petugas
+    .map(
+      (item) => `
+        <div class="flex items-center gap-2.5 rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-2.5 shadow-sm">
+          <!-- Icon Petugas (Tanpa Angka) -->
+          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/80 text-blue-700 shadow-sm">
+            <i data-lucide="user-check" class="h-4 w-4"></i>
+          </div>
+          
+          <div class="min-w-0 flex-1">
+            <p class="text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700 leading-tight">
+              Petugas Polsek / Satlantas
+            </p>
+            <p class="mt-0.5 truncate text-xs font-bold text-blue-950">
+              ${safeText(item.nama || item)}
+            </p>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
+
+  // Re-initialize Lucide Icons jika digunakan di project
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+/* =====================================================
+         RENDER DOKUMENTASI
+      ====================================================== */
+
+// function renderDokumentasi(data) {
+//   const section = document.getElementById("sectionDokumentasi");
+
+//   const link = document.getElementById("linkDokumentasi");
+
+//   const nama = document.getElementById("namaDokumentasi");
+
+//   if (!section || !link || !nama) {
+//     return;
+//   }
+
+//   if (!data.dokumentasi) {
+//     section.classList.add("hidden");
+
+//     return;
+//   }
+
+//   section.classList.remove("hidden");
+
+//   nama.textContent = safeText(data.dokumentasi.nama);
+
+//   link.href = data.dokumentasi.url || "#";
+// }
 
 function renderDokumentasi(data) {
-  const link = document.getElementById('linkDokumentasi');
+  const section = document.getElementById("sectionDokumentasi");
+  const link = document.getElementById("linkDokumentasi");
+  const nama = document.getElementById("namaDokumentasi");
 
-  const nama = document.getElementById('namaDokumentasi');
+  if (!section || !link || !nama) return;
 
-  const url = String(data.linkDokumentasi || '').trim();
+  const dokumentasi = data.dokumentasi;
 
-  if (!url) {
-    link.removeAttribute('href');
+  // =====================================================
+  // TIDAK ADA DOKUMENTASI
+  // =====================================================
+  if (!dokumentasi) {
+    section.classList.add("hidden");
+    return;
+  }
 
-    link.classList.add('disabled');
+  // =====================================================
+  // JIKA DOKUMENTASI BERUPA STRING
+  // =====================================================
+  if (typeof dokumentasi === "string") {
+    section.classList.remove("hidden");
 
-    nama.textContent = 'Dokumentasi belum tersedia.';
+    nama.textContent = "Buka Berkas Google Drive";
+    link.href = dokumentasi;
 
     return;
   }
+
+  // =====================================================
+  // JIKA DOKUMENTASI BERUPA OBJECT
+  // =====================================================
+  const url = dokumentasi.url || "";
+  const keterangan = dokumentasi.keterangan || "";
+
+  // Kalau tidak ada URL, jangan tampilkan section
+  if (!url) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  section.classList.remove("hidden");
 
   link.href = url;
 
-  nama.textContent = 'Buka folder / dokumentasi Google Drive';
+  nama.textContent =
+    keterangan.trim() !== "" ? keterangan : "Buka Berkas Google Drive";
 }
 
-/* ============================================================
-   15. RENDER MAP
-============================================================ */
-
-function renderMap(data) {
-  /*
-   * Untuk sekarang kita belum memasukkan
-   * koordinat karena struktur database
-   * belum mempunyai latitude/longitude.
-   *
-   * Jangan mengarang koordinat.
-   */
-
-  const container = document.getElementById('mapContainer');
-
-  if (
-    data.latitude !== undefined &&
-    data.longitude !== undefined &&
-    data.latitude !== '' &&
-    data.longitude !== ''
-  ) {
-    const lat = Number(data.latitude);
-
-    const lng = Number(data.longitude);
-
-    if (Number.isFinite(lat) && Number.isFinite(lng)) {
-      /*
-       * Nanti bagian ini dapat diganti
-       * dengan Google Maps Embed/API.
-       */
-
-      container.innerHTML = `
-
-                <div
-                    class="
-                        flex
-                        flex-col
-                        items-center
-                        justify-center
-                        text-center
-                    "
-                >
-
-                    <p
-                        class="
-                            text-sm
-                            font-bold
-                            text-slate-700
-                        "
-                    >
-                        Koordinat Lokasi
-                    </p>
-
-                    <p
-                        class="
-                            mt-1
-                            text-xs
-                            text-slate-500
-                        "
-                    >
-                        ${lat}, ${lng}
-                    </p>
-
-                </div>
-
-            `;
-
-      return;
-    }
-  }
-}
-
-/* ============================================================
-   16. RENDER SEMUA DATA
-============================================================ */
+/* =====================================================
+         RENDER SEMUA
+      ====================================================== */
 
 function renderLaporan(data) {
   renderHeader(data);
 
   renderRingkasan(data);
 
-  renderWaktuLokasi(data);
+  renderWaktu(data);
+
+  renderLokasi(data);
 
   renderKendaraan(data);
 
@@ -1008,319 +676,328 @@ function renderLaporan(data) {
 
   renderDokumentasi(data);
 
-  renderMap(data);
-}
-
-/* ============================================================
-   17. EMPTY STATE
-============================================================ */
-
-function buatEmptyState(pesan) {
-  return `
-
-        <div
-            class="
-                rounded-2xl
-                border
-                border-dashed
-                border-blue-300
-                bg-blue-50/60
-                p-5
-                text-center
-            "
-        >
-
-            <p
-                class="
-                    text-sm
-                    font-semibold
-                    text-slate-500
-                "
-            >
-                ${escapeHTML(pesan)}
-            </p>
-
-        </div>
-
-    `;
-}
-
-/* ============================================================
-   18. TOAST
-============================================================ */
-
-let toastTimer = null;
-
-function tampilkanToast(pesan) {
-  const toast = document.getElementById('toast');
-
-  toast.textContent = pesan;
-
-  toast.classList.remove('hidden');
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(() => {
-    toast.classList.add('hidden');
-  }, 2500);
-}
-
-/* ============================================================
-   19. NAVIGASI KEMBALI
-============================================================ */
-
-function kembaliKeDaftar() {
   /*
-   * Jika halaman sebelumnya tersedia,
-   * gunakan history browser.
-   */
+          Render ulang icon setelah elemen
+          dinamis dibuat.
+        */
 
-  if (window.history.length > 1) {
-    window.history.back();
-
-    return;
+  if (window.lucide) {
+    lucide.createIcons();
   }
-
-  /*
-   * Fallback jika halaman dibuka langsung.
-   */
-
-  window.location.href = 'halLakaLantas.html';
 }
 
-/* ============================================================
-   20. ACTION BUTTON
-============================================================ */
+/* =====================================================
+         AMBIL DATA DARI lakaData
+         Jika lakaData sudah tersedia,
+         cari berdasarkan ?id=...
+      ====================================================== */
 
-function setupActions() {
-  const btnKembali = document.getElementById('btnKembali');
+// function ambilDataLaporan() {
+//   const params = new URLSearchParams(window.location.search);
 
-  const btnTutupMobile = document.getElementById('btnTutupMobile');
+//   const id = params.get("id");
 
-  const btnPdf = document.getElementById('btnPdf');
+//   /*
+//           Jika global lakaData tersedia,
+//           gunakan data tersebut.
+//         */
 
-  const btnBagikan = document.getElementById('btnBagikan');
+//   if (Array.isArray(window.lakaData)) {
+//     const laporan = window.lakaData.find(
+//       (item) =>
+//         String(item.id || item.ID || item.nomorLaporan || "") === String(id),
+//     );
 
-  const pdfPopover = document.getElementById('pdfPopover');
+//     if (laporan) {
+//       return normalisasiData(laporan);
+//     }
+//   }
 
-  const sharePopover = document.getElementById('sharePopover');
+//   /*
+//           Jika data belum tersedia,
+//           gunakan preview.
+//         */
 
-  /* ========================================================
-       KEMBALI
-    ======================================================== */
+//   return dataPreview;
+// }
 
-  btnKembali.addEventListener('click', kembaliKeDaftar);
+/* =====================================================
+   AMBIL DATA LAPORAN (MENGAMBIL DARI window.lakaData)
+====================================================== */
 
-  btnTutupMobile.addEventListener('click', kembaliKeDaftar);
+function ambilDataLaporan() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
 
-  /* ========================================================
-       PDF POPOVER
-    ======================================================== */
+  if (Array.isArray(lakaData) && lakaData.length > 0) {
+    if (id) {
+      const laporan = lakaData.find(
+        (item) => String(item.id || "") === String(id),
+      );
 
-  btnPdf.addEventListener('click', function (event) {
-    event.stopPropagation();
-
-    sharePopover.classList.add('hidden');
-
-    pdfPopover.classList.toggle('hidden');
-  });
-
-  /* ========================================================
-       SHARE POPOVER
-    ======================================================== */
-
-  btnBagikan.addEventListener('click', function (event) {
-    event.stopPropagation();
-
-    pdfPopover.classList.add('hidden');
-
-    sharePopover.classList.toggle('hidden');
-  });
-
-  /* ========================================================
-       CLICK DI LUAR POPOVER
-    ======================================================== */
-
-  document.addEventListener('click', function () {
-    pdfPopover.classList.add('hidden');
-
-    sharePopover.classList.add('hidden');
-  });
-
-  /*
-   * Supaya klik di dalam popover
-   * tidak langsung menutupnya.
-   */
-
-  pdfPopover.addEventListener('click', function (event) {
-    event.stopPropagation();
-  });
-
-  sharePopover.addEventListener('click', function (event) {
-    event.stopPropagation();
-  });
-}
-
-/* ============================================================
-   21. TAMPILKAN ERROR
-============================================================ */
-
-function tampilkanError(pesan) {
-  const container = document.getElementById('halamanDetail');
-
-  container.innerHTML = `
-
-        <div
-            class="
-                flex
-                min-h-screen
-                items-center
-                justify-center
-                bg-blue-50
-                p-5
-            "
-        >
-
-            <div
-                class="
-                    w-full
-                    max-w-md
-                    rounded-3xl
-                    border
-                    border-blue-200
-                    bg-white
-                    p-6
-                    text-center
-                    shadow-lg
-                "
-            >
-
-                <div
-                    class="
-                        mx-auto
-                        flex
-                        h-14
-                        w-14
-                        items-center
-                        justify-center
-                        rounded-2xl
-                        bg-blue-100
-                        text-blue-700
-                    "
-                >
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-7 w-7"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 9v4m0 4h.01M10.3 3.9L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"
-                        />
-                    </svg>
-
-                </div>
-
-
-                <h1
-                    class="
-                        mt-4
-                        text-lg
-                        font-extrabold
-                        text-slate-800
-                    "
-                >
-                    Data Laporan Tidak Dapat Ditampilkan
-                </h1>
-
-
-                <p
-                    class="
-                        mt-2
-                        text-sm
-                        leading-relaxed
-                        text-slate-500
-                    "
-                >
-                    ${escapeHTML(pesan)}
-                </p>
-
-
-                <button
-                    type="button"
-                    onclick="kembaliKeDaftar()"
-                    class="
-                        mt-5
-                        rounded-xl
-                        bg-blue-700
-                        px-5
-                        py-2.5
-                        text-sm
-                        font-bold
-                        text-white
-                        transition
-                        hover:bg-blue-800
-                    "
-                >
-                    Kembali ke Daftar Laporan
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-}
-
-/* ============================================================
-   22. INIT HALAMAN
-============================================================ */
-
-async function initHalaman() {
-  setupActions();
-
-  const idLaporan = ambilIdLaporanDariURL();
-
-  try {
-    /*
-     * Ambil data.
-     */
-
-    const response = await ambilDataLaporan(idLaporan);
-
-    /*
-     * Pastikan response benar.
-     */
-
-    if (!response || response.success === false) {
-      throw new Error(response?.message || 'Data laporan tidak tersedia.');
+      return normalisasiData(laporan);
     }
 
-    /*
-     * Normalisasi.
-     */
-
-    const data = normalisasiLaporan(response.data || response);
-
-    /*
-     * Render.
-     */
-
-    renderLaporan(data);
-  } catch (error) {
-    console.error('Error halaman detail:', error);
-
-    tampilkanError(error.message || 'Terjadi kesalahan saat mengambil data.');
+    return normalisasiData(lakaData[0]);
   }
+
+  return normalisasiData(null);
+}
+/* =====================================================
+         NORMALISASI DATA
+         Sementara dibuat fleksibel.
+      ====================================================== */
+
+// function normalisasiData(data) {
+//   return {
+//     id: data.id || data.ID || data.nomorLaporan || data.nomor || dataPreview.id,
+
+//     tanggal:
+//       data.tanggal || data.tanggalKejadian || data.date || dataPreview.tanggal,
+
+//     jam: data.jam || data.jamKejadian || data.waktu || dataPreview.jam,
+
+//     waktuInput: data.waktuInput || data.inputTime || dataPreview.waktuInput,
+
+//     status:
+//       data.status ||
+//       data.statusPenanganan ||
+//       data.penanganan ||
+//       dataPreview.status,
+
+//     jumlahLR: data.jumlahLR ?? data.lr ?? data.LR ?? dataPreview.jumlahLR,
+
+//     jumlahLB: data.jumlahLB ?? data.lb ?? data.LB ?? dataPreview.jumlahLB,
+
+//     jumlahMD: data.jumlahMD ?? data.md ?? data.MD ?? dataPreview.jumlahMD,
+
+//     kermat: data.kermat ?? data.kerugianMaterial ?? dataPreview.kermat,
+
+//     tkp: data.tkp || data.lokasi || data.tempatKejadian || dataPreview.tkp,
+
+//     kendaraan: Array.isArray(data.kendaraan)
+//       ? data.kendaraan
+//       : dataPreview.kendaraan,
+
+//     saksi: Array.isArray(data.saksi) ? data.saksi : dataPreview.saksi,
+
+//     kronologi: data.kronologi || data.uraian || dataPreview.kronologi,
+
+//     petugas: Array.isArray(data.petugas) ? data.petugas : dataPreview.petugas,
+
+//     dokumentasi: data.dokumentasi || dataPreview.dokumentasi,
+//   };
+// }
+
+/* =====================================================
+   NORMALISASI DATA (FIXED & SAFE)
+====================================================== */
+
+// function normalisasiData(data) {
+//   // Helper internal untuk mengambil string atau fallback kosong
+//   const getStr = (...keys) => {
+//     for (let k of keys) {
+//       if (
+//         data[k] !== undefined &&
+//         data[k] !== null &&
+//         String(data[k]).trim() !== ""
+//       ) {
+//         return String(data[k]).trim();
+//       }
+//     }
+//     return "-"; // Jika memang kosong di lakaData, tampilkan "-" bukan dataPreview
+//   };
+
+//   // Helper internal untuk angka/jumlah korban
+//   const getNum = (...keys) => {
+//     for (let k of keys) {
+//       if (data[k] !== undefined && data[k] !== null && data[k] !== "") {
+//         const parsed = Number(data[k]);
+//         if (!isNaN(parsed)) return parsed;
+//       }
+//     }
+//     return 0; // Default angka jika kosong adalah 0
+//   };
+
+//   return {
+//     id: getStr("id", "ID", "nomorLaporan", "nomor"),
+//     tanggal: getStr("tanggal", "tanggalKejadian", "date"),
+//     jam: getStr("jam", "jamKejadian", "waktu"),
+//     waktuInput: getStr("waktuInput", "inputTime"),
+//     status: getStr("status", "statusPenanganan", "penanganan"),
+
+//     // Angka korban default ke 0
+//     jumlahLR: getNum("jumlahLR", "lr", "LR"),
+//     jumlahLB: getNum("jumlahLB", "lb", "LB"),
+//     jumlahMD: getNum("jumlahMD", "md", "MD"),
+//     kermat: getNum("kermat", "kerugianMaterial"),
+
+//     tkp: getStr("tkp", "lokasi", "tempatKejadian"),
+//     kronologi: getStr("kronologi", "uraian"),
+
+//     // Array aman
+//     kendaraan: Array.isArray(data.kendaraan) ? data.kendaraan : [],
+//     saksi: Array.isArray(data.saksi) ? data.saksi : [],
+//     petugas: Array.isArray(data.petugas) ? data.petugas : [],
+
+//     // Dokumentasi
+//     dokumentasi: data.dokumentasi || data.linkDrive || null,
+//   };
+// }
+
+/* =====================================================
+   NORMALISASI DATA (MURNI LAKADATA, JIKA KOSONG = KOSONG)
+====================================================== */
+
+/* =====================================================
+   NORMALISASI DATA
+   SESUAI STRUKTUR lakaData TERBARU
+====================================================== */
+
+function normalisasiData(data) {
+  // =====================================================
+  // JIKA DATA TIDAK DITEMUKAN
+  // =====================================================
+  if (!data) {
+    return {
+      id: "-",
+      nomorLP: "-",
+      tanggal: "-",
+      jam: "-",
+      waktuInput: "-",
+      status: "-",
+      jumlahLR: 0,
+      jumlahLB: 0,
+      jumlahMD: 0,
+      kermat: 0,
+      tkp: "-",
+      kronologi: "-",
+      kendaraan: [],
+      saksi: [],
+      petugas: [],
+      dokumentasi: null,
+    };
+  }
+
+  // =====================================================
+  // NORMALISASI DATA YANG ADA
+  // =====================================================
+
+  const listKendaraan = Array.isArray(data.kendaraan) ? data.kendaraan : [];
+
+  const listSaksi = Array.isArray(data.saksi) ? data.saksi : [];
+
+  const listPetugas = Array.isArray(data.petugas) ? data.petugas : [];
+
+  const dokumentasi = data.dokumentasi || null;
+
+  return {
+    id: data.id || "-",
+    nomorLP:
+      data.nomorLP !== undefined &&
+      data.nomorLP !== null &&
+      String(data.nomorLP).trim() !== ""
+        ? String(data.nomorLP).trim()
+        : "-",
+    tanggal: data.tanggal || "-",
+    jam: data.jam || "-",
+    waktuInput: data.waktuInput || "-",
+    status: data.status || "-",
+
+    jumlahLR: data.jumlahLR ?? 0,
+    jumlahLB: data.jumlahLB ?? 0,
+    jumlahMD: data.jumlahMD ?? 0,
+    kermat: data.kermat ?? 0,
+
+    tkp: data.tkp || "-",
+    kronologi: data.kronologi || "-",
+
+    kendaraan: listKendaraan,
+    saksi: listSaksi,
+    petugas: listPetugas,
+    dokumentasi: dokumentasi,
+  };
 }
 
-/* ============================================================
-   23. JALANKAN
-============================================================ */
+/* =====================================================
+   AWAL TAMBAHAN CODE
+====================================================== */
+/* =====================================================
+   FUNGSI DINAMIS UNTUK MEMBUKA BANYAK DATA
+====================================================== */
 
-document.addEventListener('DOMContentLoaded', initHalaman);
+// function bukaDetailLaporan(id) {
+//   if (!Array.isArray(lakaData)) return;
+
+//   const targetData = lakaData.find(
+//     (item) =>
+//       String(item.id || item.ID || item.nomorLaporan || "") === String(id),
+//   );
+
+//   if (targetData) {
+//     const dataSiap = normalisasiData(targetData);
+//     renderLaporan(dataSiap);
+
+//     // Buka modal overlay
+//     if (detailLaporanOverlay) {
+//       detailLaporanOverlay.classList.remove("hidden");
+//       detailLaporanOverlay.setAttribute("aria-hidden", "false");
+//       document.body.classList.add("overflow-hidden");
+//     }
+//   }
+// }
+
+/* =====================================================
+   AKHIR TAMBAHAN CODE
+====================================================== */
+
+/* =====================================================
+         INIT
+      ====================================================== */
+
+function initDetailLaporan() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  // Jika halaman dibuka langsung sebagai detailLaporan.html?id=...
+  // maka tampilkan detail seperti sebelumnya.
+  if (id) {
+    const data = ambilDataLaporan();
+
+    renderLaporan(data);
+
+    if (detailLaporanOverlay) {
+      detailLaporanOverlay.classList.remove("hidden");
+      detailLaporanOverlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("overflow-hidden");
+    }
+  } else {
+    // Jika detailLaporan.js dipakai sebagai overlay
+    // di halLakaLantas.html, jangan tampilkan otomatis.
+    if (detailLaporanOverlay) {
+      detailLaporanOverlay.classList.add("hidden");
+      detailLaporanOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    document.body.classList.remove("overflow-hidden");
+  }
+
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+/* =====================================================
+         ESC UNTUK MENUTUP
+      ====================================================== */
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    tutupDetailLaporan();
+  }
+});
+
+/* =====================================================
+         DOM READY
+      ====================================================== */
+
+document.addEventListener("DOMContentLoaded", initDetailLaporan);

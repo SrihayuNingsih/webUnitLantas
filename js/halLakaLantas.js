@@ -23,6 +23,16 @@ let lakaPageActiveMenuId = null;
          HELPER STATUS LAKA
       ===================================================== */
 
+function getStatusTampil(statusText) {
+  const status = (statusText || "").trim();
+
+  if (["RJ", "Selesai/RJ", "Selesai"].includes(status)) {
+    return "Selesai";
+  }
+
+  return status;
+}
+
 function getStatusBadge(statusText) {
   const status = (statusText || "").toLowerCase().trim();
 
@@ -40,19 +50,58 @@ function getStatusBadge(statusText) {
 
   return "border-slate-200 bg-slate-50 text-slate-600";
 }
+
+function getStatusDisplayText(statusText) {
+  const status = (statusText || "").toLowerCase().trim();
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "Selesai";
+  }
+
+  if (status === "dalam penanganan") {
+    return "Dalam Penanganan";
+  }
+
+  if (status === "limpah polres") {
+    return "Limpah Polres";
+  }
+
+  return statusText || "-";
+}
+
 function getStatusDot(statusText) {
   const status = (statusText || "").toLowerCase().trim();
-  if (status === "selesai") return "bg-green-700";
-  if (status === "dalam penanganan") return "bg-amber-400";
-  if (status === "limpah polres") return "bg-red-700";
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "bg-green-700";
+  }
+
+  if (status === "dalam penanganan") {
+    return "bg-amber-400";
+  }
+
+  if (status === "limpah polres") {
+    return "bg-red-700";
+  }
+
   return "bg-slate-300";
 }
 
 function getStatusText(statusText) {
   const status = (statusText || "").toLowerCase().trim();
-  if (status === "selesai") return "text-green-700";
-  if (status === "dalam penanganan") return "text-amber-400";
-  if (status === "limpah polres") return "text-red-700";
+
+  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+    return "text-green-700";
+  }
+
+  if (status === "dalam penanganan") {
+    return "text-amber-400";
+  }
+
+  if (status === "limpah polres") {
+    return "text-red-700";
+  }
+
   return "text-slate-500";
 }
 
@@ -60,7 +109,8 @@ function getStatusText(statusText) {
          HELPER TANGGAL & WAKTU LAKA
       ===================================================== */
 function getLakaMonthNumber(item) {
-  if (!item || !item.hariTanggal) return "";
+  if (!item || !item.tanggal) return "";
+
   const bulanMap = {
     Januari: "01",
     Februari: "02",
@@ -75,23 +125,29 @@ function getLakaMonthNumber(item) {
     November: "11",
     Desember: "12",
   };
-  const bagianTanggal = item.hariTanggal.split(",");
-  if (bagianTanggal.length < 2) return "";
-  const tanggal = bagianTanggal[1].trim().split(" ");
-  if (tanggal.length < 2) return "";
+
+  const tanggal = item.tanggal.trim().split(" ");
+
+  if (tanggal.length < 3) return "";
+
   return bulanMap[tanggal[1]] || "";
 }
 
 function getLakaYear(item) {
-  if (!item || !item.hariTanggal) return "";
-  const bagianTanggal = item.hariTanggal.trim().split(" ");
+  if (!item || !item.tanggal) return "";
+
+  const bagianTanggal = item.tanggal.trim().split(" ");
+
   return bagianTanggal[bagianTanggal.length - 1] || "";
 }
 
 function getLakaHour(item) {
-  if (!item || !item.waktu) return null;
-  const hasil = item.waktu.match(/\d{1,2}/);
+  if (!item || !item.jam) return null;
+
+  const hasil = item.jam.match(/\d{1,2}/);
+
   if (!hasil) return null;
+
   return Number(hasil[0]);
 }
 
@@ -173,9 +229,8 @@ function parseIndonesianDate(dateStr) {
    ===================================================== */
 function sortLakaData(data) {
   return [...data].sort(function (a, b) {
-    const dateA = parseIndonesianDate(a.hariTanggal);
-    const dateB = parseIndonesianDate(b.hariTanggal);
-
+    const dateA = parseIndonesianDate(a.tanggal);
+    const dateB = parseIndonesianDate(b.tanggal);
     /*
      * Jika kedua tanggal tidak valid,
      * pertahankan posisi relatif.
@@ -315,7 +370,7 @@ function applyLakaFilter() {
 
     // FILTER RENTANG TANGGAL
     if (lakaRentangTanggalAktif) {
-      const itemDate = parseIndonesianDate(item.hariTanggal);
+      const itemDate = parseIndonesianDate(item.tanggal);
       if (!itemDate) return false;
 
       if (tglMulaiEl && tglMulaiEl.value) {
@@ -853,23 +908,24 @@ function renderLakaPage() {
 
   <!-- STATUS -->
   <div class="min-w-0 text-right">
-  <div
-    class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(item.status)}"
-  >
-    <span
-      class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(item.status)}"
-    ></span>
-
-    <span
-      class="break-words text-sm font-medium leading-snug ${getStatusText(item.status)}"
+    <div
+      class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(item.status)}"
     >
-      ${item.status || "Belum ditentukan"}
-    </span>
+      <span
+        class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(item.status)}"
+      ></span>
+
+      <span
+        class="break-words text-sm font-medium leading-snug ${getStatusText(item.status)}"
+      >
+        ${getStatusTampil(item.status) || "Belum ditentukan"}
+      </span>
+    </div>
   </div>
-</div>
 </div>
 
 <!-- NO. LP -->
+
 <div class="ml-6 mt-2.5 flex items-center gap-2">
   <i
     data-lucide="file-text"
@@ -886,7 +942,7 @@ function renderLakaPage() {
         ? "Nihil"
         : (item.status || "").trim() === "Dalam Penanganan"
           ? "Nihil"
-          : item.noLp || "Belum tersedia"
+          : item.nomorLP || "Belum tersedia"
     }
   </span>
 </div>
@@ -897,7 +953,7 @@ function renderLakaPage() {
       data-lucide="calendar-days"
       class="h-4 w-4 shrink-0 text-blue-400"
     ></i>
-    <span>${item.hariTanggal} | ${item.waktu}</span>
+    <span>${item.tanggal} | ${item.jam}</span>
   </div>
 
   <!-- TKP -->
@@ -908,7 +964,7 @@ function renderLakaPage() {
     ></i>
 
     <p class="text-sm leading-snug text-slate-600">
-      ${item.lokasi}
+      ${item.tkp}
     </p>
   </div>
 
@@ -920,21 +976,21 @@ function renderLakaPage() {
     <div class="flex items-center gap-3 text-sm font-medium">
       <span class="text-slate-600">
         LR
-        <span class="font-semibold text-green-700">${item.lr}</span>
+        <span class="font-semibold text-green-700">${item.jumlahLR}</span>
       </span>
 
       <span class="text-blue-200">|</span>
 
       <span class="text-slate-600">
         LB
-        <span class="font-semibold text-amber-400">${item.lb}</span>
+        <span class="font-semibold text-amber-400">${item.jumlahLB}</span>
       </span>
 
       <span class="text-blue-200">|</span>
 
       <span class="text-slate-600">
         MD
-        <span class="font-semibold text-red-700">${item.md}</span>
+        <span class="font-semibold text-red-700">${item.jumlahMD}</span>
       </span>
     </div>
 
@@ -1168,7 +1224,14 @@ function confirmDeleteLaka() {
          ACTION FUNCTIONS
       ===================================================== */
 function lihatDetail(id) {
-  alert(`Membuka detail laporan: ${id}`);
+  if (!id) return;
+
+  if (typeof bukaDetailLaporan === "function") {
+    bukaDetailLaporan(id);
+    return;
+  }
+
+  console.error("[Laka Lantas] Fungsi bukaDetailLaporan() tidak ditemukan.");
 }
 
 function inputLaporanBaru() {
@@ -1232,15 +1295,15 @@ function confirmLogout() {
 /* =====================================================
    TOMBOL KEMBALI HALAMAN LAKA LANTAS
    ===================================================== */
-function initLakaPageBackButton() {
-  const lakaPageButton = document.getElementById("lakaPageButton");
+// function initLakaPageBackButton() {
+//   const lakaPageButton = document.getElementById("lakaPageButton");
 
-  if (!lakaPageButton) return;
+//   if (!lakaPageButton) return;
 
-  lakaPageButton.addEventListener("click", function () {
-    window.history.back();
-  });
-}
+//   lakaPageButton.addEventListener("click", function () {
+//     window.history.back();
+//   });
+// }
 
 /* =====================================================
          INITIALIZATION & EVENT LISTENERS
@@ -1249,7 +1312,7 @@ function initLakaPage() {
   lakaPageActionMenu = document.getElementById("action-menu-laka-page");
 
   // Tambahan Code
-  initLakaPageBackButton();
+  // initLakaPageBackButton();
 
   // =====================================================
   // SORTIR LAKA

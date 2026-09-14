@@ -609,8 +609,8 @@ window.LogoutModalComponent = {
    Mengikuti halLakaLantas.js
    ===================================================== */
 
-function getStatusBadge(statusText) {
-  const status = String(statusText || "")
+function getStatusBadge(statusTampil) {
+  const status = String(statusTampil || "")
     .toLowerCase()
     .trim();
 
@@ -629,8 +629,8 @@ function getStatusBadge(statusText) {
   return "border-slate-200 bg-slate-50 text-slate-600";
 }
 
-function getStatusDot(statusText) {
-  const status = String(statusText || "")
+function getStatusDot(statusTampil) {
+  const status = String(statusTampil || "")
     .toLowerCase()
     .trim();
 
@@ -649,8 +649,8 @@ function getStatusDot(statusText) {
   return "bg-slate-300";
 }
 
-function getStatusText(statusText) {
-  const status = String(statusText || "")
+function getStatusText(statusTampil) {
+  const status = String(statusTampil || "")
     .toLowerCase()
     .trim();
 
@@ -685,12 +685,10 @@ function getWaktuKejadian(item) {
     desember: 11,
   };
 
-  const tanggalText = String(item.hariTanggal || "").trim();
-  const waktuText = String(item.waktu || "").trim();
+  const tanggalText = String(item.tanggal || "").trim();
+  const waktuText = String(item.jam || "").trim();
 
-  const matchTanggal = tanggalText.match(
-    /(?:^[^,]+,\s*)?(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i,
-  );
+  const matchTanggal = tanggalText.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i);
 
   const matchWaktu = waktuText.match(/(\d{1,2})[.:](\d{2})/);
 
@@ -750,11 +748,17 @@ function renderLakaList(data = lakaData) {
     .map(function (item, index) {
       const status = String(item.status || "").trim();
 
-      const noLp =
-        ["Selesai", "Selesai/RJ", "RJ"].includes(status) ||
-        status === "Dalam Penanganan"
-          ? "Nihil"
-          : item.noLp || "Belum tersedia";
+      const statusTampil = ["RJ", "Selesai/RJ", "Selesai"].includes(status)
+        ? "Selesai"
+        : status;
+
+      const nomorLP = String(item.nomorLP || "").trim();
+
+      const noLp = nomorLP
+        ? nomorLP
+        : status === "Limpah Polres"
+          ? "Belum tersedia"
+          : "Nihil";
 
       return `
         <article
@@ -784,17 +788,18 @@ function renderLakaList(data = lakaData) {
             <div class="min-w-0 text-right">
 
               <div
-                class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(item.status)}"
+                class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(statusTampil)}"
               >
 
                 <span
-                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(item.status)}"
+                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(statusTampil)}"
                 ></span>
 
                 <span
-                  class="break-words text-sm font-medium leading-snug ${getStatusText(item.status)}"
+                  class="break-words text-sm font-medium leading-snug ${getStatusText(statusTampil)}"
                 >
-                  ${item.status || "Belum ditentukan"}
+                  
+                  ${statusTampil}
                 </span>
 
               </div>
@@ -832,7 +837,7 @@ function renderLakaList(data = lakaData) {
             ></i>
 
             <span>
-              ${item.hariTanggal || "-"} | ${item.waktu || "-"}
+              ${item.tanggal || "-"} | ${item.jam || "-"}
             </span>
 
           </div>
@@ -847,7 +852,7 @@ function renderLakaList(data = lakaData) {
             ></i>
 
             <p class="text-sm leading-snug text-slate-600">
-              ${item.lokasi || "-"}
+              ${item.tkp || "-"}
             </p>
 
           </div>
@@ -866,7 +871,7 @@ function renderLakaList(data = lakaData) {
               <span class="text-slate-600">
                 LR
                 <span class="font-semibold text-green-700">
-                  ${item.lr ?? 0}
+                  ${item.jumlahLR ?? 0}
                 </span>
               </span>
 
@@ -875,7 +880,7 @@ function renderLakaList(data = lakaData) {
               <span class="text-slate-600">
                 LB
                 <span class="font-semibold text-amber-400">
-                  ${item.lb ?? 0}
+                  ${item.jumlahLB ?? 0}
                 </span>
               </span>
 
@@ -884,7 +889,7 @@ function renderLakaList(data = lakaData) {
               <span class="text-slate-600">
                 MD
                 <span class="font-semibold text-red-700">
-                  ${item.md ?? 0}
+                  ${item.jumlahMD ?? 0}
                 </span>
               </span>
 
@@ -1187,7 +1192,7 @@ function updateRekapStatus(data = lakaData) {
   const tahunSekarang = new Date().getFullYear();
 
   const dataTahunBerjalan = dataLaka.filter(function (item) {
-    const tanggal = String(item.hariTanggal || "").trim();
+    const tanggal = String(item.tanggal || "").trim();
 
     const match = tanggal.match(/(\d{4})$/);
 
@@ -1199,15 +1204,15 @@ function updateRekapStatus(data = lakaData) {
   const totalKejadian = dataTahunBerjalan.length;
 
   const korbanLR = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.lr || 0);
+    return total + Number(item.jumlahLR || 0);
   }, 0);
 
   const korbanLB = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.lb || 0);
+    return total + Number(item.jumlahLB || 0);
   }, 0);
 
   const korbanMD = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.md || 0);
+    return total + Number(item.jumlahMD || 0);
   }, 0);
 
   /*

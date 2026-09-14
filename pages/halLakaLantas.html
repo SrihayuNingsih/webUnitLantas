@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="../css/navbarInputLaporan.css" />
     <link rel="stylesheet" href="../css/halLakaLantas.css" />
+    <link rel="stylesheet" href="../css/detailLaporan.css" />
 
     <!-- =====================================================
        AWAL LIBRARY TAILWIND CSS
@@ -1209,8 +1210,581 @@
         </div>
       </div>
     </main>
+    <div id="detailLaporanOverlay" aria-hidden="false">
+      <div id="detailLaporanPanel">
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <!-- <header id="detailLaporanHeader">
+          <div
+            class="flex min-h-[76px] items-center justify-between gap-3 px-4 py-3 sm:px-6"
+          >
+            <div class="min-w-0">
+              <p class="detail-header-kicker">Detail Laporan Laka Lantas</p>
+
+              <h1 id="laporanId" class="detail-header-id">-</h1>
+
+              <p class="detail-header-time">
+                Waktu Input:
+                <strong id="waktuInput">-</strong>
+              </p>
+            </div> -->
+
+        <!-- HANYA CLOSE UNTUK HEADER -->
+        <!-- <button
+              id="btnTutupDetail"
+              type="button"
+              aria-label="Tutup Detail Laporan"
+              title="Tutup"
+            >
+              <i data-lucide="x" class="h-5 w-5"></i>
+            </button>
+          </div>
+        </header> -->
+
+        <header
+          id="detailLaporanHeader"
+          class="relative shrink-0 border-b-2 border-amber-400 bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-sm"
+        >
+          <div
+            class="flex items-center justify-between gap-3 px-4 py-2.5 sm:px-5 sm:py-3"
+          >
+            <div class="min-w-0 flex-1">
+              <!-- Title & ID gabung 1 baris agar hemat ruang vertikal -->
+              <div class="flex items-center gap-2 flex-wrap">
+                <span
+                  class="text-[0.72rem] font-bold uppercase tracking-wider text-slate-200"
+                >
+                  Detail Laporan
+                </span>
+                <span class="text-slate-400 text-xs">•</span>
+                <!-- ID dibuat ringkas sebagai kode referensi internal -->
+                <h1
+                  id="laporanId"
+                  class="text-sm font-bold tracking-wide text-amber-400"
+                >
+                  -
+                </h1>
+              </div>
+
+              <!-- Waktu Input ringkas -->
+              <p class="mt-0.5 text-[0.72rem] text-slate-300">
+                Waktu Input:
+                <strong id="waktuInput" class="font-medium text-white"
+                  >-</strong
+                >
+              </p>
+            </div>
+
+            <!-- Tombol Tutup ringkas -->
+            <button
+              id="btnTutupDetail"
+              type="button"
+              aria-label="Tutup Detail Laporan"
+              title="Tutup"
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-amber-400/30 bg-white/10 text-white transition hover:border-amber-400/70 hover:bg-amber-400/20 active:scale-95"
+            >
+              <i data-lucide="x" class="h-4 w-4"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <div
+          id="detailLaporanContent"
+          class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-2.5 pb-16 sm:pb-6 space-y-2.5 sm:space-y-4"
+        >
+          <!-- =================================================
+        IDENTITAS + STATUS
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div
+              class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p
+                  class="text-[0.65rem] font-bold uppercase tracking-wider text-blue-700"
+                >
+                  Nomor LP
+                </p>
+                <p
+                  id="laporanIdSecondary"
+                  class="mt-0.5 block text-sm font-black text-blue-950 sm:text-base"
+                >
+                  -
+                </p>
+              </div>
+
+              <div
+                id="statusBadge"
+                data-status=""
+                class="inline-flex min-h-[30px] items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.68rem] font-black shadow-sm"
+              >
+                <span
+                  id="statusBadgeDot"
+                  class="h-2 w-2 shrink-0 rounded-full"
+                ></span>
+                <span id="statusBadgeText">-</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+        RINGKASAN
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i
+                  data-lucide="clipboard-list"
+                  class="h-4 w-4 sm:h-5 sm:w-5"
+                ></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Ringkasan
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Data korban dan kerugian material
+                </p>
+              </div>
+            </div>
+
+            <!-- Ringkasan Grid (Lebih Kompak) -->
+            <div
+              id="ringkasanGrid"
+              class="mt-3 grid grid-cols-2 gap-2 sm:gap-2.5"
+            >
+              <!-- LR -->
+              <div
+                class="min-w-0 rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-amber-50/70 p-2.5 shadow-sm"
+              >
+                <span
+                  class="block text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700"
+                  >LR</span
+                >
+                <strong
+                  id="jumlahLR"
+                  class="block mt-0.5 text-xl font-black leading-none text-green-700 sm:text-2xl"
+                  >0</strong
+                >
+                <span
+                  class="block mt-1 text-[0.65rem] font-semibold text-blue-800/80 leading-tight"
+                  >Luka Ringan</span
+                >
+              </div>
+
+              <!-- LB -->
+              <div
+                class="min-w-0 rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-amber-50/70 p-2.5 shadow-sm"
+              >
+                <span
+                  class="block text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700"
+                  >LB</span
+                >
+                <strong
+                  id="jumlahLB"
+                  class="block mt-0.5 text-xl font-black leading-none text-amber-500 sm:text-2xl"
+                  >0</strong
+                >
+                <span
+                  class="block mt-1 text-[0.65rem] font-semibold text-blue-800/80 leading-tight"
+                  >Luka Berat</span
+                >
+              </div>
+
+              <!-- MD -->
+              <div
+                class="min-w-0 rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-amber-50/70 p-2.5 shadow-sm"
+              >
+                <span
+                  class="block text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700"
+                  >MD</span
+                >
+                <strong
+                  id="jumlahMD"
+                  class="block mt-0.5 text-xl font-black leading-none text-red-700 sm:text-2xl"
+                  >0</strong
+                >
+                <span
+                  class="block mt-1 text-[0.65rem] font-semibold text-blue-800/80 leading-tight"
+                  >Meninggal Dunia</span
+                >
+              </div>
+
+              <!-- KERMAT -->
+              <div
+                class="min-w-0 rounded-xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-amber-50/70 p-2.5 shadow-sm"
+              >
+                <span
+                  class="block text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700"
+                  >Kermat</span
+                >
+                <strong
+                  id="jumlahKermat"
+                  class="block mt-0.5 text-sm font-black leading-tight text-blue-950 sm:text-base"
+                  >Rp 0</strong
+                >
+                <span
+                  class="block mt-1 text-[0.65rem] font-semibold text-blue-800/80 leading-tight"
+                  >Kerugian Material</span
+                >
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+        WAKTU KEJADIAN
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="clock-3" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Waktu Kejadian
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Informasi waktu terjadinya kecelakaan
+                </p>
+              </div>
+            </div>
+
+            <div id="waktuKejadian" class="mt-2.5 grid grid-cols-2 gap-2">
+              <div
+                class="rounded-xl border border-blue-300/50 bg-gradient-to-br from-blue-50/80 to-blue-100/60 p-2.5"
+              >
+                <p
+                  class="text-[0.65rem] font-bold uppercase tracking-wider text-blue-700"
+                >
+                  Tanggal
+                </p>
+                <p
+                  id="tanggalKejadian"
+                  class="mt-0.5 text-xs sm:text-sm font-bold text-blue-950 leading-snug break-words"
+                >
+                  -
+                </p>
+              </div>
+
+              <div
+                class="rounded-xl border border-blue-300/50 bg-gradient-to-br from-blue-50/80 to-blue-100/60 p-2.5"
+              >
+                <p
+                  class="text-[0.65rem] font-bold uppercase tracking-wider text-blue-700"
+                >
+                  Jam
+                </p>
+                <p
+                  id="jamKejadian"
+                  class="mt-0.5 text-xs sm:text-sm font-bold text-blue-950 leading-snug break-words"
+                >
+                  -
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+        LOKASI
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="map-pin" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Lokasi Kejadian
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Tempat kejadian perkara
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mt-2.5 rounded-xl border border-blue-300/50 bg-blue-100/50 p-2.5"
+            >
+              <p
+                class="text-[0.65rem] font-bold uppercase tracking-wider text-blue-700"
+              >
+                TKP
+              </p>
+              <p
+                id="tkp"
+                class="mt-0.5 whitespace-pre-line break-words text-xs sm:text-sm font-bold text-blue-950 leading-relaxed"
+              >
+                -
+              </p>
+            </div>
+
+            <div
+              id="mapContainer"
+              class="mt-2.5 flex min-h-[160px] sm:min-h-[200px] items-center justify-center overflow-hidden rounded-xl border border-blue-300/60 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-200/80 to-blue-100/50 p-3 text-center"
+            >
+              <div>
+                <div
+                  class="mx-auto flex h-10 w-10 items-center justify-center rounded-xl border border-blue-300/50 bg-blue-100/70 text-blue-700"
+                >
+                  <i data-lucide="map" class="h-5 w-5"></i>
+                </div>
+                <p class="mt-2 text-xs font-black text-blue-950">Peta Lokasi</p>
+                <p
+                  class="mt-0.5 max-w-xs text-[0.68rem] leading-normal text-blue-800/70"
+                >
+                  Tampilan peta akan diaktifkan setelah koordinat lokasi
+                  tersedia.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- =================================================
+        KENDARAAN
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="car-front" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Kendaraan dan Pengendara
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Identitas kendaraan dan orang yang terlibat
+                </p>
+              </div>
+            </div>
+
+            <div id="kendaraanGrid" class="mt-3 grid gap-3 lg:grid-cols-2">
+              <!-- Dirender JavaScript -->
+            </div>
+          </section>
+
+          <!-- =================================================
+        SAKSI
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="users" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Saksi-Saksi
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Identitas saksi yang memberikan keterangan
+                </p>
+              </div>
+            </div>
+
+            <!-- SAKSI -->
+            <div
+              id="saksiGrid"
+              class="mt-3 grid grid-cols-1 gap-2.5 md:grid-cols-2"
+            >
+              <!-- Dirender JavaScript -->
+            </div>
+          </section>
+
+          <!-- =================================================
+        KRONOLOGI
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="list" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Kronologi Kejadian
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Uraian kejadian berdasarkan laporan
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="kronologi"
+              class="mt-2.5 rounded-xl border border-blue-300/50 bg-blue-100/40 p-2.5 text-xs sm:text-sm font-semibold leading-relaxed text-blue-950 whitespace-pre-line break-words"
+            >
+              -
+            </div>
+          </section>
+
+          <!-- =================================================
+        PETUGAS
+   ================================================== -->
+          <section
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i
+                  data-lucide="user-round-check"
+                  class="h-4 w-4 sm:h-5 sm:w-5"
+                ></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Petugas
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Petugas yang menangani laporan
+                </p>
+              </div>
+            </div>
+
+            <!-- PETUGAS -->
+            <div
+              id="petugasList"
+              class="mt-2.5 grid grid-cols-1 gap-2.5 md:grid-cols-2"
+            >
+              <!-- Dirender JavaScript -->
+            </div>
+          </section>
+
+          <!-- =================================================
+        DOKUMENTASI
+   ================================================== -->
+          <section
+            id="sectionDokumentasi"
+            class="overflow-hidden rounded-2xl border border-blue-300/60 bg-gradient-to-br from-blue-50/90 to-blue-100/75 p-3 sm:p-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2.5">
+              <div
+                class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-blue-400/40 bg-gradient-to-br from-blue-100 to-blue-200/70 text-blue-700 shadow-sm"
+              >
+                <i data-lucide="image" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+              </div>
+              <div>
+                <h2
+                  class="text-sm sm:text-base font-black text-blue-950 leading-tight"
+                >
+                  Dokumentasi
+                </h2>
+                <p
+                  class="mt-0.5 text-[0.68rem] font-semibold text-blue-800/80 leading-tight"
+                >
+                  Dokumentasi foto dan berkas laporan
+                </p>
+              </div>
+            </div>
+
+            <a
+              id="linkDokumentasi"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-2.5 flex items-center justify-between gap-3 rounded-xl border border-blue-300/60 bg-blue-100/60 p-2.5 transition hover:bg-blue-200/60 active:scale-[0.99]"
+            >
+              <div class="flex min-w-0 items-center gap-2.5">
+                <div
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-blue-300/50 bg-blue-200/70 text-blue-700"
+                >
+                  <i data-lucide="folder-open" class="h-4 w-4"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-xs sm:text-sm font-extrabold text-blue-950">
+                    Dokumentasi Google Drive
+                  </p>
+                  <p
+                    id="namaDokumentasi"
+                    class="mt-0.5 truncate text-[0.68rem] font-medium text-blue-800/80"
+                  >
+                    Buka dokumentasi
+                  </p>
+                </div>
+              </div>
+              <i
+                data-lucide="chevron-right"
+                class="h-4 w-4 shrink-0 text-blue-700"
+              ></i>
+            </a>
+          </section>
+        </div>
+
+        <!-- =================================================
+             FOOTER CLOSE MOBILE
+        ================================================== -->
+
+        <div id="detailLaporanFooter" class="md:hidden">
+          <button id="btnTutupDetailBottom" type="button">
+            <i data-lucide="x" class="h-5 w-5"></i>
+
+            <span>Tutup Detail Laporan</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
   <script src="../js/lakaData.js"></script>
   <script src="../js/navbarHalLakaLantas.js"></script>
+  <script src="../js/detailLaporan.js"></script>
   <script src="../js/halLakaLantas.js"></script>
 </html>

@@ -981,8 +981,10 @@
         (item) => String(item.status || "").trim() === "Dalam Penanganan",
       ).length,
 
-      rj: filteredData.filter(
-        (item) => String(item.status || "").trim() === "RJ",
+      selesai: filteredData.filter((item) =>
+        ["Selesai", "Selesai/RJ", "RJ"].includes(
+          String(item.status || "").trim(),
+        ),
       ).length,
 
       limpahPolres: filteredData.filter(
@@ -1121,7 +1123,7 @@
       status: {
         dalamPenanganan: safeNumber(status.dalamPenanganan),
 
-        rj: safeNumber(status.rj),
+        selesai: safeNumber(status.selesai),
 
         limpahPolres: safeNumber(status.limpahPolres),
       },
@@ -1155,7 +1157,7 @@
       formatNumber(status.dalamPenanganan),
     );
 
-    setText(el.statusRJLaporan, formatNumber(status.rj));
+    setText(el.statusRJLaporan, formatNumber(status.selesai));
 
     setText(el.statusLimpahPolresLaporan, formatNumber(status.limpahPolres));
   }

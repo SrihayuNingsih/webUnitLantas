@@ -398,9 +398,6 @@ function renderSaksi(data) {
           <!-- Detail Identitas Saksi -->
           <div class="p-2.5">
             <div class="rounded-lg border border-blue-300/40 bg-blue-50/60 p-2">
-              <p class="text-[0.65rem] font-extrabold uppercase tracking-wider text-blue-700">
-                Identitas Saksi
-              </p>
               <p class="mt-1 whitespace-pre-line break-words text-sm font-bold text-blue-950">
                 ${safeText(item.saksi || item.nama || item)}
               </p>

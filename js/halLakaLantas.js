@@ -1007,12 +1007,12 @@ function closeActionMenu() {
 ===================================================== */
 let lakaIdToDelete = null;
 
-function handleEdit() {
-  if (!lakaPageActiveMenuId) return;
-  const id = lakaPageActiveMenuId;
-  closeActionMenu();
-  alert(`Edit laporan: ${id}`);
-}
+// function handleEdit() {
+//   if (!lakaPageActiveMenuId) return;
+//   const id = lakaPageActiveMenuId;
+//   closeActionMenu();
+//   alert(`Edit laporan: ${id}`);
+// }
 
 function handleDelete() {
   if (!lakaPageActiveMenuId) return;
@@ -1076,9 +1076,12 @@ function inputLaporanBaru() {
 
 function handleEdit() {
   if (!lakaPageActiveMenuId) return;
+
   const id = lakaPageActiveMenuId;
+
   closeActionMenu();
-  alert(`Edit laporan: ${id}`);
+
+  window.location.href = `../pages/inputLaporan.html?id=${encodeURIComponent(id)}&mode=edit`;
 }
 
 /* =====================================================

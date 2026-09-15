@@ -33,23 +33,6 @@
    ============================================================ */
 
 const InputLaporanConfig = {
-  /*
-     Selama frontend masih dites, gunakan dummy backend.
-
-     true  = gunakan dummy
-     false = gunakan Apps Script asli
-  */
-  USE_DUMMY_BACKEND: true,
-
-  /*
-     Nama ENTRY POINT Apps Script.
-
-     Nama ini boleh diganti nanti apabila nama function
-     backend final berbeda.
-
-     Frontend tidak perlu mengetahui function parser
-     internal seperti ambilTKP(), ambilKendaraan(), dll.
-  */
   BACKEND_FUNCTION: {
     PROSES_WHATSAPP: "prosesLaporanWhatsApp",
 
@@ -58,9 +41,6 @@ const InputLaporanConfig = {
     SIMPAN_LAPORAN: "simpanLaporan",
   },
 
-  /*
-     Halaman tujuan setelah laporan berhasil disimpan.
-  */
   HALAMAN_LAKA_LANTAS: "laka-lantas.html",
 };
 
@@ -135,7 +115,9 @@ const InputLaporanElements = {
 
   containerListKendaraan: document.getElementById("container-list-kendaraan"),
 
-  containerListPengendara: document.getElementById("container-list-pengendara"),
+  containerListPihakTerlibat: document.getElementById(
+    "container-list-pihak-terlibat",
+  ),
 
   containerListSaksi: document.getElementById("container-list-saksi"),
 
@@ -145,7 +127,7 @@ const InputLaporanElements = {
 
   btnAddKendaraan: document.getElementById("btn-add-kendaraan"),
 
-  btnAddPengendara: document.getElementById("btn-add-pengendara"),
+  btnAddPihakTerlibat: document.getElementById("btn-add-pihak-terlibat"),
 
   btnAddSaksi: document.getElementById("btn-add-saksi"),
 
@@ -706,24 +688,6 @@ function prosesLaporanWhatsApp() {
   sembunyikanAlert();
 
   /*
-     MODE DUMMY
-  */
-  if (InputLaporanConfig.USE_DUMMY_BACKEND) {
-    jalankanDummyProsesWhatsApp(rawText)
-      .then(function (response) {
-        handleProcessWhatsAppSuccess(response);
-      })
-      .catch(function (error) {
-        handleProcessWhatsAppError(error);
-      })
-      .finally(function () {
-        setButtonLoading(button, false, "⚙ PROSES LAPORAN");
-      });
-
-    return;
-  }
-
-  /*
      MODE APPS SCRIPT ASLI
   */
   if (typeof google === "undefined" || !google.script || !google.script.run) {
@@ -1003,14 +967,27 @@ function isiFormDariJSON(data) {
   renderListKendaraan(kendaraan);
 
   /*
-     --------------------------------------------
-     PENGENDARA
-     --------------------------------------------
-  */
 
-  const pengendara = ambilArray(data, ["pengendara", "dataPengendara"]);
+  --------------------------------------------
 
-  renderListPengendara(pengendara);
+  PIHAK TERLIBAT
+
+  --------------------------------------------
+
+*/
+
+  // const pihakTerlibat = ambilArray(data, [
+  //   "pihakTerlibat",
+  //   "pihak_terlibat",
+  //   "pihak",
+  //   "dataPihakTerlibat",
+  // ]);
+
+  // renderListPihakTerlibat(pihakTerlibat);
+
+  const pihakTerlibat = buatDaftarPihakTerlibatDariKendaraan(kendaraan);
+
+  renderListPihakTerlibat(pihakTerlibat);
 
   /*
      --------------------------------------------
@@ -1113,6 +1090,14 @@ function renderListKendaraan(kendaraanList = []) {
   });
 }
 
+/* ============================================================
+   TAMBAH KENDARAAN
+   Backend menyimpan jenis kendaraan dan nopol secara terpisah
+   agar relasi pihak terlibat dapat ditentukan berdasarkan nopol.
+
+   Frontend menampilkan keduanya sebagai satu identitas kendaraan.
+   Data pengendara/pengemudi/pembonceng tidak ditampilkan di sini.
+   ============================================================ */
 function tambahKendaraan(data = "", index = null) {
   const container = InputLaporanElements.containerListKendaraan;
 
@@ -1122,21 +1107,39 @@ function tambahKendaraan(data = "", index = null) {
 
   const item = document.createElement("div");
 
-  item.className =
-    "dynamic-item-kendaraan border border-slate-200 rounded-lg p-2 bg-slate-50";
+  item.className = "dynamic-item-kendaraan";
 
-  const value = ambilDataItemString(data);
+  const nomor = index !== null ? index + 1 : container.children.length + 1;
+
+  /*
+     Backend tetap menyimpan kendaraan dan nopol sebagai
+     field terpisah.
+  */
+  const kendaraan =
+    data && typeof data === "object" ? data.kendaraan || "" : "";
+
+  const nopol = data && typeof data === "object" ? data.nopol || "" : "";
+
+  /*
+     Untuk frontend, kendaraan dan nopol digabung menjadi
+     satu identitas tampilan.
+  */
+  let identitasKendaraan = kendaraan;
+
+  if (nopol) {
+    identitasKendaraan += ` No. Pol: ${nopol}`;
+  }
 
   item.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-1">
-      <label class="text-[10px] font-semibold text-slate-500">
-        KENDARAAN ${index !== null ? index + 1 : container.children.length + 1}
+      <label class="text-[12px] font-semibold text-slate-500">
+        KENDARAAN ${nomor}
       </label>
 
       <button
         type="button"
         data-action="hapus-kendaraan"
-        class="text-red-500 text-[10px] font-semibold hover:text-red-700"
+        class="text-red-500 text-[12px] font-semibold hover:text-red-700"
       >
         Hapus
       </button>
@@ -1145,9 +1148,9 @@ function tambahKendaraan(data = "", index = null) {
     <input
       type="text"
       data-field="kendaraan"
-      value="${escapeHTML(value)}"
+      value="${escapeHTML(identitasKendaraan)}"
       placeholder="Identitas kendaraan"
-      class="w-full text-xs p-2 border border-slate-300 rounded bg-white"
+      class="w-full text-sm p-2 border border-slate-300 rounded bg-white"
     />
   `;
 
@@ -1158,8 +1161,8 @@ function tambahKendaraan(data = "", index = null) {
    18. PENGENDARA
    ============================================================ */
 
-function renderListPengendara(pengendaraList = []) {
-  const container = InputLaporanElements.containerListPengendara;
+function renderListPihakTerlibat(pihakTerlibatList = []) {
+  const container = InputLaporanElements.containerListPihakTerlibat;
 
   if (!container) {
     return;
@@ -1167,19 +1170,18 @@ function renderListPengendara(pengendaraList = []) {
 
   container.innerHTML = "";
 
-  if (!pengendaraList.length) {
-    tambahPengendara();
-
+  if (!pihakTerlibatList.length) {
+    tambahPihakTerlibat();
     return;
   }
 
-  pengendaraList.forEach(function (item, index) {
-    tambahPengendara(item, index);
+  pihakTerlibatList.forEach(function (item, index) {
+    tambahPihakTerlibat(item, index);
   });
 }
 
-function tambahPengendara(data = "", index = null) {
-  const container = InputLaporanElements.containerListPengendara;
+function tambahPihakTerlibat(data = "", index = null) {
+  const container = InputLaporanElements.containerListPihakTerlibat;
 
   if (!container) {
     return;
@@ -1188,32 +1190,73 @@ function tambahPengendara(data = "", index = null) {
   const item = document.createElement("div");
 
   item.className =
-    "dynamic-item-pengendara border border-slate-200 rounded-lg p-2 bg-slate-50";
+    "dynamic-item-pihak-terlibat border border-slate-200 rounded-lg p-2 bg-slate-50";
 
-  const value = ambilDataItemString(data);
+  const nama = ambilNilai(
+    data,
+    ["nama", "name", "identitas", "keterangan", "data", "uraian", "value"],
+    ambilDataItemString(data),
+  );
+
+  const jenisPihak = ambilNilai(
+    data,
+    ["jenisPihak", "jenis_pihak", "jenis"],
+    "Pengendara",
+  );
 
   item.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-1">
-      <label class="text-[10px] font-semibold text-slate-500">
-        PENGENDARA ${index !== null ? index + 1 : container.children.length + 1}
+      <label class="text-[12px] font-semibold text-slate-500">
+        PIHAK TERLIBAT ${index !== null ? index + 1 : container.children.length + 1}
       </label>
 
       <button
         type="button"
-        data-action="hapus-pengendara"
-        class="text-red-500 text-[10px] font-semibold hover:text-red-700"
+        data-action="hapus-pihak-terlibat"
+        class="text-red-500 text-[12px] font-semibold hover:text-red-700"
       >
         Hapus
       </button>
     </div>
 
-    <input
-      type="text"
-      data-field="pengendara"
-      value="${escapeHTML(value)}"
-      placeholder="Nama / identitas pengendara"
-      class="w-full text-xs p-2 border border-slate-300 rounded bg-white"
-    />
+    <div class="space-y-1.5">
+
+  <select
+    data-field="jenisPihak"
+    class="w-full text-sm p-2 border border-slate-300 rounded bg-white font-semibold"
+  >
+    <option value="Pengendara" ${jenisPihak === "Pengendara" ? "selected" : ""}>
+      Pengendara
+    </option>
+
+    <option value="Pengemudi" ${jenisPihak === "Pengemudi" ? "selected" : ""}>
+      Pengemudi
+    </option>
+
+    <option value="Pembonceng" ${jenisPihak === "Pembonceng" ? "selected" : ""}>
+      Pembonceng
+    </option>
+
+    <option value="Pengayuh" ${jenisPihak === "Pengayuh" ? "selected" : ""}>
+      Pengayuh
+    </option>
+
+    <option value="Pejalan Kaki" ${
+      jenisPihak === "Pejalan Kaki" ? "selected" : ""
+    }>
+      Pejalan Kaki
+    </option>
+  </select>
+
+  <input
+    type="text"
+    data-field="nama"
+    value="${escapeHTML(nama)}"
+    placeholder="Nama / identitas pihak"
+    class="w-full text-sm p-2 border border-slate-300 rounded bg-white"
+  />
+
+</div>
   `;
 
   container.appendChild(item);
@@ -1223,24 +1266,94 @@ function tambahPengendara(data = "", index = null) {
    19. SAKSI
    ============================================================ */
 
-function renderListSaksi(saksiList = []) {
-  const container = InputLaporanElements.containerListSaksi;
-
-  if (!container) {
-    return;
+function buatDaftarPihakTerlibatDariKendaraan(kendaraanList = []) {
+  if (!Array.isArray(kendaraanList)) {
+    return [];
   }
 
-  container.innerHTML = "";
+  const hasil = [];
 
-  if (!saksiList.length) {
-    tambahSaksi();
+  kendaraanList.forEach(function (item) {
+    if (!item || typeof item !== "object") {
+      return;
+    }
 
-    return;
-  }
+    const jenisKendaraan = String(item.kendaraan || "").toLowerCase();
 
-  saksiList.forEach(function (item, index) {
-    tambahSaksi(item, index);
+    /*
+     * SEPEDA MOTOR → PENGENDARA
+     */
+    if (jenisKendaraan.includes("sepeda motor")) {
+      const pengendara = ambilNamaPihakDariKendaraan(item, "Pengendara");
+
+      if (pengendara) {
+        hasil.push({
+          nama: pengendara,
+          jenisPihak: "Pengendara",
+        });
+      }
+
+      /*
+       * SEPEDA MOTOR → PEMBONCENG
+       */
+      const pembonceng = ambilNamaPihakDariKendaraan(item, "Pembonceng");
+
+      if (pembonceng) {
+        hasil.push({
+          nama: pembonceng,
+          jenisPihak: "Pembonceng",
+        });
+      }
+
+      return;
+    }
+
+    /*
+     * SEPEDA PANCAL → PENGAYUH
+     */
+    if (jenisKendaraan.includes("sepeda pancal")) {
+      const pengayuh = ambilNamaPihakDariKendaraan(item, "Pengayuh");
+
+      if (pengayuh) {
+        hasil.push({
+          nama: pengayuh,
+          jenisPihak: "Pengayuh",
+        });
+      }
+
+      return;
+    }
+
+    /*
+     * PEJALAN KAKI
+     */
+    if (jenisKendaraan.includes("pejalan kaki")) {
+      const pejalanKaki = ambilNamaPihakDariKendaraan(item, "Pejalan Kaki");
+
+      if (pejalanKaki) {
+        hasil.push({
+          nama: pejalanKaki,
+          jenisPihak: "Pejalan Kaki",
+        });
+      }
+
+      return;
+    }
+
+    /*
+     * KENDARAAN LAIN → PENGEMUDI
+     */
+    const pengemudi = ambilNamaPihakDariKendaraan(item, "Pengemudi");
+
+    if (pengemudi) {
+      hasil.push({
+        nama: pengemudi,
+        jenisPihak: "Pengemudi",
+      });
+    }
   });
+
+  return hasil;
 }
 
 function tambahSaksi(data = "", index = null) {
@@ -1252,21 +1365,20 @@ function tambahSaksi(data = "", index = null) {
 
   const item = document.createElement("div");
 
-  item.className =
-    "dynamic-item-saksi border border-slate-200 rounded-lg p-2 bg-slate-50";
+  item.className = "dynamic-item-saksi";
 
   const value = ambilDataItemString(data);
 
   item.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-1">
-      <label class="text-[10px] font-semibold text-slate-500">
+      <label class="text-[12px] font-semibold text-slate-500">
         SAKSI ${index !== null ? index + 1 : container.children.length + 1}
       </label>
 
       <button
         type="button"
         data-action="hapus-saksi"
-        class="text-red-500 text-[10px] font-semibold hover:text-red-700"
+        class="text-red-500 text-[12px] font-semibold hover:text-red-700"
       >
         Hapus
       </button>
@@ -1277,11 +1389,33 @@ function tambahSaksi(data = "", index = null) {
       data-field="saksi"
       value="${escapeHTML(value)}"
       placeholder="Nama / identitas saksi"
-      class="w-full text-xs p-2 border border-slate-300 rounded bg-white"
+      class="w-full text-sm p-2 border border-slate-300 rounded bg-white"
     />
   `;
 
   container.appendChild(item);
+}
+
+/* ============================================================
+   RENDER DAFTAR SAKSI
+   Digunakan saat mengisi form dari data laporan
+   ============================================================ */
+function renderListSaksi(list = []) {
+  const container = InputLaporanElements.containerListSaksi;
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
+
+  if (!Array.isArray(list)) {
+    return;
+  }
+
+  list.forEach(function (item, index) {
+    tambahSaksi(item, index);
+  });
 }
 
 /* ============================================================
@@ -1315,6 +1449,36 @@ function ambilDataItemString(item) {
   return String(item);
 }
 
+function ambilNamaPihakDariKendaraan(item, jenisPihak) {
+  if (!item || typeof item !== "object") {
+    return "";
+  }
+
+  if (jenisPihak === "Pengendara") {
+    return String(item.pengendara || "").trim();
+  }
+
+  if (jenisPihak === "Pembonceng") {
+    return String(item.pembonceng || "").trim();
+  }
+
+  if (jenisPihak === "Pengayuh") {
+    return String(item.pengayuh || "").trim();
+  }
+
+  if (jenisPihak === "Pejalan Kaki") {
+    return String(
+      item.pejalanKaki || item["pejalan kaki"] || item.nama || "",
+    ).trim();
+  }
+
+  if (jenisPihak === "Pengemudi") {
+    return String(item.pengemudi || "").trim();
+  }
+
+  return "";
+}
+
 /* ============================================================
    21. PETUGAS
    ============================================================ */
@@ -1329,21 +1493,6 @@ function ambilDaftarPetugas() {
   */
   if (InputLaporanState.daftarPetugas.length) {
     renderPetugasSelector();
-
-    return;
-  }
-
-  /*
-     Dummy.
-  */
-  if (InputLaporanConfig.USE_DUMMY_BACKEND) {
-    jalankanDummyDaftarPetugas()
-      .then(function (response) {
-        handleGetPetugasSuccess(response);
-      })
-      .catch(function (error) {
-        handleGetPetugasError(error);
-      });
 
     return;
   }
@@ -1484,7 +1633,7 @@ function renderPetugasSelector() {
     selector.dataset.role = "petugas-selector";
 
     selector.className =
-      "w-full text-xs p-2 border border-slate-300 rounded bg-white mt-2";
+      "w-full text-sm p-2 border border-slate-300 rounded bg-white mt-2";
 
     const defaultOption = document.createElement("option");
 
@@ -1554,7 +1703,7 @@ function renderSelectedPetugas() {
   if (!InputLaporanState.selectedPetugas.length) {
     const empty = document.createElement("span");
 
-    empty.className = "text-[10px] text-slate-400";
+    empty.className = "text-[12px] text-slate-400";
 
     empty.textContent = "Belum ada petugas dipilih";
 
@@ -1567,7 +1716,7 @@ function renderSelectedPetugas() {
     const chip = document.createElement("span");
 
     chip.className =
-      "inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-2 py-1 text-[10px]";
+      "inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-2 py-1 text-[12px]";
 
     chip.innerHTML = `
         <span>${escapeHTML(petugas.nama)}</span>
@@ -1629,11 +1778,11 @@ function ambilDataForm() {
     jamKejadian: elements.inputJamKejadian.value.trim(),
 
     /*
-       Array.
-    */
+   Array.
+*/
     kendaraan: ambilListKendaraan(),
 
-    pengendara: ambilListPengendara(),
+    pihakTerlibat: ambilListPihakTerlibat(),
 
     saksi: ambilListSaksi(),
 
@@ -1697,19 +1846,29 @@ function ambilListKendaraan() {
    27. AMBIL LIST PENGENDARA
    ============================================================ */
 
-function ambilListPengendara() {
-  const container = InputLaporanElements.containerListPengendara;
+/* ============================================================
+   27. AMBIL LIST PIHAK TERLIBAT
+   ============================================================ */
+
+function ambilListPihakTerlibat() {
+  const container = InputLaporanElements.containerListPihakTerlibat;
 
   if (!container) {
     return [];
   }
 
-  return Array.from(container.querySelectorAll('[data-field="pengendara"]'))
-    .map(function (input) {
-      return input.value.trim();
+  return Array.from(container.querySelectorAll(".dynamic-item-pihak-terlibat"))
+    .map(function (item) {
+      const inputNama = item.querySelector('[data-field="nama"]');
+      const selectJenis = item.querySelector('[data-field="jenisPihak"]');
+
+      return {
+        nama: inputNama ? inputNama.value.trim() : "",
+        jenisPihak: selectJenis ? selectJenis.value : "Pengendara",
+      };
     })
-    .filter(function (value) {
-      return value !== "";
+    .filter(function (item) {
+      return item.nama !== "";
     });
 }
 
@@ -1807,24 +1966,6 @@ function kirimLaporan() {
   setButtonLoading(button, true, "⏳ MENYIMPAN...");
 
   sembunyikanAlert();
-
-  /*
-     DUMMY BACKEND
-  */
-  if (InputLaporanConfig.USE_DUMMY_BACKEND) {
-    jalankanDummySimpanLaporan(data)
-      .then(function (response) {
-        handleSaveReportSuccess(response);
-      })
-      .catch(function (error) {
-        handleSaveReportError(error);
-      })
-      .finally(function () {
-        setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
-      });
-
-    return;
-  }
 
   /*
      APPS SCRIPT ASLI
@@ -1934,8 +2075,8 @@ function resetFormLaporan() {
     elements.containerListKendaraan.innerHTML = "";
   }
 
-  if (elements.containerListPengendara) {
-    elements.containerListPengendara.innerHTML = "";
+  if (elements.containerListPihakTerlibat) {
+    elements.containerListPihakTerlibat.innerHTML = "";
   }
 
   if (elements.containerListSaksi) {
@@ -1946,9 +2087,7 @@ function resetFormLaporan() {
      Tambahkan satu baris kosong.
   */
   tambahKendaraan();
-
-  tambahPengendara();
-
+  tambahPihakTerlibat();
   tambahSaksi();
 
   /*
@@ -2184,8 +2323,8 @@ function initializeDynamicItemEvents() {
     /*
          Hapus pengendara.
       */
-    if (action === "hapus-pengendara") {
-      const item = actionButton.closest(".dynamic-item-pengendara");
+    if (action === "hapus-pihak-terlibat") {
+      const item = actionButton.closest(".dynamic-item-pihak-terlibat");
 
       if (item) {
         item.remove();
@@ -2218,126 +2357,41 @@ function initializeDynamicItemEvents() {
   });
 }
 
-/* ============================================================
-   39. DUMMY BACKEND - WHATSAPP
-   ============================================================ */
+function cekModeEdit() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
+  const id = params.get("id");
 
-function jalankanDummyProsesWhatsApp(rawText) {
-  return new Promise(function (resolve, reject) {
-    setTimeout(function () {
-      /*
-         Dummy JSON.
+  if (mode !== "edit" || !id) {
+    return false;
+  }
 
-         Bentuk ini hanya untuk menguji
-         frontend.
+  console.log("[InputLaporan] Mode Edit:", id);
 
-         Nanti diganti response Apps Script.
-      */
-      resolve({
-        success: true,
-
-        message: "Dummy: laporan berhasil diproses.",
-
-        data: {
-          idLaporan: "L/DUMMY/001",
-
-          noUrut: "001",
-
-          waktuInput: "Dummy",
-
-          tkp: "Jl. Raya Baureno - Bojonegoro",
-
-          tanggalKejadian: "09/09/2026",
-
-          hariKejadian: "Rabu",
-
-          jamKejadian: "08:30",
-
-          kendaraan: [
-            "Sepeda motor Honda Beat N 1234 AB",
-            "Mobil Toyota Avanza S 5678 CD",
-          ],
-
-          pengendara: ["Aipda Contoh / 35 tahun", "Budi / 30 tahun"],
-
-          saksi: ["Saksi Contoh 1", "Saksi Contoh 2"],
-
-          kronologi: rawText,
-
-          korbanLR: 1,
-
-          korbanLB: 0,
-
-          korbanMD: 0,
-
-          kermat: "Rp 2.500.000",
-
-          petugas: [],
-
-          statusPenanganan: "Dalam Penanganan",
-        },
-      });
-    }, 800);
-  });
+  return true;
 }
 
-/* ============================================================
-   40. DUMMY BACKEND - PETUGAS
-   ============================================================ */
+function ambilLaporanUntukEdit() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
+  const id = params.get("id");
 
-function jalankanDummyDaftarPetugas() {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve({
-        success: true,
+  if (mode !== "edit" || !id) {
+    return null;
+  }
 
-        message: "Dummy: daftar petugas berhasil.",
-
-        data: [
-          {
-            id: "P001",
-            nama: "Aipda Petugas Satu",
-          },
-
-          {
-            id: "P002",
-            nama: "Bripka Petugas Dua",
-          },
-
-          {
-            id: "P003",
-            nama: "Briptu Petugas Tiga",
-          },
-        ],
-      });
-    }, 300);
+  const laporan = lakaData.find(function (item) {
+    return item.id === id;
   });
-}
 
-/* ============================================================
-   41. DUMMY BACKEND - SIMPAN
-   ============================================================ */
+  if (!laporan) {
+    console.error("[InputLaporan] Laporan tidak ditemukan:", id);
+    return null;
+  }
 
-function jalankanDummySimpanLaporan(data) {
-  return new Promise(function (resolve) {
-    console.log("[DUMMY SAVE] Data laporan:", data);
+  console.log("[InputLaporan] Data laporan untuk edit:", laporan);
 
-    setTimeout(function () {
-      resolve({
-        success: true,
-
-        message: "Dummy: laporan berhasil disimpan.",
-
-        data: {
-          idLaporan: data.idLaporan || "L/DUMMY/001",
-
-          noUrut: data.noUrut || "001",
-
-          waktuInput: data.waktuInput || "Dummy",
-        },
-      });
-    }, 1000);
-  });
+  return laporan;
 }
 
 /* ============================================================
@@ -2395,11 +2449,13 @@ function initializeInputLaporanEvents() {
   /*
      Tambah pengendara.
   */
-  if (elements.btnAddPengendara) {
-    elements.btnAddPengendara.addEventListener("click", function () {
-      tambahPengendara();
-    });
-  }
+
+  InputLaporanElements.btnAddPihakTerlibat.addEventListener(
+    "click",
+    function () {
+      tambahPihakTerlibat();
+    },
+  );
 
   /*
      Tambah saksi.
@@ -2562,50 +2618,57 @@ window.InputLaporanComponent = {
    45. INITIALIZATION
    ============================================================ */
 
-/*
-   Nama function sengaja dibuat:
-       initializeInputLaporan()
-
-   BUKAN initializeApplication()
-
-   karena initializeApplication()
-   merupakan pusat initialization pada dashboard.
-
-   Dengan demikian halaman ini tidak mengambil
-   alih initialization global aplikasi.
-*/
 function initializeInputLaporan() {
+  console.log("[DEBUG EDIT] URL:", window.location.href);
+  console.log(
+    "[DEBUG EDIT] mode:",
+    new URLSearchParams(window.location.search).get("mode"),
+  );
+  console.log(
+    "[DEBUG EDIT] id:",
+    new URLSearchParams(window.location.search).get("id"),
+  );
+  /* ============================================================
+     EVENT LISTENER
+     Tetap dijalankan untuk Input Baru maupun Mode Edit
+     ============================================================ */
+
   initializeInputLaporanEvents();
 
+  /* ============================================================
+     MODE EDIT — CEK PARAMETER ID DARI URL
+     ============================================================ */
+
+  const laporanEdit = ambilLaporanUntukEdit();
+
+  /* ============================================================
+     MODE EDIT — SIAPKAN DAN TAMPILKAN FORM
+     ============================================================ */
+
+  if (laporanEdit) {
+    InputLaporanState.inputMethod = "manual";
+    InputLaporanState.parsedFromWhatsApp = false;
+
+    updateInputMethodActiveState("manual");
+    resetFormLaporan();
+    isiFormDariJSON(laporanEdit);
+    showInputView("form");
+
+    return;
+  }
+
+  /* ============================================================
+     MODE INPUT BARU — KODE LAMA DILANJUTKAN DI BAWAH
+     ============================================================ */
   /*
      Default:
      WhatsApp aktif.
   */
   InputLaporanState.inputMethod = "whatsapp";
-
   InputLaporanState.parsedFromWhatsApp = false;
-
-  /*
-     Active card WhatsApp.
-  */
   updateInputMethodActiveState("whatsapp");
-
-  /*
-     Default view:
-     pilihan card.
-
-     Sesuai HTML:
-
-     View selection adalah halaman awal.
-  */
   showInputView("whatsapp");
-
-  /*
-     Reset form.
-  */
-  resetFormLaporan();
-
-  /*
+  resetFormLaporan(); /*
      Jangan tampilkan banner parsing.
   */
   hideBannerSuccessParse();

@@ -1098,7 +1098,7 @@ function setStatusPenanganan(status) {
     normalized === "selesai/damai"
   ) {
     normalized = "Selesai / Damai";
-  } else if (normalized === "limpah polres" || normalized === "pelimpahan") {
+  } else if (normalized === "Limpah Polres" || normalized === "pelimpahan") {
     normalized = "Pelimpahan";
   } else if (normalized === "dalam penanganan") {
     normalized = "Dalam Penanganan";
@@ -2814,6 +2814,11 @@ if (document.readyState === "loading") {
 } else {
   initializeInputLaporan();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Pastikan status default langsung diwarnai
+  updateWarnaStatus();
+});
 
 /* ============================================================
    AKHIR JAVASCRIPT INPUT LAPORAN

@@ -87,7 +87,7 @@ const InputLaporanElements = {
 
   inputIdLaporan: document.getElementById("input-id-laporan"),
 
-  inputNoUrut: document.getElementById("input-no-urut"),
+  inputNomorLP: document.getElementById("input-no-lp"),
 
   inputWaktuInput: document.getElementById("input-waktu-input"),
 
@@ -126,8 +126,6 @@ const InputLaporanElements = {
   /* ---------- BUTTON ---------- */
 
   btnAddKendaraan: document.getElementById("btn-add-kendaraan"),
-
-  btnAddPihakTerlibat: document.getElementById("btn-add-pihak-terlibat"),
 
   btnAddSaksi: document.getElementById("btn-add-saksi"),
 
@@ -189,7 +187,26 @@ const InputLaporanState = {
 /* ============================================================
    4. HELPER DASAR
    ============================================================ */
+function updateWarnaStatus() {
+  const select = InputLaporanElements.selectStatusPenanganan;
 
+  if (!select) return;
+
+  select.classList.remove(
+    "text-amber-500",
+    "text-emerald-700",
+    "text-rose-700",
+  );
+
+  if (select.value === "Dalam Penanganan") {
+    select.classList.add("text-amber-500");
+  } else if (select.value === "Selesai / Damai") {
+    select.classList.add("text-emerald-700");
+  } else if (select.value === "Pelimpahan") {
+    select.classList.add("text-rose-700");
+  }
+  console.log("STATUS:", select.value, "CLASS:", select.className);
+}
 /*
    Mengambil value secara aman.
 */
@@ -852,10 +869,11 @@ function isiFormDariJSON(data) {
     "id",
   ]);
 
-  elements.inputNoUrut.value = ambilNilai(data, [
-    "noUrut",
-    "no_urut",
-    "nomorUrut",
+  elements.inputNomorLP.value = ambilNilai(data, [
+    "nomorLP",
+    "nomorLp",
+    "noLP",
+    "noLp",
   ]);
 
   elements.inputWaktuInput.value = ambilNilai(data, [
@@ -909,19 +927,46 @@ function isiFormDariJSON(data) {
 
   elements.inputKorbanLR.value = ambilNilai(
     data,
-    ["korbanLR", "korbanLr", "lr"],
+    [
+      "korbanLR",
+      "korbanLr",
+      "jumlahLR",
+      "jumlahLr",
+      "lr",
+      "LR",
+      "KorbanLR",
+      "KorbanLr",
+    ],
     0,
   );
 
   elements.inputKorbanLB.value = ambilNilai(
     data,
-    ["korbanLB", "korbanLb", "lb"],
+    [
+      "korbanLB",
+      "korbanLb",
+      "jumlahLB",
+      "jumlahLb",
+      "lb",
+      "LB",
+      "KorbanLB",
+      "KorbanLb",
+    ],
     0,
   );
 
   elements.inputKorbanMD.value = ambilNilai(
     data,
-    ["korbanMD", "korbanMd", "md"],
+    [
+      "korbanMD",
+      "korbanMd",
+      "jumlahMD",
+      "jumlahMd",
+      "md",
+      "MD",
+      "KorbanMD",
+      "KorbanMd",
+    ],
     0,
   );
 
@@ -984,10 +1029,6 @@ function isiFormDariJSON(data) {
   // ]);
 
   // renderListPihakTerlibat(pihakTerlibat);
-
-  const pihakTerlibat = buatDaftarPihakTerlibatDariKendaraan(kendaraan);
-
-  renderListPihakTerlibat(pihakTerlibat);
 
   /*
      --------------------------------------------
@@ -1064,6 +1105,7 @@ function setStatusPenanganan(status) {
   }
 
   setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
+  updateWarnaStatus();
 }
 
 /* ============================================================
@@ -1098,6 +1140,7 @@ function renderListKendaraan(kendaraanList = []) {
    Frontend menampilkan keduanya sebagai satu identitas kendaraan.
    Data pengendara/pengemudi/pembonceng tidak ditampilkan di sini.
    ============================================================ */
+
 function tambahKendaraan(data = "", index = null) {
   const container = InputLaporanElements.containerListKendaraan;
 
@@ -1107,13 +1150,14 @@ function tambahKendaraan(data = "", index = null) {
 
   const item = document.createElement("div");
 
-  item.className = "dynamic-item-kendaraan";
+  item.className =
+    "dynamic-item-kendaraan border border-slate-200 rounded-xl p-3 bg-slate-50";
 
   const nomor = index !== null ? index + 1 : container.children.length + 1;
 
   /*
-     Backend tetap menyimpan kendaraan dan nopol sebagai
-     field terpisah.
+     Backend tetap menyimpan kendaraan dan nopol
+     sebagai field terpisah.
   */
   const kendaraan =
     data && typeof data === "object" ? data.kendaraan || "" : "";
@@ -1121,8 +1165,8 @@ function tambahKendaraan(data = "", index = null) {
   const nopol = data && typeof data === "object" ? data.nopol || "" : "";
 
   /*
-     Untuk frontend, kendaraan dan nopol digabung menjadi
-     satu identitas tampilan.
+     Untuk frontend, kendaraan dan nopol
+     ditampilkan sebagai satu identitas.
   */
   let identitasKendaraan = kendaraan;
 
@@ -1131,8 +1175,9 @@ function tambahKendaraan(data = "", index = null) {
   }
 
   item.innerHTML = `
-    <div class="flex items-center justify-between gap-2 mb-1">
-      <label class="text-[12px] font-semibold text-slate-500">
+    <!-- HEADER KENDARAAN -->
+    <div class="flex items-center justify-between gap-2 mb-2">
+      <label class="text-[12px] font-bold text-slate-600">
         KENDARAAN ${nomor}
       </label>
 
@@ -1145,16 +1190,58 @@ function tambahKendaraan(data = "", index = null) {
       </button>
     </div>
 
+    <!-- IDENTITAS KENDARAAN -->
     <input
       type="text"
       data-field="kendaraan"
       value="${escapeHTML(identitasKendaraan)}"
       placeholder="Identitas kendaraan"
-      class="w-full text-sm p-2 border border-slate-300 rounded bg-white"
+      class="w-full text-sm p-2 border border-slate-300 rounded-lg bg-white"
     />
+
+    <!-- PIHAK TERLIBAT DALAM KENDARAAN INI -->
+    <div
+      class="mt-3 border-t border-slate-200 pt-3"
+    >
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <label class="text-[12px] font-bold text-slate-600">
+          PIHAK TERLIBAT
+        </label>
+
+        <button
+          type="button"
+          data-action="tambah-pihak-kendaraan"
+          class="text-blue-600 text-[12px] font-semibold hover:text-blue-800"
+        >
+          + Tambah Pihak
+        </button>
+      </div>
+
+      <!--
+        Pihak yang berhubungan dengan kendaraan ini
+        akan dibuat oleh JavaScript di sini.
+      -->
+      <div
+        data-container="pihak-kendaraan"
+        class="space-y-2"
+      >
+      </div>
+    </div>
   `;
 
   container.appendChild(item);
+
+  const containerPihak = item.querySelector(
+    '[data-container="pihak-kendaraan"]',
+  );
+
+  if (containerPihak) {
+    const daftarPihak = buatDaftarPihakTerlibatDariKendaraan([data]);
+
+    daftarPihak.forEach(function (pihak, index) {
+      tambahPihakTerlibat(pihak, index, containerPihak);
+    });
+  }
 }
 
 /* ============================================================
@@ -1180,9 +1267,7 @@ function renderListPihakTerlibat(pihakTerlibatList = []) {
   });
 }
 
-function tambahPihakTerlibat(data = "", index = null) {
-  const container = InputLaporanElements.containerListPihakTerlibat;
-
+function tambahPihakTerlibat(data = "", index = null, container = null) {
   if (!container) {
     return;
   }
@@ -1190,7 +1275,7 @@ function tambahPihakTerlibat(data = "", index = null) {
   const item = document.createElement("div");
 
   item.className =
-    "dynamic-item-pihak-terlibat border border-slate-200 rounded-lg p-2 bg-slate-50";
+    "dynamic-item-pihak-terlibat border border-slate-200 rounded-lg p-2 bg-white";
 
   const nama = ambilNilai(
     data,
@@ -1206,14 +1291,14 @@ function tambahPihakTerlibat(data = "", index = null) {
 
   item.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-1">
-      <label class="text-[12px] font-semibold text-slate-500">
-        PIHAK TERLIBAT ${index !== null ? index + 1 : container.children.length + 1}
+      <label class="text-[11px] font-bold text-slate-500">
+        PIHAK ${index !== null ? index + 1 : container.children.length + 1}
       </label>
 
       <button
         type="button"
-        data-action="hapus-pihak-terlibat"
-        class="text-red-500 text-[12px] font-semibold hover:text-red-700"
+        data-action="hapus-pihak-kendaraan"
+        class="text-red-500 text-[11px] font-semibold hover:text-red-700"
       >
         Hapus
       </button>
@@ -1221,42 +1306,55 @@ function tambahPihakTerlibat(data = "", index = null) {
 
     <div class="space-y-1.5">
 
-  <select
-    data-field="jenisPihak"
-    class="w-full text-sm p-2 border border-slate-300 rounded bg-white font-semibold"
-  >
-    <option value="Pengendara" ${jenisPihak === "Pengendara" ? "selected" : ""}>
-      Pengendara
-    </option>
+      <select
+        data-field="jenisPihak"
+        class="w-full text-sm p-2 border border-slate-300 rounded-lg bg-white font-semibold"
+      >
+        <option
+          value="Pengendara"
+          ${jenisPihak === "Pengendara" ? "selected" : ""}
+        >
+          Pengendara
+        </option>
 
-    <option value="Pengemudi" ${jenisPihak === "Pengemudi" ? "selected" : ""}>
-      Pengemudi
-    </option>
+        <option
+          value="Pengemudi"
+          ${jenisPihak === "Pengemudi" ? "selected" : ""}
+        >
+          Pengemudi
+        </option>
 
-    <option value="Pembonceng" ${jenisPihak === "Pembonceng" ? "selected" : ""}>
-      Pembonceng
-    </option>
+        <option
+          value="Pembonceng"
+          ${jenisPihak === "Pembonceng" ? "selected" : ""}
+        >
+          Pembonceng
+        </option>
 
-    <option value="Pengayuh" ${jenisPihak === "Pengayuh" ? "selected" : ""}>
-      Pengayuh
-    </option>
+        <option
+          value="Pengayuh"
+          ${jenisPihak === "Pengayuh" ? "selected" : ""}
+        >
+          Pengayuh
+        </option>
 
-    <option value="Pejalan Kaki" ${
-      jenisPihak === "Pejalan Kaki" ? "selected" : ""
-    }>
-      Pejalan Kaki
-    </option>
-  </select>
+        <option
+          value="Pejalan Kaki"
+          ${jenisPihak === "Pejalan Kaki" ? "selected" : ""}
+        >
+          Pejalan Kaki
+        </option>
+      </select>
 
-  <input
-    type="text"
-    data-field="nama"
-    value="${escapeHTML(nama)}"
-    placeholder="Nama / identitas pihak"
-    class="w-full text-sm p-2 border border-slate-300 rounded bg-white"
-  />
+      <input
+        type="text"
+        data-field="nama"
+        value="${escapeHTML(nama)}"
+        placeholder="Nama / identitas pihak"
+        class="w-full text-sm p-2 border border-slate-300 rounded-lg bg-white"
+      />
 
-</div>
+    </div>
   `;
 
   container.appendChild(item);
@@ -2048,7 +2146,7 @@ function resetFormLaporan() {
   */
   elements.inputIdLaporan.value = "";
 
-  elements.inputNoUrut.value = "";
+  elements.inputNomorLP.value = "";
 
   elements.inputWaktuInput.value = "";
 
@@ -2112,7 +2210,7 @@ function resetFormLaporan() {
   /*
      Status default.
   */
-  elements.selectStatusPenanganan.value = "Dalam Penanganan";
+  elements.selectStatusPenanganan.value = "Pelimpahan";
 
   /*
      Petugas.
@@ -2301,11 +2399,33 @@ function initializeDynamicItemEvents() {
   document.addEventListener("click", function (event) {
     const actionButton = event.target.closest("[data-action]");
 
-    if (!actionButton) {
+    if (!actionButton) return;
+
+    const action = actionButton.dataset.action;
+
+    if (action === "tambah-pihak-kendaraan") {
+      const kendaraanItem = actionButton.closest(".dynamic-item-kendaraan");
+
+      if (!kendaraanItem) {
+        return;
+      }
+
+      const containerPihak = kendaraanItem.querySelector(
+        '[data-container="pihak-kendaraan"]',
+      );
+
+      if (!containerPihak) {
+        return;
+      }
+
+      tambahPihakTerlibat("", null, containerPihak);
+
       return;
     }
 
-    const action = actionButton.dataset.action;
+    if (!actionButton) {
+      return;
+    }
 
     /*
          Hapus kendaraan.
@@ -2323,7 +2443,7 @@ function initializeDynamicItemEvents() {
     /*
          Hapus pengendara.
       */
-    if (action === "hapus-pihak-terlibat") {
+    if (action === "hapus-pihak-kendaraan") {
       const item = actionButton.closest(".dynamic-item-pihak-terlibat");
 
       if (item) {
@@ -2437,6 +2557,15 @@ function initializeInputLaporanEvents() {
     });
   }
 
+  if (elements.selectStatusPenanganan) {
+    elements.selectStatusPenanganan.addEventListener(
+      "change",
+      updateWarnaStatus,
+    );
+  }
+
+  updateWarnaStatus();
+
   /*
      Tambah kendaraan.
   */
@@ -2449,13 +2578,6 @@ function initializeInputLaporanEvents() {
   /*
      Tambah pengendara.
   */
-
-  InputLaporanElements.btnAddPihakTerlibat.addEventListener(
-    "click",
-    function () {
-      tambahPihakTerlibat();
-    },
-  );
 
   /*
      Tambah saksi.

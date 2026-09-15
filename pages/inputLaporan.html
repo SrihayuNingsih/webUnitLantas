@@ -805,7 +805,7 @@
               <div class="grid grid-cols-2 gap-2">
                 <div>
                   <label
-                    for="input-no-urut"
+                    for="input-no-lp"
                     class="text-[12px] font-semibold text-slate-500"
                   >
                     Nomor LP
@@ -813,7 +813,7 @@
 
                   <input
                     type="text"
-                    id="input-no-urut"
+                    id="input-no-lp"
                     class="w-full text-sm p-2 border border-slate-300 rounded bg-slate-100 text-slate-500 focus:outline-none"
                     readonly
                   />
@@ -862,6 +862,7 @@
                 <input
                   type="text"
                   id="input-tkp"
+                  placeholder="Tempat Kejadian Perkara"
                   class="w-full text-sm p-2 border border-slate-300 rounded"
                 />
               </div>
@@ -897,7 +898,7 @@
                   </label>
 
                   <input
-                    type="text"
+                    type="date"
                     id="input-tanggal-kejadian"
                     placeholder="DD/MM/YYYY"
                     class="w-full text-sm p-2 border border-slate-300 rounded"
@@ -914,7 +915,7 @@
                   </label>
 
                   <input
-                    type="text"
+                    type="time"
                     id="input-jam-kejadian"
                     placeholder="HH:MM"
                     class="w-full text-sm p-2 border border-slate-300 rounded"
@@ -924,8 +925,9 @@
             </div>
           </fieldset>
 
-          <!-- SECTION C: KENDARAAN YANG TERLIBAT -->
-
+          <!-- ============================================================
+     SECTION C: KENDARAAN DAN PIHAK TERLIBAT
+     ============================================================ -->
           <fieldset
             id="section-kendaraan"
             class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
@@ -936,46 +938,27 @@
               C. KENDARAAN YANG TERLIBAT KECELAKAAN
             </legend>
 
-            <div id="container-list-kendaraan" class="space-y-2 mt-2">
-              <!-- Item baris kendaraan di-generate oleh JS ke dalam container ini -->
+            <!--
+    Semua card kendaraan akan dibuat oleh JavaScript
+    ke dalam container ini.
+  -->
+            <div id="container-list-kendaraan" class="space-y-4 mt-3">
+              <!-- Card kendaraan dibuat oleh JS -->
             </div>
 
+            <!-- Tambah kendaraan -->
             <button
               id="btn-add-kendaraan"
               type="button"
-              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-sm hover:bg-blue-50"
+              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg text-sm hover:bg-blue-50"
             >
               + Tambah Kendaraan
             </button>
           </fieldset>
 
-          <!-- SECTION D: PIHAK TERLIBAT -->
-
-          <fieldset
-            id="section-pihak-terlibat"
-            class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
-          >
-            <legend
-              class="text-md sm:text-base px-2 py-1 font-bold text-blue-800 leading-tight border border-1.5 bg-blue-100/80 rounded-lg border-blue-700"
-            >
-              D. PIHAK TERLIBAT
-            </legend>
-
-            <div id="container-list-pihak-terlibat" class="space-y-2 mt-2">
-              <!-- Item pihak terlibat akan di-generate oleh JS -->
-            </div>
-
-            <button
-              id="btn-add-pihak-terlibat"
-              type="button"
-              class="w-full mt-3 border border-blue-600 text-blue-600 font-semibold py-1.5 rounded-lg text-sm hover:bg-blue-50"
-            >
-              + Tambah Pihak Terlibat
-            </button>
-          </fieldset>
-
-          <!-- SECTION E: IDENTITAS SAKSI -->
-
+          <!-- ============================================================
+     SECTION D: SAKSI
+     ============================================================ -->
           <fieldset
             id="section-saksi"
             class="bg-white border border-slate-200 p-3 rounded-xl mb-4"
@@ -983,11 +966,11 @@
             <legend
               class="text-md sm:text-base px-2 py-1 font-bold text-blue-800 leading-tight border border-1.5 bg-blue-100/80 rounded-lg border-blue-700"
             >
-              E. IDENTITAS SAKSI - SAKSI
+              D. SAKSI
             </legend>
 
             <div id="container-list-saksi" class="space-y-2 mt-2">
-              <!-- Item baris saksi di-generate oleh JS ke dalam container ini -->
+              <!-- Saksi dibuat oleh JS -->
             </div>
 
             <button
@@ -1036,7 +1019,7 @@
               <div>
                 <label
                   for="input-korban-lr"
-                  class="text-[12px] font-semibold text-slate-500"
+                  class="text-[12px] font-semibold text-emerald-700"
                 >
                   LR (Luka Ringan)
                 </label>
@@ -1059,7 +1042,7 @@
               <div>
                 <label
                   for="input-korban-lb"
-                  class="text-[12px] font-semibold text-slate-500"
+                  class="text-[12px] font-semibold text-amber-500"
                 >
                   LB (Luka Berat)
                 </label>
@@ -1082,9 +1065,9 @@
               <div>
                 <label
                   for="input-korban-md"
-                  class="text-[12px] font-semibold text-slate-500"
+                  class="text-[12px] font-semibold text-rose-700"
                 >
-                  MD (Meninggal)
+                  MD (Meninggal Dunia)
                 </label>
 
                 <div

@@ -1071,7 +1071,7 @@ function lihatDetail(id) {
 }
 
 function inputLaporanBaru() {
-  alert("Membuka form Input Laporan Baru.");
+  window.location.href = "inputLaporan.html";
 }
 
 function handleEdit() {

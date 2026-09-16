@@ -8,7 +8,7 @@
 
 let isOfficerMode = localStorage.getItem("isOfficerMode") === "true";
 
-let activeMenuId = null;
+// let activeMenuId = null;
 
 /* =====================================================
    SET MODE APLIKASI
@@ -37,7 +37,7 @@ function setMode(mode) {
 function updateGlobalUI() {
   updateNavbarMode(isOfficerMode);
   updateSidebarMode(isOfficerMode);
-  updateLakaMode(isOfficerMode);
+  // updateLakaMode(isOfficerMode);
 }
 
 /* =====================================================
@@ -65,9 +65,9 @@ const logoutModal = document.getElementById("logoutModal");
 const cancelLogoutButton = document.getElementById("cancelLogoutButton");
 const confirmLogoutButton = document.getElementById("confirmLogoutButton");
 
-const actionMenu = document.getElementById("action-menu");
-const actionEditButton = document.getElementById("actionEditButton");
-const actionDeleteButton = document.getElementById("actionDeleteButton");
+// const actionMenu = document.getElementById("action-menu");
+// const actionEditButton = document.getElementById("actionEditButton");
+// const actionDeleteButton = document.getElementById("actionDeleteButton");
 
 const searchInput = document.getElementById("searchInput");
 const searchInputDesktop = document.getElementById("searchInputDesktop");
@@ -896,51 +896,7 @@ function renderLakaList(data = lakaData) {
             </div>
 
 
-            <!-- ACTION -->
-            <div class="flex items-center gap-2">
 
-              <!-- VISITOR -->
-              <button
-                type="button"
-                data-action="detail-visitor-page"
-                data-id="${item.id || index}"
-                class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
-              >
-                Lihat Detail
-
-                <i
-                  data-lucide="chevron-right"
-                  class="h-4 w-4"
-                ></i>
-              </button>
-
-
-              <!-- OFFICER DETAIL -->
-              <button
-                type="button"
-                data-action="detail-officer-page"
-                data-id="${item.id || index}"
-                class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
-              >
-                Lihat Detail
-              </button>
-
-
-              <!-- OFFICER ACTION -->
-              <button
-                type="button"
-                data-action="menu-page"
-                data-id="${item.id || index}"
-                class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
-                aria-label="Menu aksi"
-              >
-                <i
-                  data-lucide="more-vertical"
-                  class="h-5 w-5"
-                ></i>
-              </button>
-
-            </div>
 
           </div>
 
@@ -953,219 +909,234 @@ function renderLakaList(data = lakaData) {
     lucide.createIcons();
   }
 
-  updateLakaMode(isOfficerMode);
+  // updateLakaMode(isOfficerMode);
 }
 
 /* =====================================================
    MODE LAKA
    ===================================================== */
 
-function updateLakaMode(isOfficer) {
-  document
-    .querySelectorAll(".visitor-page-detail-button")
-    .forEach(function (button) {
-      button.classList.toggle("hidden", isOfficer);
-    });
+// function updateLakaMode(isOfficer) {
+//   // Dashboard sekarang hanya menampilkan Lihat Detail.
+//   // Tombol detail selalu tampil pada semua mode.
 
-  document
-    .querySelectorAll(".officer-page-detail-button")
-    .forEach(function (button) {
-      button.classList.toggle("hidden", !isOfficer);
-    });
+//   closeActionMenu();
+// }
 
-  document
-    .querySelectorAll(".officer-page-action-button")
-    .forEach(function (button) {
-      button.classList.toggle("hidden", !isOfficer);
-    });
+// document.addEventListener("modeChanged", function (event) {
+//   const officer = Boolean(event.detail && event.detail.isOfficerMode);
 
-  if (!isOfficer) {
-    closeActionMenu();
-  }
-}
-
-document.addEventListener("modeChanged", function (event) {
-  const officer = Boolean(event.detail && event.detail.isOfficerMode);
-
-  updateLakaMode(officer);
-});
+//   updateLakaMode(officer);
+// });
 
 /* =====================================================
    ACTION MENU LAKA
    ===================================================== */
 
-function toggleActionMenu(event, id, button) {
-  event.stopPropagation();
+// function toggleActionMenu(event, id, button) {
+//   event.stopPropagation();
 
-  if (!isOfficerMode) {
-    return;
-  }
+//   if (!isOfficerMode) {
+//     return;
+//   }
 
-  if (!actionMenu || !button) {
-    return;
-  }
+//   if (!actionMenu || !button) {
+//     return;
+//   }
 
-  if (activeMenuId === id && !actionMenu.classList.contains("hidden")) {
-    closeActionMenu();
-    return;
-  }
+//   if (activeMenuId === id && !actionMenu.classList.contains("hidden")) {
+//     closeActionMenu();
+//     return;
+//   }
 
-  activeMenuId = id;
+//   activeMenuId = id;
 
-  actionMenu.classList.remove("hidden");
+//   actionMenu.classList.remove("hidden");
 
-  const rect = button.getBoundingClientRect();
+//   const rect = button.getBoundingClientRect();
 
-  const menuHeight = actionMenu.offsetHeight || 90;
+//   const menuHeight = actionMenu.offsetHeight || 90;
 
-  const menuWidth = actionMenu.offsetWidth || 160;
+//   const menuWidth = actionMenu.offsetWidth || 160;
 
-  const spaceBelow = window.innerHeight - rect.bottom;
+//   const spaceBelow = window.innerHeight - rect.bottom;
 
-  if (spaceBelow < menuHeight && rect.top > menuHeight) {
-    actionMenu.style.top = `${rect.top - menuHeight - 6}px`;
-  } else {
-    actionMenu.style.top = `${rect.bottom + 6}px`;
-  }
+//   if (spaceBelow < menuHeight && rect.top > menuHeight) {
+//     actionMenu.style.top = `${rect.top - menuHeight - 6}px`;
+//   } else {
+//     actionMenu.style.top = `${rect.bottom + 6}px`;
+//   }
 
-  const leftPos = Math.min(
-    rect.right - menuWidth,
-    window.innerWidth - menuWidth - 10,
-  );
+//   const leftPos = Math.min(
+//     rect.right - menuWidth,
+//     window.innerWidth - menuWidth - 10,
+//   );
 
-  actionMenu.style.left = `${Math.max(10, leftPos)}px`;
-}
+//   actionMenu.style.left = `${Math.max(10, leftPos)}px`;
+// }
 
-function closeActionMenu() {
-  if (actionMenu) {
-    actionMenu.classList.add("hidden");
+// function closeActionMenu() {
+//   if (actionMenu) {
+//     actionMenu.classList.add("hidden");
 
-    actionMenu.style.top = "";
-    actionMenu.style.left = "";
-  }
+//     actionMenu.style.top = "";
+//     actionMenu.style.left = "";
+//   }
 
-  activeMenuId = null;
-}
+//   activeMenuId = null;
+// }
 
 /* =====================================================
    EVENT KLIK ACTION MENU
    ===================================================== */
 
-document.addEventListener("click", function (event) {
-  /* MENU PETUGAS */
-  const menuButton = event.target.closest('[data-action="menu-page"]');
+// document.addEventListener("click", function (event) {
+//   /* MENU PETUGAS */
+//   // const menuButton = event.target.closest('[data-action="menu-page"]');
 
-  if (menuButton) {
-    toggleActionMenu(event, menuButton.dataset.id, menuButton);
+//   // if (menuButton) {
+//   //   toggleActionMenu(event, menuButton.dataset.id, menuButton);
 
-    return;
-  }
+//   //   return;
+//   // }
 
-  /* DETAIL VISITOR */
-  const visitorDetail = event.target.closest(
-    '[data-action="detail-visitor-page"]',
-  );
+//   /* DETAIL VISITOR */
+//   // const visitorDetail = event.target.closest(
+//   //   '[data-action="detail-visitor-page"]',
+//   // );
 
-  if (visitorDetail) {
-    lihatDetail(visitorDetail.dataset.id);
+//   // if (visitorDetail) {
+//   //   lihatDetail(visitorDetail.dataset.id);
 
-    return;
-  }
+//   //   return;
+//   // }
 
-  /* DETAIL OFFICER */
-  const officerDetail = event.target.closest(
-    '[data-action="detail-officer-page"]',
-  );
+//   // /* DETAIL OFFICER */
+//   // const officerDetail = event.target.closest(
+//   //   '[data-action="detail-officer-page"]',
+//   // );
 
-  if (officerDetail) {
-    lihatDetail(officerDetail.dataset.id);
+//   // if (officerDetail) {
+//   //   lihatDetail(officerDetail.dataset.id);
 
-    return;
-  }
+//   //   return;
+//   // }
 
-  /* KLIK DI LUAR ACTION MENU */
-  if (!event.target.closest("#action-menu")) {
-    closeActionMenu();
-  }
-});
+//   document.addEventListener("click", function (event) {
+//     /* DETAIL LAPORAN */
+//     const detailButton = event.target.closest('[data-action="detail-page"]');
+
+//     if (detailButton) {
+//       lihatDetail(detailButton.dataset.id);
+
+//       return;
+//     }
+
+//     /* KLIK DI LUAR ACTION MENU */
+//     if (!event.target.closest("#action-menu")) {
+//       closeActionMenu();
+//     }
+//   });
+
+//   /* KLIK DI LUAR ACTION MENU */
+//   if (!event.target.closest("#action-menu")) {
+//     closeActionMenu();
+//   }
+// });
 
 /* =====================================================
    TOMBOL EDIT
    ===================================================== */
 
-if (actionEditButton) {
-  actionEditButton.addEventListener("click", function () {
-    handleEdit();
-  });
-}
+// if (actionEditButton) {
+//   actionEditButton.addEventListener("click", function () {
+//     handleEdit();
+//   });
+// }
 
 /* =====================================================
    TOMBOL HAPUS
    ===================================================== */
 
-if (actionDeleteButton) {
-  actionDeleteButton.addEventListener("click", function () {
-    handleDelete();
-  });
-}
+// if (actionDeleteButton) {
+//   actionDeleteButton.addEventListener("click", function () {
+//     handleDelete();
+//   });
+// }
 
 /* =====================================================
    TUTUP ACTION MENU
    ===================================================== */
 
-window.addEventListener("resize", function () {
-  closeActionMenu();
-});
+// window.addEventListener("resize", function () {
+//   closeActionMenu();
+// });
 
-window.addEventListener("scroll", () => closeActionMenu(), true);
+// window.addEventListener("scroll", () => closeActionMenu(), true);
 
 /* =====================================================
    ACTION LAPORAN
    ===================================================== */
 
-function lihatDetail(id) {
-  alert(`Membuka detail laporan: ${id}`);
-}
+// function lihatDetail() {
+//   if (!activeMenuId) {
+//     return;
+//   }
 
-function handleEdit() {
-  if (!activeMenuId) {
-    return;
-  }
+//   const id = activeMenuId;
 
-  const id = activeMenuId;
+//   closeActionMenu();
 
-  closeActionMenu();
+//   window.location.href = `detailLaporan.html?id=${encodeURIComponent(id)}`;
+// }
 
-  alert(`Edit laporan: ${id}`);
-}
+// function lihatDetail(id) {
+//   if (!id) {
+//     return;
+//   }
 
-function handleDelete() {
-  if (!activeMenuId) {
-    return;
-  }
+//   window.location.href = `pages/detailLaporan.html?id=${encodeURIComponent(id)}`;
+// }
 
-  const id = activeMenuId;
+// function handleEdit() {
+//   if (!activeMenuId) {
+//     return;
+//   }
 
-  const confirmed = confirm(`Yakin ingin menghapus laporan ${id}?`);
+//   const id = activeMenuId;
 
-  if (!confirmed) {
-    closeActionMenu();
-    return;
-  }
+//   closeActionMenu();
 
-  const index = lakaData.findIndex(function (item) {
-    return item.id === id;
-  });
+//   window.location.href = `pages/inputLaporan.html?id=${encodeURIComponent(id)}&mode=edit`;
+// }
 
-  if (index !== -1) {
-    lakaData.splice(index, 1);
+// function handleDelete() {
+//   if (!activeMenuId) {
+//     return;
+//   }
 
-    renderLakaList();
-    updateRekapStatus();
-  }
+//   const id = activeMenuId;
 
-  closeActionMenu();
-}
+//   const confirmed = confirm(`Yakin ingin menghapus laporan ${id}?`);
+
+//   if (!confirmed) {
+//     closeActionMenu();
+//     return;
+//   }
+
+//   const index = lakaData.findIndex(function (item) {
+//     return item.id === id;
+//   });
+
+//   if (index !== -1) {
+//     lakaData.splice(index, 1);
+
+//     renderLakaList();
+//     updateRekapStatus();
+//   }
+
+//   closeActionMenu();
+// }
 
 /* =====================================================
    TOMBOL LIHAT SEMUA
@@ -1221,9 +1192,9 @@ function updateRekapStatus(data = lakaData) {
    * - Selesai/RJ
    * - RJ
    */
-  const rj = dataLaka.filter(function (item) {
-    return ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim());
-  }).length;
+  // const rj = dataLaka.filter(function (item) {
+  //   return ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim());
+  // }).length;
 
   const selesai = dataTahunBerjalan.filter(function (item) {
     return ["Selesai", "Selesai/RJ", "RJ"].includes(
@@ -1340,13 +1311,13 @@ window.LakaComponent = {
     return [...lakaData];
   },
 
-  refreshMode: function () {
-    updateLakaMode(isOfficerMode);
-  },
+  // refreshMode: function () {
+  //   updateLakaMode(isOfficerMode);
+  // },
 
-  closeActionMenu: function () {
-    closeActionMenu();
-  },
+  // closeActionMenu: function () {
+  //   closeActionMenu();
+  // },
 };
 
 /* =====================================================
@@ -1378,7 +1349,7 @@ function initializeApplication() {
   updateRekapStatus();
 
   /* 8. Tutup Action Menu */
-  closeActionMenu();
+  // closeActionMenu();
 
   /* 9. Kondisi Sidebar awal */
   if (window.innerWidth < 768) {

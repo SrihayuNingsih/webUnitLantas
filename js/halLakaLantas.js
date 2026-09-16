@@ -1183,6 +1183,12 @@ function initLakaPage() {
       else if (action === "last") lakaPageCurrent = totalPages;
       else lakaPageCurrent = Number(action);
       renderLakaPage();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       return;
     }
 

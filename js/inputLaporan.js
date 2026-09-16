@@ -854,6 +854,7 @@ function isiFormDariJSON(data) {
   if (!data) {
     return;
   }
+  console.log("[DEBUG ISI FORM] Data Edit:", data);
 
   const elements = InputLaporanElements;
 
@@ -882,6 +883,10 @@ function isiFormDariJSON(data) {
     "tanggalInput",
   ]);
 
+  elements.inputTanggalKejadian.value = ubahTanggalKeInputDate(
+    ambilNilai(data, ["tanggalKejadian", "tanggal_kejadian", "tanggal"]),
+  );
+
   /*
      --------------------------------------------
      WAKTU & TEMPAT
@@ -889,12 +894,6 @@ function isiFormDariJSON(data) {
   */
 
   elements.inputTKP.value = ambilNilai(data, ["tkp", "TKP"]);
-
-  elements.inputTanggalKejadian.value = ambilNilai(data, [
-    "tanggalKejadian",
-    "tanggal_kejadian",
-    "tanggal",
-  ]);
 
   setSelectValue(
     elements.selectHariKejadian,
@@ -1019,17 +1018,6 @@ function isiFormDariJSON(data) {
 
   --------------------------------------------
 
-*/
-
-  // const pihakTerlibat = ambilArray(data, [
-  //   "pihakTerlibat",
-  //   "pihak_terlibat",
-  //   "pihak",
-  //   "dataPihakTerlibat",
-  // ]);
-
-  // renderListPihakTerlibat(pihakTerlibat);
-
   /*
      --------------------------------------------
      SAKSI
@@ -1051,6 +1039,49 @@ function isiFormDariJSON(data) {
   InputLaporanState.selectedPetugas = normalizePetugasArray(petugas);
 
   renderSelectedPetugas();
+}
+
+/* ============================================================
+   14. ISI CODE BARU
+   ============================================================ */
+function ubahTanggalKeInputDate(tanggal) {
+  if (!tanggal) return "";
+
+  const teks = String(tanggal).trim();
+
+  // Jika sudah YYYY-MM-DD, langsung gunakan
+  if (/^\d{4}-\d{2}-\d{2}$/.test(teks)) {
+    return teks;
+  }
+
+  const bulan = {
+    januari: "01",
+    februari: "02",
+    maret: "03",
+    april: "04",
+    mei: "05",
+    juni: "06",
+    juli: "07",
+    agustus: "08",
+    september: "09",
+    oktober: "10",
+    november: "11",
+    desember: "12",
+  };
+
+  const cocok = teks.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+
+  if (!cocok) return "";
+
+  const hari = cocok[1].padStart(2, "0");
+  const namaBulan = cocok[2].toLowerCase();
+  const tahun = cocok[3];
+
+  const nomorBulan = bulan[namaBulan];
+
+  if (!nomorBulan) return "";
+
+  return `${tahun}-${nomorBulan}-${hari}`;
 }
 
 /* ============================================================
@@ -1880,7 +1911,7 @@ function ambilDataForm() {
 */
     kendaraan: ambilListKendaraan(),
 
-    pihakTerlibat: ambilListPihakTerlibat(),
+    // pihakTerlibat: ambilListPihakTerlibat(),
 
     saksi: ambilListSaksi(),
 
@@ -2234,32 +2265,36 @@ function resetFormLaporan() {
    34. BATAL FORM
    ============================================================ */
 
+// function batalForm() {
+//   /*
+//      Jika sedang review dari WhatsApp,
+//      kembali ke halaman WhatsApp.
+//   */
+//   if (
+//     InputLaporanState.inputMethod === "whatsapp" &&
+//     InputLaporanState.parsedFromWhatsApp
+//   ) {
+//     showInputView("whatsapp");
+
+//     return;
+//   }
+
+//   /*
+//      Manual kembali ke selection.
+//   */
+//   showInputView("selection");
+
+//   updateInputMethodActiveState("whatsapp");
+
+//   InputLaporanState.inputMethod = "whatsapp";
+
+//   InputLaporanState.parsedFromWhatsApp = false;
+
+//   resetFormLaporan();
+// }
+
 function batalForm() {
-  /*
-     Jika sedang review dari WhatsApp,
-     kembali ke halaman WhatsApp.
-  */
-  if (
-    InputLaporanState.inputMethod === "whatsapp" &&
-    InputLaporanState.parsedFromWhatsApp
-  ) {
-    showInputView("whatsapp");
-
-    return;
-  }
-
-  /*
-     Manual kembali ke selection.
-  */
-  showInputView("selection");
-
-  updateInputMethodActiveState("whatsapp");
-
-  InputLaporanState.inputMethod = "whatsapp";
-
-  InputLaporanState.parsedFromWhatsApp = false;
-
-  resetFormLaporan();
+  window.location.href = "halLakaLantas.html";
 }
 
 /* ============================================================

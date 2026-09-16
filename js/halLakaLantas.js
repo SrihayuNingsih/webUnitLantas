@@ -418,6 +418,23 @@ function applyLakaFilter() {
 }
 
 function resetLakaFilter() {
+  // =====================================================
+  // MULAI: HAPUS PARAMETER FILTER DARI URL SAAT RESET
+  // =====================================================
+
+  const url = new URL(window.location.href);
+
+  url.searchParams.delete("tahun");
+  url.searchParams.delete("bulan");
+  url.searchParams.delete("tanggalMulai");
+  url.searchParams.delete("tanggalAkhir");
+
+  window.history.replaceState({}, "", url.pathname);
+
+  // =====================================================
+  // SELESAI: HAPUS PARAMETER FILTER DARI URL SAAT RESET
+  // =====================================================
+
   const tahun = document.getElementById("filter-tahun");
   const bulan = document.getElementById("filter-bulan");
   const waktu = document.getElementById("filter-waktu");
@@ -431,6 +448,78 @@ function resetLakaFilter() {
   if (tglMulai) tglMulai.value = "";
   if (tglAkhir) tglAkhir.value = "";
   if (status) status.value = "";
+
+  // =====================================================
+  // MULAI: RESET TAMPILAN CUSTOM FILTER TAHUN
+  // =====================================================
+
+  const filterTahunValue = document.getElementById("filter-tahun-value");
+  const filterTahunOptions = document.getElementById("filter-tahun-options");
+  const iconFilterTahun = document.getElementById("icon-filter-tahun");
+
+  if (filterTahunValue) {
+    filterTahunValue.textContent = "";
+  }
+
+  if (filterTahunOptions) {
+    filterTahunOptions.classList.add("hidden");
+  }
+
+  if (iconFilterTahun) {
+    iconFilterTahun.classList.remove("rotate-180");
+  }
+
+  // =====================================================
+  // SELESAI: RESET TAMPILAN CUSTOM FILTER TAHUN
+  // =====================================================
+
+  // =====================================================
+  // MULAI: RESET TAMPILAN CUSTOM FILTER BULAN
+  // =====================================================
+
+  const filterBulanValue = document.getElementById("filter-bulan-value");
+  const filterBulanOptions = document.getElementById("filter-bulan-options");
+  const iconFilterBulan = document.getElementById("icon-filter-bulan");
+
+  if (filterBulanValue) {
+    filterBulanValue.textContent = "";
+  }
+
+  if (filterBulanOptions) {
+    filterBulanOptions.classList.add("hidden");
+  }
+
+  if (iconFilterBulan) {
+    iconFilterBulan.classList.remove("rotate-180");
+  }
+
+  // =====================================================
+  // SELESAI: RESET TAMPILAN CUSTOM FILTER BULAN
+  // =====================================================
+
+  // =====================================================
+  // MULAI: RESET TAMPILAN CUSTOM FILTER WAKTU
+  // =====================================================
+
+  const filterWaktuValue = document.getElementById("filter-waktu-value");
+  const filterWaktuOptions = document.getElementById("filter-waktu-options");
+  const iconFilterWaktu = document.getElementById("icon-filter-waktu");
+
+  if (filterWaktuValue) {
+    filterWaktuValue.textContent = "";
+  }
+
+  if (filterWaktuOptions) {
+    filterWaktuOptions.classList.add("hidden");
+  }
+
+  if (iconFilterWaktu) {
+    iconFilterWaktu.classList.remove("rotate-180");
+  }
+
+  // =====================================================
+  // SELESAI: RESET TAMPILAN CUSTOM FILTER WAKTU
+  // =====================================================
 
   if (lakaRentangTanggalAktif && rentangTanggalButton) {
     rentangTanggalButton.click();
@@ -523,11 +612,48 @@ function applyLakaFilterFromUrl() {
   // }
   // function diatas diganti funvtion dibawah
 
+  // if (!tahun && !bulan && !tanggalMulai && !tanggalAkhir) {
+  //   lakaFilteredData = sortLakaData(lakaData);
+  //   renderLakaPage();
+  //   return;
+  // }
+
+  // =====================================================
+  // MULAI: RESET FILTER SAAT TIDAK ADA PARAMETER URL
+  // =====================================================
+
   if (!tahun && !bulan && !tanggalMulai && !tanggalAkhir) {
+    const filterTahunValue = document.getElementById("filter-tahun-value");
+    const filterBulanValue = document.getElementById("filter-bulan-value");
+
+    // Kosongkan nilai select agar browser tidak membawa
+    // kembali pilihan filter sebelumnya saat reload
+    if (tahunEl) {
+      tahunEl.value = "";
+    }
+
+    if (bulanEl) {
+      bulanEl.value = "";
+    }
+
+    // Kosongkan tampilan custom Tahun
+    if (filterTahunValue) {
+      filterTahunValue.textContent = "";
+    }
+
+    // Kosongkan tampilan custom Bulan
+    if (filterBulanValue) {
+      filterBulanValue.textContent = "";
+    }
+
     lakaFilteredData = sortLakaData(lakaData);
     renderLakaPage();
     return;
   }
+
+  // =====================================================
+  // SELESAI: RESET FILTER SAAT TIDAK ADA PARAMETER URL
+  // =====================================================
   /*
     RENTANG TANGGAL
     Jika tanggal mulai/akhir dikirim,
@@ -571,9 +697,42 @@ function applyLakaFilterFromUrl() {
     tahunEl.value = tahun || "";
   }
 
+  // =====================================================
+  // MULAI: SINKRONISASI TAMPILAN CUSTOM FILTER TAHUN
+  // =====================================================
+
+  const filterTahunValue = document.getElementById("filter-tahun-value");
+
+  if (filterTahunValue) {
+    filterTahunValue.textContent = params.has("tahun") ? tahun || "" : "";
+  }
+
+  // =====================================================
+  // SELESAI: SINKRONISASI TAMPILAN CUSTOM FILTER TAHUN
+  // =====================================================
+
   if (bulanEl) {
     bulanEl.value = bulan || "";
   }
+
+  // =====================================================
+  // MULAI: SINKRONISASI TAMPILAN CUSTOM FILTER BULAN DARI URL
+  // =====================================================
+
+  const filterBulanValue = document.getElementById("filter-bulan-value");
+
+  if (filterBulanValue) {
+    const bulanText =
+      bulanEl && bulanEl.selectedIndex >= 0
+        ? bulanEl.options[bulanEl.selectedIndex].text
+        : "";
+
+    filterBulanValue.textContent = bulan ? bulanText : "";
+  }
+
+  // =====================================================
+  // SELESAI: SINKRONISASI TAMPILAN CUSTOM FILTER BULAN DARI URL
+  // =====================================================
 
   if (waktuEl) {
     waktuEl.value = "";
@@ -1112,7 +1271,186 @@ function confirmLogout() {
 function initLakaPage() {
   lakaPageActionMenu = document.getElementById("action-menu-laka-page");
 
+  // =====================================================
+  // CUSTOM FILTER TAHUN
+  // =====================================================
+  const btnFilterTahun = document.getElementById("btn-filter-tahun");
+  const filterTahun = document.getElementById("filter-tahun");
+  const filterTahunOptions = document.getElementById("filter-tahun-options");
+  const filterTahunValue = document.getElementById("filter-tahun-value");
+  const iconFilterTahun = document.getElementById("icon-filter-tahun");
+
+  if (btnFilterTahun && filterTahun && filterTahunOptions && filterTahunValue) {
+    // Buka / tutup pilihan Tahun
+    btnFilterTahun.addEventListener("click", function () {
+      if (filterTahun.disabled) return;
+
+      // =====================================================
+      // MULAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterBulanOptions?.classList.add("hidden");
+      filterWaktuOptions?.classList.add("hidden");
+
+      // =====================================================
+      // SELESAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterTahunOptions.classList.toggle("hidden");
+
+      if (iconFilterTahun) {
+        iconFilterTahun.classList.toggle("rotate-180");
+      }
+    });
+
+    // Pilih Tahun
+    document
+      .querySelectorAll(".filter-tahun-option")
+      .forEach(function (button) {
+        button.addEventListener("click", function () {
+          const value = this.dataset.tahun || "";
+
+          filterTahun.value = value;
+
+          if (value) {
+            filterTahunValue.textContent = value;
+          } else {
+            filterTahunValue.textContent = "Semua";
+          }
+
+          filterTahunOptions.classList.add("hidden");
+
+          if (iconFilterTahun) {
+            iconFilterTahun.classList.remove("rotate-180");
+          }
+        });
+      });
+  }
+
   // Tambahan Code
+  // =====================================================
+  // MULAI: CUSTOM FILTER BULAN
+  // =====================================================
+
+  const btnFilterBulan = document.getElementById("btn-filter-bulan");
+  const filterBulan = document.getElementById("filter-bulan");
+  const filterBulanOptions = document.getElementById("filter-bulan-options");
+  const filterBulanValue = document.getElementById("filter-bulan-value");
+  const iconFilterBulan = document.getElementById("icon-filter-bulan");
+
+  if (btnFilterBulan && filterBulan && filterBulanOptions && filterBulanValue) {
+    // Buka / tutup pilihan Bulan
+    btnFilterBulan.addEventListener("click", function () {
+      if (filterBulan.disabled) return;
+
+      // =====================================================
+      // MULAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterTahunOptions?.classList.add("hidden");
+      filterWaktuOptions?.classList.add("hidden");
+
+      // =====================================================
+      // SELESAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterBulanOptions.classList.toggle("hidden");
+
+      if (iconFilterBulan) {
+        iconFilterBulan.classList.toggle("rotate-180");
+      }
+    });
+
+    // Pilih Bulan
+    document
+      .querySelectorAll(".filter-bulan-option")
+      .forEach(function (button) {
+        button.addEventListener("click", function () {
+          const value = this.dataset.bulan || "";
+          const text = this.textContent.trim();
+
+          filterBulan.value = value;
+
+          if (value) {
+            filterBulanValue.textContent = text;
+          } else {
+            filterBulanValue.textContent = "Semua";
+          }
+
+          filterBulanOptions.classList.add("hidden");
+
+          if (iconFilterBulan) {
+            iconFilterBulan.classList.remove("rotate-180");
+          }
+        });
+      });
+  }
+
+  // =====================================================
+  // SELESAI: CUSTOM FILTER BULAN
+  // =====================================================
+
+  // =====================================================
+  // MULAI: CUSTOM FILTER WAKTU KEJADIAN
+  // =====================================================
+
+  const btnFilterWaktu = document.getElementById("btn-filter-waktu");
+  const filterWaktu = document.getElementById("filter-waktu");
+  const filterWaktuOptions = document.getElementById("filter-waktu-options");
+  const filterWaktuValue = document.getElementById("filter-waktu-value");
+  const iconFilterWaktu = document.getElementById("icon-filter-waktu");
+
+  if (btnFilterWaktu && filterWaktu && filterWaktuOptions && filterWaktuValue) {
+    // Buka / tutup pilihan Waktu
+    btnFilterWaktu.addEventListener("click", function () {
+      if (filterWaktu.disabled) return;
+
+      // =====================================================
+      // MULAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterTahunOptions?.classList.add("hidden");
+      filterBulanOptions?.classList.add("hidden");
+
+      // =====================================================
+      // SELESAI: TUTUP DROPDOWN FILTER LAIN
+      // =====================================================
+
+      filterWaktuOptions.classList.toggle("hidden");
+
+      if (iconFilterWaktu) {
+        iconFilterWaktu.classList.toggle("rotate-180");
+      }
+    });
+
+    // Pilih Waktu
+    document
+      .querySelectorAll(".filter-waktu-option")
+      .forEach(function (button) {
+        button.addEventListener("click", function () {
+          const value = this.dataset.waktu || "";
+          const text = this.textContent.trim();
+
+          filterWaktu.value = value;
+
+          if (value) {
+            filterWaktuValue.textContent = text;
+          } else {
+            filterWaktuValue.textContent = "Semua";
+          }
+
+          filterWaktuOptions.classList.add("hidden");
+
+          if (iconFilterWaktu) {
+            iconFilterWaktu.classList.remove("rotate-180");
+          }
+        });
+      });
+  }
+
+  // =====================================================
+  // SELESAI: CUSTOM FILTER WAKTU KEJADIAN
+  // =====================================================
   // initLakaPageBackButton();
 
   // =====================================================

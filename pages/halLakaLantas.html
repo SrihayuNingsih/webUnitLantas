@@ -723,48 +723,106 @@
           <div
             class="mb-1 rounded-2xl border border-blue-100 bg-white p-2 shadow-sm sm:p-3"
           >
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <!-- =====================================================
+     MULAI: PROPORSI KOLOM FILTER
+     ===================================================== -->
+
+            <div class="grid grid-cols-[0.8fr_0.8fr_1.4fr] gap-2 md:gap-4">
+              <!-- =====================================================
+     SELESAI: PROPORSI KOLOM FILTER
+     ===================================================== -->
               <!-- =============================================
              FILTER TAHUN
         ============================================== -->
+              <!-- FILTER TAHUN -->
               <div
-                class="flex items-center justify-between gap-3 md:border-r md:border-amber-200 md:pr-4"
+                class="relative flex min-w-0 flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-3 md:border-r md:border-amber-200 md:pr-4"
               >
-                <label
-                  for="filter-tahun"
-                  class="shrink-0 text-sm font-semibold text-slate-700"
-                >
-                  Tahun
-                </label>
-
-                <select
-                  id="filter-tahun"
-                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                >
+                <!-- SELECT ASLI: JANGAN DIHAPUS, dipakai oleh sistem filter -->
+                <select id="filter-tahun" class="hidden">
                   <option value="">Semua Tahun</option>
                   <option value="2026">2026</option>
                   <option value="2025">2025</option>
                   <option value="2024">2024</option>
                 </select>
+
+                <!-- TOMBOL FILTER TAHUN -->
+                <button
+                  type="button"
+                  id="btn-filter-tahun"
+                  class="flex w-full min-w-0 items-start justify-between gap-1 rounded-lg px-1.5 py-1 text-left transition-colors hover:bg-amber-50"
+                >
+                  <span class="min-w-0 flex-1">
+                    <span
+                      class="block truncate text-sm font-semibold text-slate-700"
+                    >
+                      Tahun
+                    </span>
+
+                    <span
+                      id="filter-tahun-value"
+                      class="block truncate text-xs font-medium text-slate-500"
+                    ></span>
+                  </span>
+
+                  <i
+                    data-lucide="chevron-down"
+                    id="icon-filter-tahun"
+                    class="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200"
+                  ></i>
+                </button>
+
+                <!-- PILIHAN TAHUN -->
+                <div
+                  id="filter-tahun-options"
+                  class="mt-1 hidden w-full rounded-xl border border-blue-100 bg-white p-1.5 shadow-md md:absolute md:left-0 md:top-full md:z-30 md:mt-2 md:w-40"
+                >
+                  <button
+                    type="button"
+                    data-tahun=""
+                    class="font-medium filter-tahun-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Semua Tahun
+                  </button>
+
+                  <button
+                    type="button"
+                    data-tahun="2026"
+                    class="filter-tahun-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    2026
+                  </button>
+
+                  <button
+                    type="button"
+                    data-tahun="2025"
+                    class="filter-tahun-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    2025
+                  </button>
+
+                  <button
+                    type="button"
+                    data-tahun="2024"
+                    class="filter-tahun-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    2024
+                  </button>
+                </div>
               </div>
 
               <!-- =============================================
              FILTER BULAN
         ============================================== -->
-              <div
-                class="flex items-center justify-between gap-3 md:border-r md:border-amber-200 md:pr-4"
-              >
-                <label
-                  for="filter-bulan"
-                  class="shrink-0 text-sm font-semibold text-slate-700"
-                >
-                  Bulan
-                </label>
+              <!-- =====================================================
+     MULAI: CUSTOM FILTER BULAN
+     ===================================================== -->
 
-                <select
-                  id="filter-bulan"
-                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                >
+              <div
+                class="relative flex min-w-0 flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-3 md:border-r md:border-amber-200 md:pr-4"
+              >
+                <!-- SELECT ASLI: JANGAN DIHAPUS, dipakai oleh sistem filter -->
+                <select id="filter-bulan" class="hidden">
                   <option value="">Semua Bulan</option>
                   <option value="01">Januari</option>
                   <option value="02">Februari</option>
@@ -779,30 +837,243 @@
                   <option value="11">November</option>
                   <option value="12">Desember</option>
                 </select>
+
+                <!-- TOMBOL FILTER BULAN -->
+                <button
+                  type="button"
+                  id="btn-filter-bulan"
+                  class="flex w-full min-w-0 items-start justify-between gap-1 rounded-lg px-1.5 py-1 text-left transition-colors hover:bg-amber-50"
+                >
+                  <span class="min-w-0 flex-1">
+                    <span
+                      class="block truncate text-sm font-semibold text-slate-700"
+                    >
+                      Bulan
+                    </span>
+
+                    <span
+                      id="filter-bulan-value"
+                      class="block truncate text-xs font-medium text-slate-500"
+                    ></span>
+                  </span>
+
+                  <i
+                    data-lucide="chevron-down"
+                    id="icon-filter-bulan"
+                    class="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200"
+                  ></i>
+                </button>
+
+                <!-- PILIHAN BULAN -->
+                <div
+                  id="filter-bulan-options"
+                  class="max-h-60 overflow-y-auto mt-1 hidden w-full rounded-xl border border-blue-100 bg-white p-1.5 shadow-md md:absolute md:left-0 md:top-full md:z-30 md:mt-2 md:w-40"
+                >
+                  <button
+                    type="button"
+                    data-bulan=""
+                    class="font-medium filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Semua Bulan
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="01"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Januari
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="02"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Februari
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="03"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Maret
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="04"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    April
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="05"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Mei
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="06"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Juni
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="07"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Juli
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="08"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Agustus
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="09"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    September
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="10"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Oktober
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="11"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    November
+                  </button>
+
+                  <button
+                    type="button"
+                    data-bulan="12"
+                    class="filter-bulan-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Desember
+                  </button>
+                </div>
               </div>
+
+              <!-- =====================================================
+     SELESAI: CUSTOM FILTER BULAN
+     ===================================================== -->
 
               <!-- =============================================
              FILTER WAKTU
         ============================================== -->
-              <div class="flex items-center justify-between gap-3">
-                <label
-                  for="filter-waktu"
-                  class="shrink-0 text-sm font-semibold text-slate-700"
-                >
-                  Waktu Kejadian
-                </label>
+              <!-- =====================================================
+     MULAI: CUSTOM FILTER WAKTU KEJADIAN
+     ===================================================== -->
 
-                <select
-                  id="filter-waktu"
-                  class="W-36 rounded-xl border border-blue-100 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                >
+              <div
+                class="relative flex min-w-0 flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-3"
+              >
+                <!-- SELECT ASLI: JANGAN DIHAPUS, dipakai oleh sistem filter -->
+                <select id="filter-waktu" class="hidden">
                   <option value="">Semua Waktu</option>
                   <option value="00-06">00:00 – 05:59</option>
                   <option value="06-12">06:00 – 11:59</option>
                   <option value="12-18">12:00 – 17:59</option>
                   <option value="18-24">18:00 – 23:59</option>
                 </select>
+
+                <!-- TOMBOL FILTER WAKTU -->
+                <button
+                  type="button"
+                  id="btn-filter-waktu"
+                  class="flex w-full min-w-0 items-start justify-between gap-1 rounded-lg px-1.5 py-1 text-left transition-colors hover:bg-amber-50"
+                >
+                  <span class="min-w-0 flex-1">
+                    <span
+                      class="block truncate text-sm font-semibold text-slate-700"
+                    >
+                      Waktu Kejadian
+                    </span>
+
+                    <span
+                      id="filter-waktu-value"
+                      class="block truncate text-xs font-medium text-slate-500"
+                    ></span>
+                  </span>
+
+                  <i
+                    data-lucide="chevron-down"
+                    id="icon-filter-waktu"
+                    class="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200"
+                  ></i>
+                </button>
+
+                <!-- PILIHAN WAKTU -->
+                <div
+                  id="filter-waktu-options"
+                  class="mt-1 hidden w-full rounded-xl border border-blue-100 bg-white p-1.5 shadow-md md:absolute md:left-0 md:top-full md:z-30 md:mt-2 md:w-44"
+                >
+                  <button
+                    type="button"
+                    data-waktu=""
+                    class="font-medium filter-waktu-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    Semua Waktu
+                  </button>
+
+                  <button
+                    type="button"
+                    data-waktu="00-06"
+                    class="filter-waktu-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    00:00 – 05:59
+                  </button>
+
+                  <button
+                    type="button"
+                    data-waktu="06-12"
+                    class="filter-waktu-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    06:00 – 11:59
+                  </button>
+
+                  <button
+                    type="button"
+                    data-waktu="12-18"
+                    class="filter-waktu-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    12:00 – 17:59
+                  </button>
+
+                  <button
+                    type="button"
+                    data-waktu="18-24"
+                    class="filter-waktu-option block w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-600 transition hover:bg-blue-50"
+                  >
+                    18:00 – 23:59
+                  </button>
+                </div>
               </div>
+
+              <!-- =====================================================
+     SELESAI: CUSTOM FILTER WAKTU KEJADIAN
+     ===================================================== -->
             </div>
 
             <!-- =================================================

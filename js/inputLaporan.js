@@ -41,7 +41,7 @@ const InputLaporanConfig = {
     SIMPAN_LAPORAN: "simpanLaporan",
   },
 
-  HALAMAN_LAKA_LANTAS: "laka-lantas.html",
+  HALAMAN_LAKA_LANTAS: "halLakaLantas.html",
 };
 
 /* ============================================================
@@ -751,6 +751,10 @@ function handleProcessWhatsAppSuccess(response) {
   /*
      Isi form dari JSON.
   */
+  // =====================================================
+  // MULAI DEBUG DATA KENDARAAN + PIHAK DARI FORM
+  // =====================================================
+
   isiFormDariJSON(data);
 
   /*
@@ -1234,11 +1238,35 @@ function tambahKendaraan(data = "", index = null) {
      Untuk frontend, kendaraan dan nopol
      ditampilkan sebagai satu identitas.
   */
+  // let identitasKendaraan = kendaraan;
+
+  // if (nopol) {
+  //   identitasKendaraan += ` No. Pol: ${nopol}`;
+  // }
+
+  // =====================================================
+  // MULAI PERBAIKAN IDENTITAS KENDARAAN
+  // =====================================================
+
+  /*
+   Parser sudah dapat mengirim nomor polisi
+   di dalam teks kendaraan.
+
+   Jika nopol sudah ada di dalam teks kendaraan,
+   jangan tambahkan lagi.
+*/
   let identitasKendaraan = kendaraan;
 
-  if (nopol) {
+  if (
+    nopol &&
+    !identitasKendaraan.toLowerCase().includes(nopol.toLowerCase())
+  ) {
     identitasKendaraan += ` No. Pol: ${nopol}`;
   }
+
+  // =====================================================
+  // SELESAI PERBAIKAN IDENTITAS KENDARAAN
+  // =====================================================
 
   item.innerHTML = `
     <!-- HEADER KENDARAAN -->
@@ -1917,6 +1945,10 @@ function hapusPetugas(id) {
    25. AMBIL DATA FORM
    ============================================================ */
 
+// =====================================================
+// MULAI DEBUG AMBIL DATA FORM
+// =====================================================
+
 function ambilDataForm() {
   const elements = InputLaporanElements;
 
@@ -1946,7 +1978,9 @@ function ambilDataForm() {
     /*
    Array.
 */
-    kendaraan: ambilListKendaraan(),
+    // kendaraan: ambilListKendaraan(),
+
+    kendaraan: ambilKendaraanDanPihak(),
 
     // pihakTerlibat: ambilListPihakTerlibat(),
 
@@ -2005,6 +2039,56 @@ function ambilListKendaraan() {
     })
     .filter(function (value) {
       return value !== "";
+    });
+}
+
+function ambilKendaraanDanPihak() {
+  const container = InputLaporanElements.containerListKendaraan;
+
+  if (!container) {
+    return [];
+  }
+
+  return Array.from(container.querySelectorAll(".dynamic-item-kendaraan"))
+    .map(function (kendaraanItem) {
+      const inputKendaraan = kendaraanItem.querySelector(
+        '[data-field="kendaraan"]',
+      );
+
+      const namaKendaraan = inputKendaraan ? inputKendaraan.value.trim() : "";
+
+      const containerPihak = kendaraanItem.querySelector(
+        '[data-container="pihak-kendaraan"]',
+      );
+
+      const pihak = containerPihak
+        ? Array.from(
+            containerPihak.querySelectorAll(".dynamic-item-pihak-terlibat"),
+          )
+            .map(function (pihakItem) {
+              const inputNama = pihakItem.querySelector('[data-field="nama"]');
+
+              const selectJenis = pihakItem.querySelector(
+                '[data-field="jenisPihak"]',
+              );
+
+              return {
+                nama: inputNama ? inputNama.value.trim() : "",
+                jenisPihak: selectJenis ? selectJenis.value : "Pengendara",
+              };
+            })
+            .filter(function (item) {
+              return item.nama !== "";
+            })
+        : [];
+
+      return {
+        kendaraan: namaKendaraan,
+        pihak: pihak,
+      };
+    })
+    .filter(function (item) {
+      return item.kendaraan !== "";
     });
 }
 
@@ -2108,7 +2192,15 @@ function validasiForm(data) {
 function kirimLaporan() {
   const button = InputLaporanElements.btnKirimLaporan;
 
+  // =====================================================
+  // MULAI TEST DATA FINAL FORM
+  // =====================================================
+
   const data = ambilDataForm();
+
+  // =====================================================
+  // SELESAI TEST DATA FINAL FORM
+  // =====================================================
 
   /*
      Validasi frontend.
@@ -2136,51 +2228,76 @@ function kirimLaporan() {
   /*
      APPS SCRIPT ASLI
   */
-  if (typeof google === "undefined" || !google.script || !google.script.run) {
-    handleSaveReportError("google.script.run tidak tersedia.");
+  //   if (typeof google === "undefined" || !google.script || !google.script.run) {
+  //     handleSaveReportError("google.script.run tidak tersedia.");
 
-    setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
+  //     setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
 
-    return;
-  }
+  //     return;
+  //   }
 
-  google.script.run
-    .withSuccessHandler(function (response) {
+  //   google.script.run
+  //     .withSuccessHandler(function (response) {
+  //       handleSaveReportSuccess(response);
+
+  //       setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
+  //     })
+  //     .withFailureHandler(function (error) {
+  //       handleSaveReportError(error);
+
+  //       setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
+  //     })
+  //     [InputLaporanConfig.BACKEND_FUNCTION.SIMPAN_LAPORAN](data);
+  // }
+
+  // =====================================================
+  // MULAI SIMPAN LAPORAN MELALUI API
+  // =====================================================
+
+  apiRequest("SIMPAN_LAPORAN", data)
+    .then(function (response) {
       handleSaveReportSuccess(response);
-
-      setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
     })
-    .withFailureHandler(function (error) {
+    .catch(function (error) {
       handleSaveReportError(error);
-
-      setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
     })
-    [InputLaporanConfig.BACKEND_FUNCTION.SIMPAN_LAPORAN](data);
+    .finally(function () {
+      setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
+    });
 }
 
-/* ============================================================
-   31. RESPONSE SAVE SUCCESS
-   ============================================================ */
+// =====================================================
+// SELESAI SIMPAN LAPORAN MELALUI API
+// =====================================================
+
+// =====================================================
+// MULAI: HANDLE SAVE REPORT SUCCESS
+// =====================================================
 
 function handleSaveReportSuccess(response) {
   const normalized = normalisasiResponseBackend(response);
 
   if (!normalized.success) {
     handleSaveReportError(normalized.message || "Laporan gagal disimpan.");
-
     return;
   }
 
   tampilkanAlert("success", normalized.message || "Laporan berhasil disimpan.");
 
-  /*
-     Berikan sedikit waktu agar user
-     melihat pesan sukses.
-  */
-  setTimeout(function () {
-    window.location.href = InputLaporanConfig.HALAMAN_LAKA_LANTAS;
-  }, 1000);
+  // ===================================================
+  // MULAI: RESET FORM SETELAH BERHASIL DISIMPAN
+  // ===================================================
+
+  resetFormLaporan();
+
+  // ===================================================
+  // SELESAI: RESET FORM SETELAH BERHASIL DISIMPAN
+  // ===================================================
 }
+
+// =====================================================
+// SELESAI: HANDLE SAVE REPORT SUCCESS
+// =====================================================
 
 /* ============================================================
    32. RESPONSE SAVE ERROR
@@ -2834,15 +2951,6 @@ window.InputLaporanComponent = {
    ============================================================ */
 
 function initializeInputLaporan() {
-  console.log("[DEBUG EDIT] URL:", window.location.href);
-  console.log(
-    "[DEBUG EDIT] mode:",
-    new URLSearchParams(window.location.search).get("mode"),
-  );
-  console.log(
-    "[DEBUG EDIT] id:",
-    new URLSearchParams(window.location.search).get("id"),
-  );
   /* ============================================================
      EVENT LISTENER
      Tetap dijalankan untuk Input Baru maupun Mode Edit

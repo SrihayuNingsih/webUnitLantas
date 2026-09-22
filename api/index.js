@@ -18,7 +18,6 @@ function ambilLakaTerbaruDashboard() {
       jumlahMD: 0,
       tkp: "Jl. Raya Bojonegoro - Babat turut wilayah Desa Baureno Kec. Baureno Kab. Bojonegoro",
     },
-
     {
       id: "LKA-2026-002",
       tanggal: "12 Januari 2026",
@@ -30,7 +29,6 @@ function ambilLakaTerbaruDashboard() {
       jumlahMD: 0,
       tkp: "Jl. Raya Baureno - Babat Desa Tanggungan Kec. Baureno",
     },
-
     {
       id: "LKA-2026-003",
       tanggal: "20 Januari 2026",
@@ -42,7 +40,6 @@ function ambilLakaTerbaruDashboard() {
       jumlahMD: 0,
       tkp: "Jl. Raya Bojonegoro - Babat Desa Sraturejo Kec. Baureno",
     },
-
     {
       id: "LKA-2026-004",
       tanggal: "28 Januari 2026",
@@ -109,6 +106,7 @@ export default async function handler(req, res) {
     });
   }
 
+  // EKSPLISIT DESTRUCTURING ACTION DARI REQ.BODY
   const { action } = req.body || {};
 
   if (!action) {
@@ -196,6 +194,120 @@ export default async function handler(req, res) {
 
   // =====================================================
   // SELESAI: ACTION PETUGAS PIKET DASHBOARD
+  // =====================================================
+
+  // =====================================================
+  // MULAI: ACTION SIMPAN LAPORAN
+  // =====================================================
+
+  if (action === "SIMPAN_LAPORAN") {
+    const data = { ...req.body };
+    delete data.action;
+
+    console.log("[API SIMPAN LAPORAN] Data final dari FE:", data);
+
+    // =====================================================
+    // MULAI: KIRIM DATA KE GOOGLE APPS SCRIPT
+    // =====================================================
+
+    const GAS_API_URL =
+      "https://script.google.com/macros/s/AKfycbzg7AmEQz7qQeAlfogSfGNkyHOlcFYyuY2zkm5SmkQWJwUNN9qx1JV_DhUsziXIjfu_/exec";
+
+    const gasPayload = {
+      modul: "laka",
+      aksi: "simpan",
+      ...data,
+    };
+
+    // const gasResponse = await fetch(GAS_API_URL, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(gasPayload),
+    // });
+
+    // const gasResult = await gasResponse.json();
+
+    // console.log("[API SIMPAN LAPORAN] Response GAS:", gasResult);
+
+    // =====================================================
+    // MULAI: FETCH GOOGLE APPS SCRIPT
+    // =====================================================
+
+    let gasResponse;
+    let gasResult;
+
+    try {
+      gasResponse = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasText = await gasResponse.text();
+
+      console.log(
+        "[API SIMPAN LAPORAN] HTTP GAS:",
+        gasResponse.status,
+        gasResponse.statusText,
+      );
+
+      console.log("[API SIMPAN LAPORAN] RAW RESPONSE GAS:", gasText);
+
+      try {
+        gasResult = JSON.parse(gasText);
+      } catch (parseError) {
+        console.error(
+          "[API SIMPAN LAPORAN] RESPONSE GAS BUKAN JSON:",
+          parseError,
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Response Google Apps Script bukan JSON.",
+          detail: gasText.substring(0, 500),
+        });
+      }
+
+      console.log("[API SIMPAN LAPORAN] Response GAS:", gasResult);
+    } catch (error) {
+      console.error("[API SIMPAN LAPORAN] ERROR FETCH GAS:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghubungi Google Apps Script.",
+        detail: error.message,
+      });
+    }
+
+    // =====================================================
+    // SELESAI: FETCH GOOGLE APPS SCRIPT
+    // =====================================================
+
+    // =====================================================
+    // SELESAI: KIRIM DATA KE GOOGLE APPS SCRIPT
+    // =====================================================
+
+    if (!gasResponse.ok || gasResult.sukses === false) {
+      return res.status(500).json({
+        success: false,
+        message:
+          gasResult.pesan || "Google Apps Script gagal menyimpan laporan.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: gasResult.pesan || "Laporan berhasil disimpan.",
+      data: gasResult,
+    });
+  }
+
+  // =====================================================
+  // SELESAI: ACTION SIMPAN LAPORAN
   // =====================================================
 
   // =====================================================

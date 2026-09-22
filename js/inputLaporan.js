@@ -671,1046 +671,56 @@ function kembaliKeHalamanSebelumnya() {
   }
 }
 
-// =====================================================
-// MULAI: PARSER WHATSAPP FRONTEND
-// =====================================================
-
-const JUDUL_LAPORAN = [
-  "TKP",
-  "WAKTU KEJADIAN",
-  "DILAPORKAN",
-  "KENDARAAN YANG TERLIBAT KECELAKAAN",
-  "IDENTITAS SAKSI-SAKSI",
-  "IDENTITAS PENGENDARA",
-  "KRONOLOGI KEJADIAN",
-  "KORBAN",
-  "KERMAT",
-  "YANG MENDATANGI TKP",
-  "TINDAKAN YANG TELAH DILAKSANAKAN",
-];
-
-function normalisasiJudul(teks) {
-  return teks
-    .replace(/\*/g, "")
-    .trim()
-    .replace(/\s*:\s*$/, "")
-    .replace(/\s+/g, " ")
-    .toUpperCase();
-}
-
-// =====================================================
-// AMBIL TKP
-// =====================================================
-
-function ambilTKP(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisiTKP = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "TKP") {
-      posisiTKP = i;
-      break;
-    }
-  }
-
-  if (posisiTKP === -1) {
-    return "";
-  }
-
-  const hasil = [];
-
-  for (let i = posisiTKP + 1; i < baris.length; i++) {
-    const teks = baris[i].trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    hasil.push(teks);
-  }
-
-  return hasil.join(" ").trim();
-}
-
-// =====================================================
-// AMBIL KENDARAAN
-// =====================================================
-
-function ambilKendaraan(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  const judul = "KENDARAAN YANG TERLIBAT KECELAKAAN";
-
-  const index = baris.findIndex((barisLaporan) => {
-    const teks = barisLaporan
-      .replace(/\*/g, "")
-      .trim()
-      .replace(/\s*:\s*$/, "")
-      .toUpperCase();
-
-    return teks === judul;
-  });
-
-  if (index === -1) {
-    return [];
-  }
-
-  const hasil = [];
-  let dataSekarang = "";
-
-  for (let i = index + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    const teksJudul = teks.replace(/\s*:\s*$/, "").toUpperCase();
-
-    if (JUDUL_LAPORAN.includes(teksJudul)) {
-      break;
-    }
-
-    const dataBaru = /^(-|\d+[.)])\s+/.test(teks);
-
-    if (dataBaru) {
-      if (dataSekarang !== "") {
-        hasil.push(dataSekarang.trim());
-      }
-
-      dataSekarang = teks.replace(/^(-|\d+[.)])\s+/, "").trim();
-    } else {
-      if (dataSekarang !== "") {
-        dataSekarang += " " + teks.replace(/,+\s*$/, "");
-      } else {
-        dataSekarang = teks.replace(/,+\s*$/, "");
-      }
-    }
-  }
-
-  if (dataSekarang !== "") {
-    hasil.push(dataSekarang.trim());
-  }
-
-  return hasil;
-}
-
-// =====================================================
-// AMBIL NOPOL
-// =====================================================
-
-function ambilNopol(teks) {
-  if (!teks) return "";
-
-  let data = teks.toUpperCase().trim();
-
-  const setelahLabel = data.match(
-    /(?:NOPOL|NO\.?\s*POL)\s*[:\-]?\s*([A-Z0-9\s\-]+)/,
-  );
-
-  if (setelahLabel) {
-    data = setelahLabel[1];
-  }
-
-  const hasil = data.match(
-    /\b([A-Z]{1,2})[\s\-]*(\d{1,4})[\s\-]*([A-Z]{1,3})\b/,
-  );
-
-  if (!hasil) return "";
-
-  return (hasil[1] + " " + hasil[2] + " " + hasil[3]).trim();
-}
-
-// =====================================================
-// AMBIL WAKTU KEJADIAN
-// =====================================================
-
-function ambilWaktuKejadian(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisiWaktu = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "WAKTU KEJADIAN") {
-      posisiWaktu = i;
-      break;
-    }
-  }
-
-  if (posisiWaktu === -1) {
-    return "";
-  }
-
-  const hasil = [];
-
-  for (let i = posisiWaktu + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    hasil.push(teks);
-  }
-
-  return hasil
-    .join(" ")
-    .replace(/,+\s*$/, "")
-    .trim();
-}
-
-// =====================================================
-// SPLIT WAKTU KEJADIAN
-// =====================================================
-
-function splitWaktuKejadian(teks) {
-  const hasil = {
-    hari: "",
-    tanggal: "",
-    jam: "",
-  };
-
-  if (!teks) {
-    return hasil;
-  }
-
-  const teksBersih = teks.replace(/\*/g, "").trim();
-
-  const cocokHari = teksBersih.match(
-    /\b(Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu)\b/i,
-  );
-
-  if (cocokHari) {
-    hasil.hari = cocokHari[1];
-  }
-
-  const cocokTanggal = teksBersih.match(
-    /\b(\d{1,2}\s*(?:[-/.]\s*|\s+)(?:\d{1,2}|Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s*(?:[-/.]\s*|\s+)\d{4})\b/i,
-  );
-
-  if (cocokTanggal) {
-    hasil.tanggal = cocokTanggal[1].replace(/\s*([-.\/])\s*/g, "$1").trim();
-  }
-
-  const cocokJam = teksBersih.match(
-    /\b(\d{1,2}\s*[:.]\s*\d{2})\s*(?:WIB|WITA|WIT)?\b/i,
-  );
-
-  if (cocokJam) {
-    hasil.jam = cocokJam[1].replace(/\s*[:.]\s*/g, ":").trim();
-  }
-
-  return {
-    hari: hasil.hari || "",
-    tanggal: hasil.tanggal || "",
-    jam: hasil.jam || "",
-  };
-}
-
-// =====================================================
-// AMBIL SAKSI
-// =====================================================
-
-function ambilSaksi(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  const judul = "IDENTITAS SAKSI-SAKSI";
-
-  const index = baris.findIndex((barisLaporan) => {
-    const teks = barisLaporan
-      .replace(/\*/g, "")
-      .trim()
-      .replace(/\s*:\s*$/, "")
-      .toUpperCase();
-
-    return teks === judul;
-  });
-
-  if (index === -1) {
-    return [];
-  }
-
-  const hasil = [];
-  let dataSekarang = "";
-
-  for (let i = index + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    const teksJudul = teks.replace(/\s*:\s*$/, "").toUpperCase();
-
-    if (JUDUL_LAPORAN.includes(teksJudul)) {
-      break;
-    }
-
-    const dataBaru = /^(-|\d+[.)])\s+/.test(teks);
-
-    if (dataBaru) {
-      if (dataSekarang !== "") {
-        hasil.push(dataSekarang.trim());
-      }
-
-      dataSekarang = teks.replace(/^(-|\d+[.)])\s+/, "").trim();
-    } else {
-      if (dataSekarang !== "") {
-        dataSekarang += " " + teks.replace(/,+\s*$/, "");
-      } else {
-        dataSekarang = teks.replace(/,+\s*$/, "");
-      }
-    }
-  }
-
-  if (dataSekarang !== "") {
-    hasil.push(dataSekarang.trim());
-  }
-
-  return hasil;
-}
-
-// =====================================================
-// KUNCI KENDARAAN
-// =====================================================
-
-function ambilKunciKendaraan(teks) {
-  if (!teks) {
-    return "";
-  }
-
-  const nopol = ambilNopol(teks);
-
-  if (nopol) {
-    return nopol;
-  }
-
-  const data = teks.replace(/\*/g, "").trim();
-
-  const tanpaNopol = data.match(/^(.+?)\s+tanpa\s+nopol\b/i);
-
-  if (tanpaNopol) {
-    return tanpaNopol[1]
-      .trim()
-      .replace(/^(pengemudi|pengendara)\s+/i, "")
-      .trim();
-  }
-
-  if (/^pejalan kaki$/i.test(data)) {
-    return "Pejalan kaki";
-  }
-
-  if (/^sepeda pancal$/i.test(data)) {
-    return "Sepeda pancal";
-  }
-
-  return "";
-}
-
-// =====================================================
-// AMBIL PENGENDARA
-// =====================================================
-
-function ambilPengendara(laporan, kendaraan) {
-  const baris = laporan.split(/\r?\n/);
-
-  const judul = "IDENTITAS PENGENDARA";
-
-  const index = baris.findIndex(function (barisLaporan) {
-    const teks = barisLaporan
-      .replace(/\*/g, "")
-      .trim()
-      .replace(/\s*:\s*$/, "")
-      .toUpperCase();
-
-    return teks === judul;
-  });
-
-  if (index === -1) {
-    return ["", "", "", "", ""];
-  }
-
-  const hasil = ["", "", "", "", ""];
-
-  const kunciKendaraan = kendaraan.map(function (dataKendaraan) {
-    return ambilKunciKendaraan(dataKendaraan);
-  });
-
-  const daftarPengendara = [];
-
-  let dataSekarang = "";
-
-  for (let i = index + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    const teksJudul = teks.replace(/\s*:\s*$/, "").toUpperCase();
-
-    if (JUDUL_LAPORAN.includes(teksJudul)) {
-      break;
-    }
-
-    if (/^berboncengan\s+dengan\b/i.test(teks)) {
-      continue;
-    }
-
-    if (/^(?:-|\d+[.)]|•|◦)?\s*Pembonceng\b/i.test(teks)) {
-      continue;
-    }
-
-    const dataBaru =
-      /^(-|\d+[.)]|•|◦)\s*/.test(teks) ||
-      /^Pengemudi\b/i.test(teks) ||
-      /^Pengendara\b/i.test(teks);
-
-    if (dataBaru) {
-      if (dataSekarang !== "") {
-        daftarPengendara.push(dataSekarang.trim());
-      }
-
-      dataSekarang = teks.replace(/^(-|\d+[.)]|•|◦)\s*/, "").trim();
-    } else {
-      if (dataSekarang !== "") {
-        dataSekarang += " " + teks.replace(/,+\s*$/, "");
-      }
-    }
-  }
-
-  if (dataSekarang !== "") {
-    daftarPengendara.push(dataSekarang.trim());
-  }
-
-  daftarPengendara.forEach(function (dataPengendara) {
-    let teksKunci = dataPengendara.replace(/^(-|\d+[.)]|•|◦)\s*/, "").trim();
-
-    teksKunci = teksKunci.replace(/^(pengemudi|pengendara)\s+/i, "").trim();
-
-    teksKunci = teksKunci.split(/\bNama\s*:/i)[0].trim();
-
-    const kunciPengendara = ambilKunciKendaraan(teksKunci);
-
-    if (!kunciPengendara) {
-      return;
-    }
-
-    const posisiKendaraan = kunciKendaraan.findIndex(function (kunci) {
-      return kunci === kunciPengendara;
-    });
-
-    if (posisiKendaraan !== -1) {
-      const identitas = ambilIdentitasPengendara(dataPengendara);
-
-      if (identitas) {
-        hasil[posisiKendaraan] = identitas;
-      }
-    }
-  });
-
-  return hasil;
-}
-
-// =====================================================
-// AMBIL IDENTITAS PENGENDARA
-// =====================================================
-
-function ambilIdentitasPengendara(teks) {
-  if (!teks) return "";
-
-  let hasil = teks.match(/\bNama\s*:\s*(.+)$/i);
-
-  if (hasil) {
-    return hasil[1].trim();
-  }
-
-  hasil = teks.match(/\bAn\s*:\s*(.+)$/i);
-
-  if (hasil) {
-    return hasil[1].trim();
-  }
-
-  hasil = teks.match(/\bSdr\s*:\s*(.+)$/i);
-
-  if (hasil) {
-    return hasil[1].trim();
-  }
-
-  hasil = teks.match(
-    /\b(?:Nopol|No\.?\s*Pol)\s*[:\-]?\s*[A-Z]{1,2}[\s\-]*\d{1,4}[\s\-]*[A-Z]{1,3}\b\s*(.+)$/i,
-  );
-
-  if (hasil) {
-    return hasil[1].trim();
-  }
-
-  return "";
-}
-
-// =====================================================
-// AMBIL PEMBONCENG
-// =====================================================
-
-function ambilPembonceng(laporan, kendaraan, pengendara) {
-  const baris = laporan.split(/\r?\n/);
-
-  const hasil = ["", "", "", "", ""];
-
-  const kunciKendaraan = kendaraan.map(function (dataKendaraan) {
-    return ambilKunciKendaraan(dataKendaraan);
-  });
-
-  const index = baris.findIndex(function (barisLaporan) {
-    const teks = barisLaporan
-      .replace(/\*/g, "")
-      .trim()
-      .replace(/\s*:\s*$/, "")
-      .toUpperCase();
-
-    return teks === "IDENTITAS PENGENDARA";
-  });
-
-  if (index === -1) {
-    return hasil;
-  }
-
-  let kunciSebelumnya = "";
-
-  for (let i = index + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    const teksJudul = teks.replace(/\s*:\s*$/, "").toUpperCase();
-
-    if (JUDUL_LAPORAN.includes(teksJudul)) {
-      break;
-    }
-
-    if (/^(?:-|\d+[.)]|•|◦)?\s*Pembonceng\b/i.test(teks)) {
-      let teksKunci = teks
-        .replace(/^(?:-|\d+[.)]|•|◦)\s*/i, "")
-        .replace(/^Pembonceng\s+/i, "")
-        .trim();
-
-      teksKunci = teksKunci.split(/\bNama\s*:/i)[0].trim();
-
-      const kunciPembonceng = ambilKunciKendaraan(teksKunci);
-
-      if (!kunciPembonceng) {
-        continue;
-      }
-
-      const posisiKendaraan = kunciKendaraan.findIndex(function (kunci) {
-        return kunci === kunciPembonceng;
-      });
-
-      if (posisiKendaraan !== -1) {
-        const namaPembonceng = ambilNamaPembonceng(teks);
-
-        if (namaPembonceng) {
-          hasil[posisiKendaraan] = gabungPembonceng(
-            hasil[posisiKendaraan],
-            namaPembonceng,
-          );
-        }
-      }
-
-      continue;
-    }
-
-    if (/^berboncengan\s+dengan\b/i.test(teks)) {
-      if (kunciSebelumnya) {
-        const posisiKendaraan = kunciKendaraan.findIndex(function (kunci) {
-          return kunci === kunciSebelumnya;
-        });
-
-        if (posisiKendaraan !== -1) {
-          const namaPembonceng = ambilNamaBerboncengan(teks);
-
-          if (namaPembonceng) {
-            hasil[posisiKendaraan] = gabungPembonceng(
-              hasil[posisiKendaraan],
-              namaPembonceng,
-            );
-          }
-        }
-      }
-
-      continue;
-    }
-
-    if (/^(?:-|\d+[.)]|•|◦)?\s*(Pengemudi|Pengendara)\b/i.test(teks)) {
-      let teksKunci = teks
-        .replace(/^(?:-|\d+[.)]|•|◦)\s*/i, "")
-        .replace(/^(Pengemudi|Pengendara)\s+/i, "")
-        .trim();
-
-      teksKunci = teksKunci.split(/\bNama\s*:/i)[0].trim();
-
-      const kunciBaris = ambilKunciKendaraan(teksKunci);
-
-      if (kunciBaris) {
-        kunciSebelumnya = kunciBaris;
-      }
-
-      continue;
-    }
-  }
-
-  return hasil;
-}
-
-// =====================================================
-// NAMA PEMBONCENG
-// =====================================================
-
-function ambilNamaPembonceng(teks) {
-  const hasil = teks.match(/\bNama\s*:\s*(.+)$/i);
-
-  if (!hasil) {
-    return "";
-  }
-
-  return hasil[1].trim();
-}
-
-// =====================================================
-// NAMA BERBONCENGAN
-// =====================================================
-
-function ambilNamaBerboncengan(teks) {
-  const hasil = teks.match(/berboncengan\s+dengan\s+(.+)$/i);
-
-  if (!hasil) {
-    return "";
-  }
-
-  return hasil[1].trim();
-}
-
-// =====================================================
-// GABUNG PEMBONCENG
-// =====================================================
-
-function gabungPembonceng(lama, baru) {
-  if (!lama) {
-    return baru;
-  }
-
-  return lama + "\n" + baru;
-}
-
-// =====================================================
-// AMBIL KRONOLOGI
-// =====================================================
-
-function ambilKronologi(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisiKronologi = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "KRONOLOGI KEJADIAN") {
-      posisiKronologi = i;
-      break;
-    }
-  }
-
-  if (posisiKronologi === -1) {
-    return "";
-  }
-
-  const hasil = [];
-
-  for (let i = posisiKronologi + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    hasil.push(teks);
-  }
-
-  return hasil.join(" ").trim();
-}
-
-// =====================================================
-// AMBIL KORBAN
-// =====================================================
-
-function ambilKorban(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisiKorban = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "KORBAN") {
-      posisiKorban = i;
-      break;
-    }
-  }
-
-  if (posisiKorban === -1) {
-    return {
-      LR: "",
-      LB: "",
-      MD: "",
-    };
-  }
-
-  const dataKorban = [];
-
-  for (let i = posisiKorban + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    dataKorban.push(teks);
-  }
-
-  const teksKorban = dataKorban.join(" ");
-
-  const hasil = {
-    LR: "",
-    LB: "",
-    MD: "",
-  };
-
-  const lr = teksKorban.match(/LR\s*:\s*([0-9]+)/i);
-
-  if (lr) {
-    hasil.LR = lr[1];
-  }
-
-  const lb = teksKorban.match(/LB\s*:\s*([0-9]+)/i);
-
-  if (lb) {
-    hasil.LB = lb[1];
-  }
-
-  const md = teksKorban.match(/MD\s*:\s*([0-9]+)/i);
-
-  if (md) {
-    hasil.MD = md[1];
-  }
-
-  return hasil;
-}
-
-// =====================================================
-// AMBIL KERMAT
-// =====================================================
-
-function ambilKermat(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisiKermat = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "KERMAT") {
-      posisiKermat = i;
-      break;
-    }
-  }
-
-  // Untuk frontend: data kosong tetap kosong,
-  // bukan error.
-  if (posisiKermat === -1) {
-    return "";
-  }
-
-  const dataKermat = [];
-
-  for (let i = posisiKermat + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    dataKermat.push(teks);
-  }
-
-  const teksKermat = dataKermat.join(" ");
-
-  const angka = teksKermat.replace(/\D/g, "");
-
-  if (angka === "") {
-    return "";
-  }
-
-  return Number(angka);
-}
-
-// =====================================================
-// AMBIL YANG MENDATANGI TKP
-// =====================================================
-
-function ambilYangMendatangiTKP(laporan) {
-  const baris = laporan.split(/\r?\n/);
-
-  let posisi = -1;
-
-  for (let i = 0; i < baris.length; i++) {
-    if (normalisasiJudul(baris[i]) === "YANG MENDATANGI TKP") {
-      posisi = i;
-      break;
-    }
-  }
-
-  if (posisi === -1) {
-    return "";
-  }
-
-  const hasil = [];
-
-  for (let i = posisi + 1; i < baris.length; i++) {
-    const teks = baris[i].replace(/\*/g, "").trim();
-
-    if (teks === "") {
-      continue;
-    }
-
-    if (JUDUL_LAPORAN.includes(normalisasiJudul(teks))) {
-      break;
-    }
-
-    hasil.push(teks);
-  }
-
-  return hasil.join("\n").trim();
-}
-
-// =====================================================
-// SPLIT KENDARAAN DAN NOPOL
-// =====================================================
-
-function splitKendaraanDanNopol(teks) {
-  if (!teks) {
-    return {
-      kendaraan: "",
-      nopol: "",
-    };
-  }
-
-  let teksBersih = teks.replace(/\s+/g, " ").trim();
-
-  const cocok = teksBersih.match(
-    /\b([A-Z]{1,2})\s*[- ]?\s*(\d{1,4})\s*[- ]?\s*([A-Z]{1,3})\b/i,
-  );
-
-  if (!cocok) {
-    return {
-      kendaraan: teksBersih,
-      nopol: "",
-    };
-  }
-
-  const kode = cocok[1].toUpperCase();
-  const angka = cocok[2];
-  const huruf = cocok[3].toUpperCase();
-
-  const nopol = `${kode} ${angka} ${huruf}`;
-
-  const kendaraan = teksBersih
-    .substring(0, cocok.index)
-    .trim()
-    .replace(/[-:]+$/, "")
-    .trim();
-
-  return {
-    kendaraan,
-    nopol,
-  };
-}
-
-// =====================================================
-// PINTU UTAMA PARSER WA FRONTEND
-// =====================================================
-
-function parseTeksWA(teks) {
-  if (!teks || !teks.trim()) {
-    return {
-      idLaporan: "",
-      nomorLP: "",
-      waktuInput: "",
-      tkp: "",
-      tanggalKejadian: "",
-      hariKejadian: "",
-      jamKejadian: "",
-      kendaraan: [],
-      pengendara: [],
-      saksi: [],
-      kronologi: "",
-      korbanLR: "",
-      korbanLB: "",
-      korbanMD: "",
-      kermat: "",
-      petugas: [],
-      statusPenanganan: "",
-    };
-  }
-
-  const laporan = teks.trim();
-
-  const kendaraan = ambilKendaraan(laporan);
-  const waktu = ambilWaktuKejadian(laporan);
-  const waktuSplit = splitWaktuKejadian(waktu);
-
-  const pengendara = ambilPengendara(laporan, kendaraan);
-
-  const pembonceng = ambilPembonceng(laporan, kendaraan, pengendara);
-
-  const korban = ambilKorban(laporan);
-
-  /*
-   * NOMOR LP TIDAK DIAMBIL DARI WA.
-   *
-   * Untuk laporan baru:
-   * - idLaporan kosong
-   * - waktuInput kosong
-   * - nomorLP kosong
-   *
-   * Nomor LP akan ditentukan setelah
-   * status penanganan dipilih di form.
-   */
-
-  return {
-    idLaporan: "",
-    nomorLP: "",
-    waktuInput: "",
-
-    tkp: ambilTKP(laporan),
-
-    tanggalKejadian: waktuSplit.tanggal || "",
-
-    hariKejadian: waktuSplit.hari || "",
-
-    jamKejadian: waktuSplit.jam || "",
-
-    kendaraan: kendaraan || [],
-
-    pengendara: pengendara || [],
-
-    pembonceng: pembonceng || [],
-
-    saksi: ambilSaksi(laporan) || [],
-
-    kronologi: ambilKronologi(laporan) || "",
-
-    korbanLR: korban.LR || "",
-
-    korbanLB: korban.LB || "",
-
-    korbanMD: korban.MD || "",
-
-    kermat: ambilKermat(laporan),
-
-    /*
-     * Petugas TIDAK diambil dari WA.
-     * Petugas dipilih dari dropdown 6 petugas
-     * yang sudah ditentukan di frontend.
-     */
-    petugas: [],
-
-    /*
-     * Status juga bukan hasil parser WA.
-     * Status dipilih oleh petugas pada form.
-     */
-    statusPenanganan: "",
-  };
-}
-
-// =====================================================
-// SELESAI: PARSER WHATSAPP FRONTEND
-// =====================================================
-
 /* ============================================================
    10. PROSES LAPORAN WHATSAPP
    ============================================================ */
 
+// =====================================================
+// MULAI: PROSES PARSER LAPORAN WHATSAPP FRONTEND
+// =====================================================
+
 function prosesLaporanWhatsApp() {
   const textarea = InputLaporanElements.textareaRawWA;
-
   const button = InputLaporanElements.btnProsesLaporan;
 
-  if (!textarea) {
-    return;
-  }
+  if (!textarea) return;
 
   const rawText = textarea.value.trim();
 
-  /*
-     Jangan proses jika kosong.
-  */
   if (!rawText) {
     tampilkanAlert("warning", "Laporan WhatsApp belum diisi.");
-
     textarea.focus();
-
     return;
   }
 
-  /*
-     Kunci tombol.
-  */
   setButtonLoading(button, true, "⏳ MEMPROSES...");
-
   sembunyikanAlert();
 
-  /*
-     MODE APPS SCRIPT ASLI
-  */
-  if (typeof google === "undefined" || !google.script || !google.script.run) {
-    handleProcessWhatsAppError("google.script.run tidak tersedia.");
+  try {
+    const hasilParser = parseLaporanWA(rawText);
 
+    if (!hasilParser) {
+      throw new Error("Laporan WhatsApp tidak dapat diproses.");
+    }
+
+    console.log("[DEBUG PARSER WA] Hasil JSON:", hasilParser);
+
+    handleProcessWhatsAppSuccess({
+      success: true,
+      data: hasilParser,
+      message: "Laporan WhatsApp berhasil diproses.",
+    });
+  } catch (error) {
+    console.error("[ERROR PARSER WA]", error);
+    handleProcessWhatsAppError(error);
+  } finally {
     setButtonLoading(button, false, "⚙ PROSES LAPORAN");
-
-    return;
   }
-
-  google.script.run
-    .withSuccessHandler(function (response) {
-      handleProcessWhatsAppSuccess(response);
-
-      setButtonLoading(button, false, "⚙ PROSES LAPORAN");
-    })
-    .withFailureHandler(function (error) {
-      handleProcessWhatsAppError(error);
-
-      setButtonLoading(button, false, "⚙ PROSES LAPORAN");
-    })
-    [InputLaporanConfig.BACKEND_FUNCTION.PROSES_WHATSAPP](rawText);
 }
 
+// =====================================================
+// SELESAI: PROSES PARSER LAPORAN WHATSAPP FRONTEND
+// =====================================================
 /* ============================================================
    11. RESPONSE PROSES WHATSAPP
    ============================================================ */
@@ -1852,12 +862,30 @@ function isiFormDariJSON(data) {
     "id",
   ]);
 
-  elements.inputNomorLP.value = ambilNilai(data, [
-    "nomorLP",
-    "nomorLp",
-    "noLP",
-    "noLp",
-  ]);
+  // elements.inputNomorLP.value = ambilNilai(data, [
+  //   "nomorLP",
+  //   "nomorLp",
+  //   "noLP",
+  //   "noLp",
+  // ]);
+
+  // ==========================================================
+  // MULAI: ISI NOMOR LP
+  // ==========================================================
+
+  const nomorLP = ambilNilai(
+    data,
+    ["nomorLP", "nomorLp", "noLP", "noLp"],
+    null,
+  );
+
+  if (nomorLP !== null && String(nomorLP).trim() !== "") {
+    elements.inputNomorLP.value = nomorLP;
+  }
+
+  // ==========================================================
+  // SELESAI: ISI NOMOR LP
+  // ==========================================================
 
   elements.inputWaktuInput.value = ambilNilai(data, [
     "waktuInput",
@@ -2117,9 +1145,34 @@ function setStatusPenanganan(status) {
     normalized = "Dalam Penanganan";
   }
 
+  // setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
+  // updateWarnaStatus();
+
   setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
   updateWarnaStatus();
+  updateNomorLPBerdasarkanStatus();
 }
+
+// =====================================================
+// MULAI ATURAN NOMOR LP BERDASARKAN STATUS
+// =====================================================
+
+function updateNomorLPBerdasarkanStatus() {
+  const status = InputLaporanElements.selectStatusPenanganan?.value;
+  const inputNomorLP = InputLaporanElements.inputNomorLP;
+
+  if (!inputNomorLP) return;
+
+  if (status === "Pelimpahan") {
+    inputNomorLP.value = "Belum Tersedia";
+  } else {
+    inputNomorLP.value = "Nihil";
+  }
+}
+
+// =====================================================
+// SELESAI ATURAN NOMOR LP BERDASARKAN STATUS
+// =====================================================
 
 /* ============================================================
    17. KENDARAAN
@@ -2873,6 +1926,8 @@ function ambilDataForm() {
     */
     idLaporan: elements.inputIdLaporan.value.trim(),
 
+    nomorLP: elements.inputNomorLP.value.trim(),
+
     // noUrut: elements.inputNoUrut.value.trim(),
 
     waktuInput: elements.inputWaktuInput.value.trim(),
@@ -3221,9 +2276,13 @@ function resetFormLaporan() {
   elements.inputKermatRupiah.value = "";
 
   /*
-     Status default.
-  */
+
+   Status default.
+
+*/
+
   elements.selectStatusPenanganan.value = "Pelimpahan";
+  updateNomorLPBerdasarkanStatus();
 
   /*
      Petugas.
@@ -3574,14 +2633,31 @@ function initializeInputLaporanEvents() {
     });
   }
 
+  // if (elements.selectStatusPenanganan) {
+  //   elements.selectStatusPenanganan.addEventListener(
+  //     "change",
+  //     updateWarnaStatus,
+  //   );
+  // }
+
+  // updateWarnaStatus();
+
+  // =====================================================
+  // MULAI EVENT STATUS PENANGANAN → NOMOR LP
+  // =====================================================
+
   if (elements.selectStatusPenanganan) {
-    elements.selectStatusPenanganan.addEventListener(
-      "change",
-      updateWarnaStatus,
-    );
+    elements.selectStatusPenanganan.addEventListener("change", function () {
+      updateWarnaStatus();
+      updateNomorLPBerdasarkanStatus();
+    });
   }
 
   updateWarnaStatus();
+
+  // =====================================================
+  // SELESAI EVENT STATUS PENANGANAN → NOMOR LP
+  // =====================================================
 
   /*
      Tambah kendaraan.

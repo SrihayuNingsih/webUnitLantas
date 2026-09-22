@@ -9,8 +9,10 @@
 let lakaPageCurrent = 1;
 let lakaPageSize = 10;
 let lakaSortOrder = "terbaru";
-let lakaFilteredData = [...lakaData];
-
+// let lakaFilteredData = [...lakaData];
+let lakaFilteredData = [];
+let lakaDataFromBackend = [];
+let lakaDataLoadError = false;
 /* =====================================================
    MODE RENTANG TANGGAL
    ===================================================== */
@@ -150,6 +152,32 @@ function getLakaHour(item) {
 
   return Number(hasil[0]);
 }
+
+/* =====================================================
+   MULAI: AMBIL DATA LAKA LANTAS DARI BACKEND
+   ===================================================== */
+
+async function ambilDataLakaLantas() {
+  try {
+    const response = await apiRequest("AMBIL_LAKA_LANTAS");
+
+    lakaDataLoadError = false;
+
+    console.log("DATA LAKA LANTAS DARI BACKEND:", response.data);
+
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    console.error("Gagal mengambil data Laka Lantas:", error);
+
+    lakaDataLoadError = true;
+
+    return [];
+  }
+}
+
+/* =====================================================
+   SELESAI: AMBIL DATA LAKA LANTAS DARI BACKEND
+   ===================================================== */
 
 /* =====================================================
          FILTER LAKA
@@ -349,7 +377,7 @@ function applyLakaFilter() {
   const tglAkhirEl = document.getElementById("filter-tanggal-akhir");
   const statusEl = document.getElementById("filter-status");
 
-  lakaFilteredData = lakaData.filter(function (item) {
+  lakaFilteredData = lakaDataFromBackend.filter(function (item) {
     const status = statusEl ? statusEl.value : "";
 
     // FILTER STATUS
@@ -551,7 +579,9 @@ function resetLakaFilter() {
    * Kembalikan seluruh data,
    * kemudian urutkan menggunakan default.
    */
-  lakaFilteredData = sortLakaData(lakaData);
+  // lakaFilteredData = sortLakaData(lakaData);
+
+  lakaFilteredData = sortLakaData(lakaDataFromBackend);
 
   /*
    * Kembali ke halaman pertama.
@@ -646,7 +676,8 @@ function applyLakaFilterFromUrl() {
       filterBulanValue.textContent = "";
     }
 
-    lakaFilteredData = sortLakaData(lakaData);
+    // lakaFilteredData = sortLakaData(lakaData);
+    lakaFilteredData = sortLakaData(lakaDataFromBackend);
     renderLakaPage();
     return;
   }
@@ -914,6 +945,31 @@ function renderLakaPage() {
 
   if (total === 0) {
     container.innerHTML = "";
+
+    if (lakaDataLoadError) {
+      if (emptyState) {
+        emptyState.classList.remove("hidden");
+
+        const title = emptyState.querySelector("h3");
+        const description = emptyState.querySelector("p");
+
+        if (title) {
+          title.textContent = "Gagal memuat data Laka Lantas";
+        }
+
+        if (description) {
+          description.textContent =
+            "Data tidak dapat diambil dari server. Silakan coba lagi.";
+        }
+      }
+
+      renderLakaPagination();
+
+      if (window.lucide) lucide.createIcons();
+
+      return;
+    }
+
     if (emptyState) emptyState.classList.remove("hidden");
     renderLakaPagination();
     if (window.lucide) lucide.createIcons();
@@ -1648,7 +1704,16 @@ function initLakaPage() {
 
   // First Render
   // renderLakaPage();
-  applyLakaFilterFromUrl();
+  // applyLakaFilterFromUrl();
+  // updateLakaMode(Boolean(isOfficerMode));
+
+  ambilDataLakaLantas().then((data) => {
+    lakaDataFromBackend = data;
+    lakaFilteredData = sortLakaData(lakaDataFromBackend);
+
+    applyLakaFilterFromUrl();
+  });
+
   updateLakaMode(Boolean(isOfficerMode));
 }
 

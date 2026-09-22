@@ -768,19 +768,37 @@
      ke backend / Code.gs.
      ===================================================== */
 
+  // =====================================================
+  // MULAI - REQUEST PAYLOAD LAPORAN DAN REKAP
+  // =====================================================
+
   function buildRequestPayload(period) {
     return {
-      action: "getLaporanRekap",
-
       periode: {
         type: period.type,
-
         startDate: period.startDate ? dateToInputValue(period.startDate) : null,
-
         endDate: period.endDate ? dateToInputValue(period.endDate) : null,
       },
     };
   }
+
+  // =====================================================
+  // SELESAI - REQUEST PAYLOAD LAPORAN DAN REKAP
+  // =====================================================
+
+  // function buildRequestPayload(period) {
+  //   return {
+  //     action: "getLaporanRekap",
+
+  //     periode: {
+  //       type: period.type,
+
+  //       startDate: period.startDate ? dateToInputValue(period.startDate) : null,
+
+  //       endDate: period.endDate ? dateToInputValue(period.endDate) : null,
+  //     },
+  //   };
+  // }
 
   /* =====================================================
      15. MOCK BACKEND
@@ -1364,27 +1382,39 @@
     setLoading(true);
 
     try {
+      // =====================================================
+      // MULAI - REQUEST API LAPORAN DAN REKAP
+      // =====================================================
+
       const payload = buildRequestPayload(period);
 
-      let response;
+      const response = await apiRequest("AMBIL_LAPORAN_DAN_REKAP", payload);
 
-      if (CONFIG.USE_MOCK_DATA) {
-        response = await requestMockData(payload);
-      } else {
-        /*
-          TEMPAT BACKEND NANTI
+      // =====================================================
+      // SELESAI - REQUEST API LAPORAN DAN REKAP
+      // =====================================================
 
-          Contoh konsep:
+      // const payload = buildRequestPayload(period);
 
-          response =
-            await requestBackendData(payload);
+      // let response;
 
-          Bagian ini sengaja belum
-          diaktifkan.
-        */
+      // if (CONFIG.USE_MOCK_DATA) {
+      //   response = await requestMockData(payload);
+      // } else {
+      //   /*
+      //     TEMPAT BACKEND NANTI
 
-        throw new Error("Backend belum diaktifkan.");
-      }
+      //     Contoh konsep:
+
+      //     response =
+      //       await requestBackendData(payload);
+
+      //     Bagian ini sengaja belum
+      //     diaktifkan.
+      //   */
+
+      //   throw new Error("Backend belum diaktifkan.");
+      // }
 
       /*
         Jika ada request baru setelah request
@@ -1655,87 +1685,6 @@
   /* =====================================================
      33. URL UNTUK LAPORAN.HTML
      ===================================================== */
-
-  // function buildReportPageUrl() {
-  //   const period = getSelectedPeriod();
-
-  //   if (!period.valid) {
-  //     return null;
-  //   }
-
-  //   const params = new URLSearchParams();
-
-  //   params.set('periode', period.type);
-
-  //   if (period.startDate) {
-  //     params.set('tanggalMulai', dateToInputValue(period.startDate));
-  //   }
-
-  //   if (period.endDate) {
-  //     params.set('tanggalAkhir', dateToInputValue(period.endDate));
-  //   }
-
-  //   return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
-  // }
-
-  // function buildReportPageUrl() {
-  //   const period = getSelectedPeriod();
-
-  //   if (!period.valid) {
-  //     return null;
-  //   }
-
-  //   /*
-  //   Semua Periode:
-  //   Tidak perlu query parameter.
-  //   Halaman Laka Lantas memang default-nya
-  //   menampilkan semua data.
-  // */
-  //   if (period.type === 'semua') {
-  //     return CONFIG.REPORT_PAGE;
-  //   }
-
-  //   const params = new URLSearchParams();
-
-  //   /*
-  //   BULANAN
-  //   Kirim Tahun + Bulan sesuai filter
-  //   yang sudah tersedia di halaman Laka Lantas.
-  // */
-  //   if (period.type === 'bulanan') {
-  //     params.set('tahun', String(period.startDate.getFullYear()));
-
-  //     params.set('bulan', padNumber(period.startDate.getMonth() + 1));
-
-  //     return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
-  //   }
-
-  //   /*
-  //   TAHUNAN
-  //   Hanya kirim Tahun.
-  // */
-  //   if (period.type === 'tahunan') {
-  //     params.set('tahun', String(period.startDate.getFullYear()));
-
-  //     return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
-  //   }
-
-  //   /*
-  //   RENTANG TANGGAL
-  //   Kirim tanggal mulai + tanggal akhir.
-  // */
-  //   if (period.type === 'rentang') {
-  //     params.set('tanggalMulai', dateToInputValue(period.startDate));
-
-  //     params.set('tanggalAkhir', dateToInputValue(period.endDate));
-
-  //     return `${CONFIG.REPORT_PAGE}?${params.toString()}`;
-  //   }
-
-  //   return CONFIG.REPORT_PAGE;
-  // }
-
-  // Ganti code lagi
 
   function buildReportPageUrl() {
     const period = getSelectedPeriod();

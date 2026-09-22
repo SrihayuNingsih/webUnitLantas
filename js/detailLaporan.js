@@ -11,43 +11,133 @@ const btnTutupDetailBottom = document.getElementById("btnTutupDetailBottom");
          AWAL TAMBAHAN CODE
       ====================================================== */
 
-const dataLakaDetail = typeof lakaData !== "undefined" ? lakaData : [];
+// const dataLakaDetail = typeof lakaData !== "undefined" ? lakaData : [];
 /* =====================================================
    FUNGSI UTAMA: BUKA DETAIL LAPORAN BERDASARKAN ID
 ====================================================== */
 
-function bukaDetailLaporan(idLaporan) {
-  // 1. Cek apakah const lakaData sudah terisi
-  if (!Array.isArray(dataLakaDetail) || dataLakaDetail.length === 0) {
-    console.warn("Data lakaData belum dimuat atau kosong.");
-    return;
+// function bukaDetailLaporan(idLaporan) {
+//   // 1. Cek apakah const lakaData sudah terisi
+//   if (!Array.isArray(dataLakaDetail) || dataLakaDetail.length === 0) {
+//     console.warn("Data lakaData belum dimuat atau kosong.");
+//     return;
+//   }
+
+//   // 2. Cari data yang cocok berdasarkan ID / Nomor Laporan
+//   const dataMentah = dataLakaDetail.find(
+//     (item) =>
+//       String(item.id || item.ID || item.nomorLaporan || "") ===
+//       String(idLaporan),
+//   );
+
+//   if (!dataMentah) {
+//     alert("Data laporan dengan ID " + idLaporan + " tidak ditemukan!");
+//     return;
+//   }
+
+//   // 3. Normalisasi data agar siap di-render
+//   const dataSiap = normalisasiData(dataMentah);
+
+//   // 4. Render seluruh komponen UI
+//   renderLaporan(dataSiap);
+
+//   // 5. Tampilkan Modal / Overlay Detail
+//   if (detailLaporanOverlay) {
+//     detailLaporanOverlay.classList.remove("hidden");
+//     detailLaporanOverlay.setAttribute("aria-hidden", "false");
+//     document.body.classList.add("overflow-hidden");
+//   }
+// }
+
+// =====================================================
+// MULAI: AMBIL DETAIL LAPORAN DARI API
+// =====================================================
+
+async function ambilDetailLaporan(idLaporan) {
+  if (!idLaporan) {
+    return null;
   }
 
-  // 2. Cari data yang cocok berdasarkan ID / Nomor Laporan
-  const dataMentah = dataLakaDetail.find(
-    (item) =>
-      String(item.id || item.ID || item.nomorLaporan || "") ===
-      String(idLaporan),
-  );
+  try {
+    const response = await apiRequest("AMBIL_DETAIL_LAPORAN", {
+      id: idLaporan,
+    });
 
-  if (!dataMentah) {
-    alert("Data laporan dengan ID " + idLaporan + " tidak ditemukan!");
-    return;
-  }
+    // console.log("[Detail Laporan] Data dari backend:", response.data);
 
-  // 3. Normalisasi data agar siap di-render
-  const dataSiap = normalisasiData(dataMentah);
+    return response.data || null;
+  } catch (error) {
+    console.error("[Detail Laporan] Gagal mengambil detail laporan:", error);
 
-  // 4. Render seluruh komponen UI
-  renderLaporan(dataSiap);
-
-  // 5. Tampilkan Modal / Overlay Detail
-  if (detailLaporanOverlay) {
-    detailLaporanOverlay.classList.remove("hidden");
-    detailLaporanOverlay.setAttribute("aria-hidden", "false");
-    document.body.classList.add("overflow-hidden");
+    throw error;
   }
 }
+
+// =====================================================
+// SELESAI: AMBIL DETAIL LAPORAN DARI API
+// =====================================================
+
+// =====================================================
+// MULAI BUKA DETAIL LAPORAN
+// =====================================================
+
+async function bukaDetailLaporan(idLaporan) {
+  if (!idLaporan) return;
+
+  try {
+    // ===================================================
+    // 1. AMBIL DATA DETAIL LAPORAN DARI API
+    // ===================================================
+
+    // const dataMentah = await apiRequest("AMBIL_DETAIL_LAPORAN", {
+    //   id: idLaporan,
+    // });
+
+    const dataMentah = await ambilDetailLaporan(idLaporan);
+
+    // ===================================================
+    // 2. CEK DATA
+    // ===================================================
+
+    if (!dataMentah) {
+      alert("Data laporan dengan ID " + idLaporan + " tidak ditemukan!");
+
+      return;
+    }
+
+    // ===================================================
+    // 3. NORMALISASI DATA
+    // ===================================================
+
+    const dataSiap = normalisasiData(dataMentah);
+
+    // ===================================================
+    // 4. RENDER SELURUH KOMPONEN UI
+    // ===================================================
+
+    renderLaporan(dataSiap);
+
+    // ===================================================
+    // 5. TAMPILKAN MODAL / OVERLAY DETAIL
+    // ===================================================
+
+    if (detailLaporanOverlay) {
+      detailLaporanOverlay.classList.remove("hidden");
+
+      detailLaporanOverlay.setAttribute("aria-hidden", "false");
+
+      document.body.classList.add("overflow-hidden");
+    }
+  } catch (error) {
+    console.error("[Detail Laporan] Gagal mengambil data:", error);
+
+    alert("Gagal mengambil data detail laporan. Silakan coba lagi.");
+  }
+}
+
+// =====================================================
+// SELESAI BUKA DETAIL LAPORAN
+// =====================================================
 /* =====================================================
          AKHIR TAMBAHAN CODE
       ====================================================== */
@@ -364,7 +454,7 @@ function renderSaksi(data) {
 
   const saksi = Array.isArray(data.saksi) ? data.saksi : [];
 
-  console.log("DATA SAKSI:", saksi);
+  // console.log("DATA SAKSI:", saksi);
 
   if (!saksi.length) {
     container.innerHTML = `
@@ -564,24 +654,24 @@ function renderLaporan(data) {
          cari berdasarkan ?id=...
       ====================================================== */
 
-function ambilDataLaporan() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+// function ambilDataLaporan() {
+//   const params = new URLSearchParams(window.location.search);
+//   const id = params.get("id");
 
-  if (Array.isArray(lakaData) && lakaData.length > 0) {
-    if (id) {
-      const laporan = lakaData.find(
-        (item) => String(item.id || "") === String(id),
-      );
+//   if (Array.isArray(lakaData) && lakaData.length > 0) {
+//     if (id) {
+//       const laporan = lakaData.find(
+//         (item) => String(item.id || "") === String(id),
+//       );
 
-      return normalisasiData(laporan);
-    }
+//       return normalisasiData(laporan);
+//     }
 
-    return normalisasiData(lakaData[0]);
-  }
+//     return normalisasiData(lakaData[0]);
+//   }
 
-  return normalisasiData(null);
-}
+//   return normalisasiData(null);
+// }
 
 /* =====================================================
    NORMALISASI DATA
@@ -665,49 +755,124 @@ function normalisasiData(data) {
          INIT
       ====================================================== */
 
-function initDetailLaporan() {
+// function initDetailLaporan() {
+//   const params = new URLSearchParams(window.location.search);
+//   const id = params.get("id");
+
+//   // Jika halaman dibuka langsung sebagai detailLaporan.html?id=...
+//   // maka tampilkan detail seperti sebelumnya.
+//   if (id) {
+//     const data = ambilDataLaporan();
+
+//     renderLaporan(data);
+
+//     if (detailLaporanOverlay) {
+//       detailLaporanOverlay.classList.remove("hidden");
+//       detailLaporanOverlay.setAttribute("aria-hidden", "false");
+//       document.body.classList.add("overflow-hidden");
+//     }
+//   } else {
+//     // Jika detailLaporan.js dipakai sebagai overlay
+//     // di halLakaLantas.html, jangan tampilkan otomatis.
+//     if (detailLaporanOverlay) {
+//       detailLaporanOverlay.classList.add("hidden");
+//       detailLaporanOverlay.setAttribute("aria-hidden", "true");
+//     }
+
+//     document.body.classList.remove("overflow-hidden");
+//   }
+
+//   if (window.lucide) {
+//     lucide.createIcons();
+//   }
+// }
+// /* =====================================================
+//          ESC UNTUK MENUTUP
+//       ====================================================== */
+
+// document.addEventListener("keydown", function (event) {
+//   if (event.key === "Escape") {
+//     tutupDetailLaporan();
+//   }
+// });
+
+// /* =====================================================
+//          DOM READY
+//       ====================================================== */
+
+// document.addEventListener("DOMContentLoaded", initDetailLaporan);
+
+async function initDetailLaporan() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
-  // Jika halaman dibuka langsung sebagai detailLaporan.html?id=...
-  // maka tampilkan detail seperti sebelumnya.
   if (id) {
-    const data = ambilDataLaporan();
+    try {
+      // ===================================================
+      // 1. AMBIL DATA DETAIL DARI BACKEND
+      // ===================================================
 
-    renderLaporan(data);
+      const dataMentah = await ambilDetailLaporan(id);
 
-    if (detailLaporanOverlay) {
-      detailLaporanOverlay.classList.remove("hidden");
-      detailLaporanOverlay.setAttribute("aria-hidden", "false");
-      document.body.classList.add("overflow-hidden");
+      // ===================================================
+      // 2. CEK DATA
+      // ===================================================
+
+      if (!dataMentah) {
+        alert("Data laporan dengan ID " + id + " tidak ditemukan!");
+
+        return;
+      }
+
+      // ===================================================
+      // 3. NORMALISASI DATA
+      // ===================================================
+
+      const dataSiap = normalisasiData(dataMentah);
+
+      // ===================================================
+      // 4. RENDER DATA LAPORAN
+      // ===================================================
+
+      renderLaporan(dataSiap);
+
+      // ===================================================
+      // 5. TAMPILKAN OVERLAY
+      // ===================================================
+
+      if (detailLaporanOverlay) {
+        detailLaporanOverlay.classList.remove("hidden");
+
+        detailLaporanOverlay.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("overflow-hidden");
+      }
+    } catch (error) {
+      console.error("[Detail Laporan] Gagal memuat laporan dari URL:", error);
+
+      alert("Gagal mengambil data detail laporan. Silakan coba lagi.");
     }
   } else {
-    // Jika detailLaporan.js dipakai sebagai overlay
-    // di halLakaLantas.html, jangan tampilkan otomatis.
+    // ===================================================
+    // TIDAK ADA ID LAPORAN
+    // ===================================================
+
     if (detailLaporanOverlay) {
       detailLaporanOverlay.classList.add("hidden");
+
       detailLaporanOverlay.setAttribute("aria-hidden", "true");
     }
 
     document.body.classList.remove("overflow-hidden");
   }
 
+  // ===================================================
+  // 6. AKTIFKAN ICON LUCIDE
+  // ===================================================
+
   if (window.lucide) {
     lucide.createIcons();
   }
 }
-/* =====================================================
-         ESC UNTUK MENUTUP
-      ====================================================== */
-
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Escape") {
-    tutupDetailLaporan();
-  }
-});
-
-/* =====================================================
-         DOM READY
-      ====================================================== */
 
 document.addEventListener("DOMContentLoaded", initDetailLaporan);

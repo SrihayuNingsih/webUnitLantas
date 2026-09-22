@@ -8,7 +8,7 @@ const lakaData = [
     nomorLP: "LP-0101-BJN/I/2026",
     status: "Limpah Polres",
     jumlahLR: 2,
-    jumlahLB: 0,
+    jumlahLB: 1,
     jumlahMD: 0,
     kermat: 2500000,
     tkp: "Jl. Raya Bojonegoro - Babat turut wilayah Desa Baureno Kec. Baureno Kab. Bojonegoro",
@@ -32,8 +32,8 @@ const lakaData = [
     kronologi:
       "Sepeda motor berjalan dari arah Bojonegoro menuju Babat kemudian terjadi benturan dengan kendaraan Toyota Avanza dari arah berlawanan.",
     petugas: [
-      { id: "PTG001", nama: "Briptu Andi" },
-      { id: "PTG002", nama: "Aiptu Budi" },
+      { id: "PTG001", nama: "Briptu Andika Perkasa" },
+      { id: "PTG002", nama: "Aiptu Budi Prihatin" },
     ],
     dokumentasi: {
       url: "https://drive.google.com/drive/folders/1ContohLKA001",

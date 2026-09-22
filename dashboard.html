@@ -734,7 +734,7 @@
           >
             <div class="aspect-[3/4] w-full overflow-hidden bg-slate-100">
               <img
-                src="assets/images/personil/Kapolsek.png"
+                src="assets/images/personil/Kapolsek.pn"
                 alt="Kapolsek Baureno"
                 class="h-full w-full object-cover"
               />
@@ -762,7 +762,7 @@
           >
             <div class="aspect-[3/4] w-full overflow-hidden bg-slate-100">
               <img
-                src="assets/images/personil/Kanit Lantas.png"
+                src="assets/images/personil/Kanit Lantas.pn"
                 alt="Kanit Lantas"
                 class="h-full w-full object-cover"
               />
@@ -821,7 +821,7 @@
             >
               <div class="aspect-[3/4] w-full overflow-hidden">
                 <img
-                  src="assets/images/personil/Kapolsek.png"
+                  src="assets/images/personil/Kapolsek.pn"
                   alt="Kapolsek Baureno"
                   class="h-full w-full object-cover"
                 />
@@ -901,7 +901,7 @@
             >
               <div class="aspect-[3/4] w-full overflow-hidden">
                 <img
-                  src="assets/images/personil/Kanit Lantas.png"
+                  src="assets/images/personil/Kanit Lantas.pn"
                   alt="Kanit Lantas"
                   class="h-full w-full object-cover"
                 />
@@ -1571,11 +1571,16 @@
               </div>
 
               <div class="min-w-0">
-                <p class="truncate text-sm lg:text-md font-bold text-slate-800">
-                  AIPDA HENDRA D. A
+                <p
+                  id="petugasPiket1"
+                  class="truncate text-sm lg:text-md font-bold text-slate-800"
+                >
+                  <!-- Diisi JavaScript -->
                 </p>
 
-                <p class="text-xs lg:text-sm text-slate-500">Kanit Lantas</p>
+                <p class="text-xs lg:text-sm text-slate-500">
+                  Anggota Unit Lantas
+                </p>
 
                 <span
                   class="mt-1 inline-flex rounded-full bg-blue-50 py-0.5 text-[10px] xl:text-lg font-semibold text-emerald-700"
@@ -1601,11 +1606,16 @@
               </div>
 
               <div class="min-w-0">
-                <p class="truncate text-sm lg:text-md font-bold text-slate-800">
-                  BRIPKA AGUS SETIAWAN
+                <p
+                  id="petugasPiket2"
+                  class="truncate text-sm lg:text-md font-bold text-slate-800"
+                >
+                  <!-- Diisi JavaScript -->
                 </p>
 
-                <p class="text-sm lg:text-sm text-slate-500">Petugas Lantas</p>
+                <p class="text-xs lg:text-sm text-slate-500">
+                  Anggota Unit Lantas
+                </p>
 
                 <span
                   class="mt-1 inline-flex rounded-full bg-emerald-50 py-0.5 text-[10px] xl:text-lg font-semibold text-emerald-700"
@@ -1728,44 +1738,10 @@
     </footer>
 
     <!-- =====================================================
-       AKHIR KOMPONEN FOOTER
-  ====================================================== -->
-
-    <!-- =====================================================
-       AWAL KOMPONEN ACTION MENU LAKA
-       
-       Hanya dipakai mode Petugas.
-  ====================================================== -->
-
-    <!-- <div
-      id="action-menu"
-      class="fixed z-50 hidden w-40 rounded-xl border border-slate-200 bg-white py-1 shadow-xl"
-    >
-      <button
-        id="actionEditButton"
-        type="button"
-        class="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50"
-      >
-        <i data-lucide="pencil" class="h-4 w-4 text-slate-500"></i>
-
-        Edit
-      </button>
-
-      <button
-        id="actionDeleteButton"
-        type="button"
-        class="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-red-600 hover:bg-red-50"
-      >
-        <i data-lucide="trash-2" class="h-4 w-4"></i>
-
-        Hapus
-      </button>
-    </div> -->
-
-    <!-- =====================================================
        AKHIR KOMPONEN ACTION MENU LAKA
   ====================================================== -->
   </body>
-  <script src="js/lakaData.js"></script>
+
+  <script src="js/api.js"></script>
   <script src="js/dashboard.js"></script>
 </html>

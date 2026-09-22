@@ -669,41 +669,41 @@ function getStatusText(statusTampil) {
   return "text-slate-500";
 }
 
-function getWaktuKejadian(item) {
-  const bulan = {
-    januari: 0,
-    februari: 1,
-    maret: 2,
-    april: 3,
-    mei: 4,
-    juni: 5,
-    juli: 6,
-    agustus: 7,
-    september: 8,
-    oktober: 9,
-    november: 10,
-    desember: 11,
-  };
+// function getWaktuKejadian(item) {
+//   const bulan = {
+//     januari: 0,
+//     februari: 1,
+//     maret: 2,
+//     april: 3,
+//     mei: 4,
+//     juni: 5,
+//     juli: 6,
+//     agustus: 7,
+//     september: 8,
+//     oktober: 9,
+//     november: 10,
+//     desember: 11,
+//   };
 
-  const tanggalText = String(item.tanggal || "").trim();
-  const waktuText = String(item.jam || "").trim();
+//   const tanggalText = String(item.tanggal || "").trim();
+//   const waktuText = String(item.jam || "").trim();
 
-  const matchTanggal = tanggalText.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i);
+//   const matchTanggal = tanggalText.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/i);
 
-  const matchWaktu = waktuText.match(/(\d{1,2})[.:](\d{2})/);
+//   const matchWaktu = waktuText.match(/(\d{1,2})[.:](\d{2})/);
 
-  if (!matchTanggal || !matchWaktu) return 0;
+//   if (!matchTanggal || !matchWaktu) return 0;
 
-  const tanggal = Number(matchTanggal[1]);
-  const bulanIndex = bulan[matchTanggal[2].toLowerCase()];
-  const tahun = Number(matchTanggal[3]);
-  const jam = Number(matchWaktu[1]);
-  const menit = Number(matchWaktu[2]);
+//   const tanggal = Number(matchTanggal[1]);
+//   const bulanIndex = bulan[matchTanggal[2].toLowerCase()];
+//   const tahun = Number(matchTanggal[3]);
+//   const jam = Number(matchWaktu[1]);
+//   const menit = Number(matchWaktu[2]);
 
-  if (bulanIndex === undefined) return 0;
+//   if (bulanIndex === undefined) return 0;
 
-  return new Date(tahun, bulanIndex, tanggal, jam, menit).getTime();
-}
+//   return new Date(tahun, bulanIndex, tanggal, jam, menit).getTime();
+// }
 
 /* =====================================================
    RENDER LAKA DASHBOARD
@@ -714,7 +714,7 @@ function getWaktuKejadian(item) {
    Tidak ada data Laka lain di dashboard.js.
    ===================================================== */
 
-function renderLakaList(data = lakaData) {
+function renderLakaList(data = []) {
   const container = document.getElementById("laka-list");
   const emptyState = document.getElementById("empty-state");
 
@@ -722,9 +722,11 @@ function renderLakaList(data = lakaData) {
 
   const dataLaka = Array.isArray(data) ? data : [];
 
-  const dataTerbaru = [...dataLaka]
-    .sort((a, b) => getWaktuKejadian(b) - getWaktuKejadian(a))
-    .slice(0, 4);
+  // const dataTerbaru = [...dataLaka]
+  //   .sort((a, b) => getWaktuKejadian(b) - getWaktuKejadian(a))
+  //   .slice(0, 4);
+
+  const dataTerbaru = dataLaka;
 
   if (dataTerbaru.length === 0) {
     container.innerHTML = "";
@@ -1157,168 +1159,309 @@ if (lihatSemuaButton) {
    Tidak ada RekapStatusData.
    ===================================================== */
 
-function updateRekapStatus(data = lakaData) {
-  const dataLaka = Array.isArray(data) ? data : [];
+// function updateRekapStatus(data = lakaData) {
+//   const dataLaka = Array.isArray(data) ? data : [];
 
-  const tahunSekarang = new Date().getFullYear();
+//   const tahunSekarang = new Date().getFullYear();
 
-  const dataTahunBerjalan = dataLaka.filter(function (item) {
-    const tanggal = String(item.tanggal || "").trim();
+//   const dataTahunBerjalan = dataLaka.filter(function (item) {
+//     const tanggal = String(item.tanggal || "").trim();
 
-    const match = tanggal.match(/(\d{4})$/);
+//     const match = tanggal.match(/(\d{4})$/);
 
-    if (!match) return false;
+//     if (!match) return false;
 
-    return Number(match[1]) === tahunSekarang;
-  });
+//     return Number(match[1]) === tahunSekarang;
+//   });
 
-  const totalKejadian = dataTahunBerjalan.length;
+//   const totalKejadian = dataTahunBerjalan.length;
 
-  const korbanLR = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.jumlahLR || 0);
-  }, 0);
+//   const korbanLR = dataTahunBerjalan.reduce(function (total, item) {
+//     return total + Number(item.jumlahLR || 0);
+//   }, 0);
 
-  const korbanLB = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.jumlahLB || 0);
-  }, 0);
+//   const korbanLB = dataTahunBerjalan.reduce(function (total, item) {
+//     return total + Number(item.jumlahLB || 0);
+//   }, 0);
 
-  const korbanMD = dataTahunBerjalan.reduce(function (total, item) {
-    return total + Number(item.jumlahMD || 0);
-  }, 0);
+//   const korbanMD = dataTahunBerjalan.reduce(function (total, item) {
+//     return total + Number(item.jumlahMD || 0);
+//   }, 0);
 
-  /*
-   * Selesai mencakup:
-   * - Selesai
-   * - Selesai/RJ
-   * - RJ
-   */
-  // const rj = dataLaka.filter(function (item) {
-  //   return ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim());
-  // }).length;
+//   /*
+//    * Selesai mencakup:
+//    * - Selesai
+//    * - Selesai/RJ
+//    * - RJ
+//    */
+//   // const rj = dataLaka.filter(function (item) {
+//   //   return ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim());
+//   // }).length;
 
-  const selesai = dataTahunBerjalan.filter(function (item) {
-    return ["Selesai", "Selesai/RJ", "RJ"].includes(
-      String(item.status || "").trim(),
-    );
-  }).length;
+//   const selesai = dataTahunBerjalan.filter(function (item) {
+//     return ["Selesai", "Selesai/RJ", "RJ"].includes(
+//       String(item.status || "").trim(),
+//     );
+//   }).length;
 
-  const dalamPenanganan = dataTahunBerjalan.filter(function (item) {
-    return String(item.status || "").trim() === "Dalam Penanganan";
-  }).length;
+//   const dalamPenanganan = dataTahunBerjalan.filter(function (item) {
+//     return String(item.status || "").trim() === "Dalam Penanganan";
+//   }).length;
 
-  const limpahPolres = dataTahunBerjalan.filter(function (item) {
-    return String(item.status || "").trim() === "Limpah Polres";
-  }).length;
+//   const limpahPolres = dataTahunBerjalan.filter(function (item) {
+//     return String(item.status || "").trim() === "Limpah Polres";
+//   }).length;
 
-  const elements = {
-    totalKejadian: ["totalKejadian", "totalKejadianDesktop"],
+//   const elements = {
+//     totalKejadian: ["totalKejadian", "totalKejadianDesktop"],
 
-    korbanLR: ["korbanLR", "korbanLRDesktop"],
+//     korbanLR: ["korbanLR", "korbanLRDesktop"],
 
-    korbanLB: ["korbanLB", "korbanLBDesktop"],
+//     korbanLB: ["korbanLB", "korbanLBDesktop"],
 
-    korbanMD: ["korbanMD", "korbanMDDesktop"],
+//     korbanMD: ["korbanMD", "korbanMDDesktop"],
 
-    dalamPenanganan: ["statusDalamPenanganan", "statusDalamDesktop"],
+//     dalamPenanganan: ["statusDalamPenanganan", "statusDalamDesktop"],
 
-    rj: ["statusRJ", "statusRJDesktop"],
+//     rj: ["statusRJ", "statusRJDesktop"],
 
-    limpahPolres: ["statusLimpahPolres", "statusLimpahDesktop"],
-  };
+//     limpahPolres: ["statusLimpahPolres", "statusLimpahDesktop"],
+//   };
 
-  const values = {
-    totalKejadian: totalKejadian,
+//   const values = {
+//     totalKejadian: totalKejadian,
 
-    korbanLR: korbanLR,
+//     korbanLR: korbanLR,
 
-    korbanLB: korbanLB,
+//     korbanLB: korbanLB,
 
-    korbanMD: korbanMD,
+//     korbanMD: korbanMD,
 
-    dalamPenanganan: dalamPenanganan,
+//     dalamPenanganan: dalamPenanganan,
 
-    rj: selesai,
+//     rj: selesai,
 
-    limpahPolres: limpahPolres,
-  };
+//     limpahPolres: limpahPolres,
+//   };
 
-  Object.keys(elements).forEach(function (key) {
-    elements[key].forEach(function (id) {
-      const element = document.getElementById(id);
+//   Object.keys(elements).forEach(function (key) {
+//     elements[key].forEach(function (id) {
+//       const element = document.getElementById(id);
 
-      if (element) {
-        element.textContent = values[key];
-      }
-    });
-  });
-}
+//       if (element) {
+//         element.textContent = values[key];
+//       }
+//     });
+//   });
+// }
 
 /* =====================================================
    PUBLIC API REKAP STATUS
    ===================================================== */
 
-window.RekapStatusComponent = {
-  update: function (data) {
-    updateRekapStatus(data || lakaData);
-  },
+// window.RekapStatusComponent = {
+//   update: function (data) {
+//     updateRekapStatus(data || lakaData);
+//   },
 
-  getData: function () {
-    const dataLaka = Array.isArray(lakaData) ? lakaData : [];
+//   getData: function () {
+//     const dataLaka = Array.isArray(lakaData) ? lakaData : [];
 
-    return {
-      totalKejadian: dataLaka.length,
+//     return {
+//       totalKejadian: dataLaka.length,
 
-      korbanLR: dataLaka.reduce(
-        (total, item) => total + Number(item.lr || 0),
-        0,
-      ),
+//       korbanLR: dataLaka.reduce(
+//         (total, item) => total + Number(item.lr || 0),
+//         0,
+//       ),
 
-      korbanLB: dataLaka.reduce(
-        (total, item) => total + Number(item.lb || 0),
-        0,
-      ),
+//       korbanLB: dataLaka.reduce(
+//         (total, item) => total + Number(item.lb || 0),
+//         0,
+//       ),
 
-      korbanMD: dataLaka.reduce(
-        (total, item) => total + Number(item.md || 0),
-        0,
-      ),
+//       korbanMD: dataLaka.reduce(
+//         (total, item) => total + Number(item.md || 0),
+//         0,
+//       ),
 
-      dalamPenanganan: dataLaka.filter(
-        (item) => String(item.status || "").trim() === "Dalam Penanganan",
-      ).length,
+//       dalamPenanganan: dataLaka.filter(
+//         (item) => String(item.status || "").trim() === "Dalam Penanganan",
+//       ).length,
 
-      rj: dataLaka.filter((item) =>
-        ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim()),
-      ).length,
+//       rj: dataLaka.filter((item) =>
+//         ["Selesai/RJ", "RJ"].includes(String(item.status || "").trim()),
+//       ).length,
 
-      limpahPolres: dataLaka.filter(
-        (item) => String(item.status || "").trim() === "Limpah Polres",
-      ).length,
-    };
-  },
-};
+//       limpahPolres: dataLaka.filter(
+//         (item) => String(item.status || "").trim() === "Limpah Polres",
+//       ).length,
+//     };
+//   },
+// };
 
 /* =====================================================
    PUBLIC API LAKA
    ===================================================== */
 
-window.LakaComponent = {
-  render: function (data) {
-    renderLakaList(data || lakaData);
-  },
+// window.LakaComponent = {
+//   render: function (data) {
+//     renderLakaList(data || lakaData);
+//   },
 
-  getData: function () {
-    return [...lakaData];
-  },
+//   getData: function () {
+//     return [...lakaData];
+//   },
 
-  // refreshMode: function () {
-  //   updateLakaMode(isOfficerMode);
-  // },
+//   // refreshMode: function () {
+//   //   updateLakaMode(isOfficerMode);
+//   // },
 
-  // closeActionMenu: function () {
-  //   closeActionMenu();
-  // },
-};
+//   // closeActionMenu: function () {
+//   //   closeActionMenu();
+//   // },
+// };
+
+// =====================================================
+// MULAI: AMBIL LAKA TERBARU DASHBOARD DARI BACKEND
+// =====================================================
+
+async function ambilLakaTerbaru() {
+  try {
+    const response = await apiRequest("AMBIL_LAKA_TERBARU_DASHBOARD");
+
+    console.log("DATA LAKA TERBARU DARI BACKEND:", response.data);
+
+    return response.data || [];
+  } catch (error) {
+    console.error("Gagal mengambil data laka terbaru:", error);
+
+    return [];
+  }
+}
+
+// =====================================================
+// SELESAI: AMBIL LAKA TERBARU DASHBOARD DARI BACKEND
+// =====================================================
+
+// =====================================================
+// MULAI: AMBIL REKAP DASHBOARD DARI BACKEND
+// =====================================================
+
+async function ambilRekapDashboard() {
+  try {
+    const response = await apiRequest("AMBIL_REKAP_DASHBOARD");
+
+    console.log("REKAP DASHBOARD DARI BACKEND:", response.data);
+
+    return response.data || {};
+  } catch (error) {
+    console.error("Gagal mengambil rekap dashboard:", error);
+
+    return {};
+  }
+}
+
+// =====================================================
+// SELESAI: AMBIL REKAP DASHBOARD DARI BACKEND
+// =====================================================
+
+// =====================================================
+// MULAI: RENDER REKAP DASHBOARD DARI BACKEND
+// =====================================================
+
+function renderRekapDashboard(data) {
+  document.getElementById("totalKejadian").textContent =
+    data.totalKejadian ?? 0;
+
+  document.getElementById("totalKejadianDesktop").textContent =
+    data.totalKejadian ?? 0;
+
+  document.getElementById("korbanLR").textContent = data.jumlahLR ?? 0;
+
+  document.getElementById("korbanLRDesktop").textContent = data.jumlahLR ?? 0;
+
+  document.getElementById("korbanLB").textContent = data.jumlahLB ?? 0;
+
+  document.getElementById("korbanLBDesktop").textContent = data.jumlahLB ?? 0;
+
+  document.getElementById("korbanMD").textContent = data.jumlahMD ?? 0;
+
+  document.getElementById("korbanMDDesktop").textContent = data.jumlahMD ?? 0;
+
+  document.getElementById("statusDalamPenanganan").textContent =
+    data.dalamPenanganan ?? 0;
+
+  document.getElementById("statusDalamDesktop").textContent =
+    data.dalamPenanganan ?? 0;
+
+  document.getElementById("statusRJ").textContent = data.selesai ?? 0;
+
+  document.getElementById("statusRJDesktop").textContent = data.selesai ?? 0;
+
+  document.getElementById("statusLimpahPolres").textContent =
+    data.limpahPolres ?? 0;
+
+  document.getElementById("statusLimpahDesktop").textContent =
+    data.limpahPolres ?? 0;
+}
+
+// =====================================================
+// SELESAI: RENDER REKAP DASHBOARD DARI BACKEND
+// =====================================================
+
+// =====================================================
+// MULAI: AMBIL PETUGAS PIKET DASHBOARD DARI BACKEND
+// =====================================================
+
+async function ambilPetugasPiketDashboard() {
+  try {
+    const response = await apiRequest("AMBIL_PETUGAS_PIKET_DASHBOARD");
+
+    console.log("PETUGAS PIKET DARI BACKEND:", response.data);
+
+    return (
+      response.data || {
+        tanggal: "",
+        petugas: [],
+      }
+    );
+  } catch (error) {
+    console.error("Gagal mengambil petugas piket:", error);
+
+    return {
+      tanggal: "",
+      petugas: [],
+    };
+  }
+}
+
+// =====================================================
+// SELESAI: AMBIL PETUGAS PIKET DASHBOARD DARI BACKEND
+// =====================================================
+
+// =====================================================
+// MULAI: RENDER PETUGAS PIKET DASHBOARD
+// =====================================================
+
+function renderPetugasPiketDashboard(data) {
+  const petugas = data?.petugas || [];
+
+  const petugas1 = document.getElementById("petugasPiket1");
+  const petugas2 = document.getElementById("petugasPiket2");
+
+  if (petugas1) {
+    petugas1.textContent = petugas[0]?.namaLengkap || "-";
+  }
+
+  if (petugas2) {
+    petugas2.textContent = petugas[1]?.namaLengkap || "-";
+  }
+}
+
+// =====================================================
+// SELESAI: RENDER PETUGAS PIKET DASHBOARD
+// =====================================================
 
 /* =====================================================
    INITIALIZATION
@@ -1340,13 +1483,31 @@ function initializeApplication() {
   initializeSidebarLinks();
 
   /* 5. Render Laka */
-  renderLakaList();
+  // renderLakaList();
+
+  /* 5. Ambil dan Render Laka dari Backend */
+  ambilLakaTerbaru().then((data) => {
+    renderLakaList(data);
+  });
+
+  /* 6. Ambil Rekap dari Backend */
+  // ambilRekapDashboard();
+
+  /* 6. Ambil dan Render Rekap dari Backend */
+  ambilRekapDashboard().then((data) => {
+    renderRekapDashboard(data);
+  });
+
+  /* 7. Ambil dan Render Petugas Piket dari Backend */
+  ambilPetugasPiketDashboard().then((data) => {
+    renderPetugasPiketDashboard(data);
+  });
 
   /* 6. Terapkan mode */
   updateGlobalUI();
 
   /* 7. Rekap langsung dari lakaData */
-  updateRekapStatus();
+  // updateRekapStatus();
 
   /* 8. Tutup Action Menu */
   // closeActionMenu();

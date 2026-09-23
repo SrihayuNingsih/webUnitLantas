@@ -1784,7 +1784,22 @@ function handleGetPetugasSuccess(response) {
 
   InputLaporanState.daftarPetugas = normalizePetugasArray(petugasArray);
 
-  renderPetugasSelector();
+  // =====================================================
+  // MULAI DEBUG: HASIL NORMALISASI DAFTAR PETUGAS
+  // =====================================================
+
+  console.log(
+    "[INPUT LAPORAN] Jumlah petugas:",
+    InputLaporanState.daftarPetugas.length,
+  );
+
+  console.log("[INPUT LAPORAN] Data petugas:", InputLaporanState.daftarPetugas);
+
+  // =====================================================
+  // SELESAI DEBUG: HASIL NORMALISASI DAFTAR PETUGAS
+  // =====================================================
+
+  // renderPetugasSelector();
 
   renderSelectedPetugas();
 }
@@ -1823,6 +1838,10 @@ function normalizePetugasArray(list = []) {
       }
 
       if (item && typeof item === "object") {
+        // =====================================================
+        // MULAI: NORMALISASI DATA PETUGAS
+        // =====================================================
+
         return {
           id: ambilNilai(item, [
             "id",
@@ -1837,7 +1856,13 @@ function normalizePetugasArray(list = []) {
             "namaPersonil",
             "name",
           ]),
+
+          pangkat: ambilNilai(item, ["pangkat", "pangkatPetugas"]),
         };
+
+        // =====================================================
+        // SELESAI: NORMALISASI DATA PETUGAS
+        // =====================================================
       }
 
       return null;
@@ -1851,6 +1876,7 @@ function normalizePetugasArray(list = []) {
    23. RENDER SELECTOR PETUGAS
    ============================================================ */
 
+// MULAI PERBAIKAN RENDER SELECTOR PETUGAS
 function renderPetugasSelector() {
   const container = InputLaporanElements.containerTagsPetugas;
 
@@ -1858,15 +1884,13 @@ function renderPetugasSelector() {
     return;
   }
 
-  /*
-     Jangan menghapus chip yang sudah dipilih.
-
-     Buat selector jika belum ada.
-  */
   let selector = container.parentElement.querySelector(
     '[data-role="petugas-selector"]',
   );
 
+  // =====================================================
+  // BUAT SELECTOR JIKA BELUM ADA
+  // =====================================================
   if (!selector) {
     selector = document.createElement("select");
 
@@ -1874,24 +1898,6 @@ function renderPetugasSelector() {
 
     selector.className =
       "w-full text-sm p-2 border border-slate-300 rounded bg-white mt-2";
-
-    const defaultOption = document.createElement("option");
-
-    defaultOption.value = "";
-
-    defaultOption.textContent = "-- Pilih Petugas --";
-
-    selector.appendChild(defaultOption);
-
-    InputLaporanState.daftarPetugas.forEach(function (petugas) {
-      const option = document.createElement("option");
-
-      option.value = petugas.id;
-
-      option.textContent = petugas.nama;
-
-      selector.appendChild(option);
-    });
 
     selector.addEventListener("change", function () {
       const id = selector.value;
@@ -1916,8 +1922,19 @@ function renderPetugasSelector() {
 
       if (!alreadySelected) {
         InputLaporanState.selectedPetugas.push(petugas);
-
         renderSelectedPetugas();
+
+        // =====================================================
+        // MULAI: SEMBUNYIKAN SELECTOR SETELAH PETUGAS DIPILIH
+        // =====================================================
+
+        selector.remove();
+
+        // =====================================================
+        // SELESAI: SEMBUNYIKAN SELECTOR SETELAH PETUGAS DIPILIH
+        // =====================================================
+
+        return;
       }
 
       selector.value = "";
@@ -1925,7 +1942,50 @@ function renderPetugasSelector() {
 
     container.parentElement.appendChild(selector);
   }
+
+  // =====================================================
+  // PERBARUI ISI OPTION SETIAP KALI DATA PETUGAS BERUBAH
+  // =====================================================
+  selector.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+
+  defaultOption.value = "";
+  defaultOption.textContent = "-- Pilih Petugas --";
+
+  selector.appendChild(defaultOption);
+
+  InputLaporanState.daftarPetugas.forEach(function (petugas) {
+    const option = document.createElement("option");
+
+    // option.value = petugas.id;
+    // option.textContent = petugas.nama;
+
+    // =====================================================
+    // MULAI: TAMPILKAN PANGKAT + NAMA PETUGAS
+    // =====================================================
+
+    option.value = petugas.id;
+
+    // const pangkat = petugas.pangkat
+    //   ? petugas.pangkat.charAt(0).toUpperCase() +
+    //     petugas.pangkat.slice(1).toLowerCase()
+    //   : "";
+
+    // option.textContent = pangkat ? `${pangkat} ${petugas.nama}` : petugas.nama;
+
+    option.textContent = petugas.pangkat
+      ? `${petugas.pangkat} ${petugas.nama}`
+      : petugas.nama;
+
+    // =====================================================
+    // SELESAI: TAMPILKAN PANGKAT + NAMA PETUGAS
+    // =====================================================
+
+    selector.appendChild(option);
+  });
 }
+// SELESAI PERBAIKAN RENDER SELECTOR PETUGAS
 
 /* ============================================================
    24. RENDER CHIP PETUGAS
@@ -1959,7 +2019,9 @@ function renderSelectedPetugas() {
       "inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full px-2 py-1 text-[12px]";
 
     chip.innerHTML = `
-        <span>${escapeHTML(petugas.nama)}</span>
+        <span>${escapeHTML(
+          petugas.pangkat ? petugas.pangkat + " " + petugas.nama : petugas.nama,
+        )}</span>
 
         <button
           type="button"

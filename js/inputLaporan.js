@@ -1490,6 +1490,8 @@ function buatDaftarPihakTerlibatDariKendaraan(kendaraanList = []) {
 
   const hasil = [];
 
+  console.log("[CEK PIHAK KENDARAAN]", JSON.stringify(kendaraanList, null, 2));
+
   kendaraanList.forEach(function (item) {
     if (!item || typeof item !== "object") {
       return;
@@ -1671,6 +1673,33 @@ function ambilNamaPihakDariKendaraan(item, jenisPihak) {
     return "";
   }
 
+  // =====================================================
+  // MULAI - Ambil pihak dari struktur array "pihak"
+  // =====================================================
+  if (Array.isArray(item.pihak)) {
+    const pihakDitemukan = item.pihak.find(function (pihak) {
+      return (
+        pihak &&
+        String(pihak.jenisPihak || "")
+          .trim()
+          .toLowerCase() ===
+          String(jenisPihak || "")
+            .trim()
+            .toLowerCase()
+      );
+    });
+
+    if (pihakDitemukan) {
+      return String(pihakDitemukan.nama || "").trim();
+    }
+  }
+  // =====================================================
+  // SELESAI - Ambil pihak dari struktur array "pihak"
+  // =====================================================
+
+  // =====================================================
+  // MULAI - Backup struktur lama
+  // =====================================================
   if (jenisPihak === "Pengendara") {
     return String(item.pengendara || "").trim();
   }
@@ -1692,6 +1721,9 @@ function ambilNamaPihakDariKendaraan(item, jenisPihak) {
   if (jenisPihak === "Pengemudi") {
     return String(item.pengemudi || "").trim();
   }
+  // =====================================================
+  // SELESAI - Backup struktur lama
+  // =====================================================
 
   return "";
 }

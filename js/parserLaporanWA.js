@@ -358,6 +358,25 @@ function ambilSaksi(laporan) {
 // SELESAI AMBIL SAKSI
 // ==========================================================
 
+// ==========================================================
+// MULAI - Khusus identifikasi Sepeda Pancal
+// ==========================================================
+function cocokSepedaPancal(teks) {
+  if (!teks) {
+    return false;
+  }
+
+  const teksNormal = String(teks)
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^sepedah\b/i, "sepeda");
+
+  return /^sepeda pancal\b/i.test(teksNormal);
+}
+// ==========================================================
+// SELESAI - Khusus identifikasi Sepeda Pancal
+// ==========================================================
+
 function ambilKunciKendaraan(teks) {
   if (!teks) {
     return "";
@@ -380,6 +399,18 @@ function ambilKunciKendaraan(teks) {
 
   const data = teks.replace(/\*/g, "").trim();
 
+  // ==========================================================
+  // MULAI - Khusus identifikasi Sepeda Pancal
+  // ==========================================================
+  const dataNormal = data.replace(/\s+/g, " ").trim();
+
+  if (/\bsepedah?\s+pancal\b/i.test(dataNormal)) {
+    return "Sepeda pancal";
+  }
+  // ==========================================================
+  // SELESAI - Khusus identifikasi Sepeda Pancal
+  // ==========================================================
+
   const tanpaNopol = data.match(/^(.+?)\s+tanpa\s+nopol\b/i);
 
   if (tanpaNopol) {
@@ -397,14 +428,22 @@ function ambilKunciKendaraan(teks) {
     return "Pejalan kaki";
   }
 
-  if (/^sepeda pancal$/i.test(data)) {
+  // ==========================================================
+  // MULAI - Khusus identifikasi Sepeda Pancal
+  // ==========================================================
+  if (cocokSepedaPancal(data)) {
     return "Sepeda pancal";
   }
+  // ==========================================================
+  // SELESAI - Khusus identifikasi Sepeda Pancal
+  // ==========================================================
 
   return "";
 }
 
 function ambilPengendara(laporan, kendaraan) {
+  console.log("=== AMBIL PENGENDARA TERPANGGIL ===");
+
   const baris = laporan.split(/\r?\n/);
 
   const judul = "IDENTITAS PENGENDARA";
@@ -485,11 +524,20 @@ function ambilPengendara(laporan, kendaraan) {
     // ==========================================
     // CEK DATA BARU
     // ==========================================
+    // ==========================================================
+    // MULAI - Deteksi data baru Pengemudi / Pengendara / Sepeda Pancal
+    // ==========================================================
 
     const dataBaru =
-      /^(-|\d+[.)]|•|◦)\s*/.test(teks) ||
+      /^(-|\d+[.)]|•|◦)\s+/.test(teks) ||
       /^Pengemudi\b/i.test(teks) ||
-      /^Pengendara\b/i.test(teks);
+      /^Pengendara\b/i.test(teks) ||
+      /^Pengayuh\s+sepedah?\s+pancal\b/i.test(teks) ||
+      /^Sepeda\s+pancal\b/i.test(teks);
+
+    // ==========================================================
+    // SELESAI - Deteksi data baru Pengemudi / Pengendara / Sepeda Pancal
+    // ==========================================================
 
     // ==========================================
     // DATA BARU
@@ -553,9 +601,30 @@ function ambilPengendara(laporan, kendaraan) {
     // KHUSUS PEJALAN KAKI / SEPEDA PANCAL
     // ------------------------------------------
 
+    // if (/^pejala(?:n)?\s+kaki\b/i.test(teksKunci)) {
+    //   teksKunci = "Pejalan kaki";
+    // } else if (/^sepeda\s+pancal\b/i.test(teksKunci)) {
+    //   teksKunci = "Sepeda pancal";
+    // } else {
+    //   // ------------------------------------------
+    //   // KENDARAAN BIASA
+    //   // Ambil hanya bagian kendaraan sebelum Nama
+    //   // ------------------------------------------
+
+    //   teksKunci = teksKunci.split(/\bNama\s\*:/i)[0].trim();
+    // }
+
+    // ==========================================================
+    // MULAI - KHUSUS PEJALAN KAKI / SEPEDA PANCAL
+    // ==========================================================
+
     if (/^pejala(?:n)?\s+kaki\b/i.test(teksKunci)) {
       teksKunci = "Pejalan kaki";
-    } else if (/^sepeda\s+pancal\b/i.test(teksKunci)) {
+    } else if (/^pengayuh\s+sepedah?\s+pancal\b/i.test(teksKunci)) {
+      // Pengayuh adalah label orang.
+      // Kunci kendaraan tetap "Sepeda pancal".
+      teksKunci = "Sepeda pancal";
+    } else if (/^sepedah?\s+pancal\b/i.test(teksKunci)) {
       teksKunci = "Sepeda pancal";
     } else {
       // ------------------------------------------
@@ -563,8 +632,19 @@ function ambilPengendara(laporan, kendaraan) {
       // Ambil hanya bagian kendaraan sebelum Nama
       // ------------------------------------------
 
-      teksKunci = teksKunci.split(/\bNama\s\*:/i)[0].trim();
+      teksKunci = teksKunci.split(/\bNama\s*:\s*/i)[0].trim();
     }
+
+    console.log("[DEBUG PENGAYUH] dataPengendara:", dataPengendara);
+    console.log("[DEBUG PENGAYUH] teksKunci:", teksKunci);
+    console.log(
+      "[DEBUG PENGAYUH] hasil ambilKunciKendaraan:",
+      ambilKunciKendaraan(teksKunci),
+    );
+
+    // ==========================================================
+    // SELESAI - KHUSUS PEJALAN KAKI / SEPEDA PANCAL
+    // ==========================================================
 
     // ------------------------------------------
     // AMBIL KUNCI KENDARAAN
@@ -658,6 +738,68 @@ function ambilIdentitasPengendara(teks) {
   let hasil = "";
 
   // ==========================================================
+  // MULAI - Khusus identitas Pengayuh Sepeda Pancal
+  // ==========================================================
+
+  if (/\bsepedah?\s+pancal\b/i.test(teks)) {
+    // Normalisasi whitespace hanya pada teks yang sedang diperiksa.
+    const teksNormal = String(teks).replace(/\s+/g, " ").trim();
+
+    // =====================================================
+    // PRIORITAS 1
+    // Jika ada "Nama :", ambil semua teks setelah "Nama :"
+    // =====================================================
+
+    let cocokPancal = teksNormal.match(/\bNama\s*:\s*(.+)$/i);
+
+    if (cocokPancal) {
+      hasil = cocokPancal[1].replace(/\*/g, "").trim();
+
+      // Buang identitas pembuka jika masih ikut.
+      hasil = hasil.replace(/^(?:Sdr\.?|Sdri\.?|a\.n\.?)\s*/i, "").trim();
+
+      return hasil;
+    }
+
+    // =====================================================
+    // PRIORITAS 2
+    // Jika tidak ada "Nama :", cari Sdr / Sdri / a.n
+    // =====================================================
+
+    cocokPancal = teksNormal.match(/(?:Sdr\.?|Sdri\.?|a\.n\.?)\s*(.+)$/i);
+
+    if (cocokPancal) {
+      hasil = cocokPancal[1].replace(/\*/g, "").trim();
+
+      // Antisipasi jika ada marker identitas berlapis.
+      hasil = hasil.replace(/^(?:Sdr\.?|Sdri\.?|a\.n\.?)\s*/i, "").trim();
+
+      return hasil;
+    }
+
+    // =====================================================
+    // PRIORITAS 3
+    // Tidak ada Nama / Sdr / Sdri / a.n
+    // → ambil teks setelah "Sepeda pancal"
+    // =====================================================
+
+    cocokPancal = teksNormal.match(
+      /\bsepedah?\s+pancal\b\s*(?:[:\-])?\s*(.+)$/i,
+    );
+
+    if (cocokPancal) {
+      hasil = cocokPancal[1].replace(/\*/g, "").trim();
+
+      hasil = hasil.replace(/^(?:Sdr\.?|Sdri\.?|a\.n\.?)\s*/i, "").trim();
+
+      return hasil;
+    }
+  }
+  // ==========================================================
+  // SELESAI - Khusus identitas Pengayuh Sepeda Pancal
+  // ==========================================================
+
+  // ==========================================================
   // 1. PRIORITAS: ADA "NAMA :"
   //    Ambil setelah Nama :
   //    Jika diawali Sdr./Sdri./a.n, hapus penandanya.
@@ -701,17 +843,55 @@ function ambilIdentitasPengendara(teks) {
   //    Sdr./Sdri./a.n, gunakan identitas setelah NOPOL
   // ==========================================================
 
+  // cocok = teks.match(
+  //   /\b(?:Nopol|No\.?\s*Pol)\s*[:\-]?\s*[A-Z]{1,2}\s*[- ]\s*\d{1,4}\s*[- ]\s*[A-Z]{1,3}\b\s*\*?(.+?)\*?$/i,
+  // );
+
+  // if (cocok) {
+  //   hasil = cocok[1].trim();
+
+  //   hasil = hasil.replace(/^\*+|\*+$/g, "").trim();
+
+  //   hasil = hasil.replace(/^(?:Sdr\.|Sdri\.|a\.n)\s*/i, "").trim();
+
+  //   return hasil;
+  // }
+
+  // ==========================================================
+  // 3. FALLBACK KHUSUS SEPEDA PANCAL
+  //    Jika tidak ada Nama dan tidak ada Sdr./Sdri./a.n,
+  //    ambil identitas setelah "Sepeda pancal".
+  // ==========================================================
+  if (/sepeda\s+pancal/i.test(teks)) {
+    cocok = teks.match(/sepeda\s+pancal\b\s*(?:[:\-])?\s*(.+)$/i);
+
+    if (cocok) {
+      hasil = cocok[1].trim();
+
+      // Hapus tanda * jika ada
+      hasil = hasil.replace(/^\*+|\*+$/g, "").trim();
+
+      // Jika ternyata masih diawali penanda identitas,
+      // hapus penandanya.
+      hasil = hasil.replace(/^(?:Sdr\.|Sdri\.|a\.n)\s*/i, "").trim();
+
+      return hasil;
+    }
+  }
+
+  // ==========================================================
+  // 4. BACKUP UNTUK KENDARAAN LAIN
+  //    Jika tidak ada Nama dan tidak ada Sdr./Sdri./a.n,
+  //    tetap gunakan identitas setelah NOPOL.
+  // ==========================================================
   cocok = teks.match(
     /\b(?:Nopol|No\.?\s*Pol)\s*[:\-]?\s*[A-Z]{1,2}\s*[- ]\s*\d{1,4}\s*[- ]\s*[A-Z]{1,3}\b\s*\*?(.+?)\*?$/i,
   );
 
   if (cocok) {
     hasil = cocok[1].trim();
-
     hasil = hasil.replace(/^\*+|\*+$/g, "").trim();
-
     hasil = hasil.replace(/^(?:Sdr\.|Sdri\.|a\.n)\s*/i, "").trim();
-
     return hasil;
   }
 
@@ -1339,6 +1519,8 @@ function ambilYangMendatangiTKP(laporan) {
 // ============================================================
 
 function parseLaporanWA(laporan) {
+  console.log("=== PARSERLAPORANWA.JS YANG DIEKSEKUSI ===");
+
   if (!laporan || typeof laporan !== "string") {
     return null;
   }

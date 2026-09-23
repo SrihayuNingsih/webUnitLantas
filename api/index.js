@@ -197,6 +197,84 @@ export default async function handler(req, res) {
   // =====================================================
 
   // =====================================================
+  // MULAI: ACTION AMBIL PETUGAS INPUT LAPORAN
+  // =====================================================
+
+  if (action === "AMBIL_PETUGAS_INPUT") {
+    const GAS_API_URL =
+      "https://script.google.com/macros/s/AKfycbzg7AmEQz7qQeAlfogSfGNkyHOlcFYyuY2zkm5SmkQWJwUNN9qx1JV_DhUsziXIjfu_/exec";
+
+    const gasPayload = {
+      modul: "laka",
+      aksi: "ambilpetugas",
+    };
+
+    let gasResponse;
+    let gasResult;
+
+    try {
+      gasResponse = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasText = await gasResponse.text();
+
+      console.log(
+        "[API AMBIL PETUGAS INPUT] HTTP GAS:",
+        gasResponse.status,
+        gasResponse.statusText,
+      );
+
+      console.log("[API AMBIL PETUGAS INPUT] RAW RESPONSE GAS:", gasText);
+
+      try {
+        gasResult = JSON.parse(gasText);
+      } catch (parseError) {
+        console.error(
+          "[API AMBIL PETUGAS INPUT] RESPONSE GAS BUKAN JSON:",
+          parseError,
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Response Google Apps Script bukan JSON.",
+          detail: gasText.substring(0, 500),
+        });
+      }
+    } catch (error) {
+      console.error("[API AMBIL PETUGAS INPUT] ERROR FETCH GAS:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghubungi Google Apps Script.",
+        detail: error.message,
+      });
+    }
+
+    if (!gasResponse.ok || gasResult.sukses === false) {
+      return res.status(500).json({
+        success: false,
+        message:
+          gasResult.pesan ||
+          "Google Apps Script gagal mengambil daftar petugas.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: gasResult.data || [],
+    });
+  }
+
+  // =====================================================
+  // SELESAI: ACTION AMBIL PETUGAS INPUT LAPORAN
+  // =====================================================
+
+  // =====================================================
   // MULAI: ACTION SIMPAN LAPORAN
   // =====================================================
 

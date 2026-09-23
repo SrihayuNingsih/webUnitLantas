@@ -181,7 +181,14 @@ const InputLaporanState = {
   /*
      Penanda apakah form berasal dari hasil parser.
   */
-  parsedFromWhatsApp: false,
+  // parsedFromWhatsApp: false,
+  /*
+     Teks WhatsApp asli sebelum diproses parser.
+
+     Disimpan sementara di frontend.
+     Akan dikirim ke backend saat laporan disimpan.
+  */
+  rawLaporan: "",
 };
 
 /* ============================================================
@@ -685,6 +692,14 @@ function prosesLaporanWhatsApp() {
 
   if (!textarea) return;
 
+  // const rawText = textarea.value.trim();
+
+  // if (!rawText) {
+  //   tampilkanAlert("warning", "Laporan WhatsApp belum diisi.");
+  //   textarea.focus();
+  //   return;
+  // }
+
   const rawText = textarea.value.trim();
 
   if (!rawText) {
@@ -692,6 +707,16 @@ function prosesLaporanWhatsApp() {
     textarea.focus();
     return;
   }
+
+  // =====================================================
+  // MULAI: SIMPAN RAW LAPORAN KE STATE
+  // =====================================================
+
+  InputLaporanState.rawLaporan = rawText;
+
+  // =====================================================
+  // SELESAI: SIMPAN RAW LAPORAN KE STATE
+  // =====================================================
 
   setButtonLoading(button, true, "⏳ MEMPROSES...");
   sembunyikanAlert();
@@ -1678,7 +1703,11 @@ function ambilNamaPihakDariKendaraan(item, jenisPihak) {
 /*
    Ambil daftar petugas dari backend.
 */
-function ambilDaftarPetugas() {
+// =====================================================
+// MULAI: AMBIL DAFTAR PETUGAS INPUT LAPORAN VIA API
+// =====================================================
+
+async function ambilDaftarPetugas() {
   /*
      Jika sudah tersedia,
      tidak perlu meminta lagi.
@@ -1689,9 +1718,23 @@ function ambilDaftarPetugas() {
     return;
   }
 
+  try {
+    const response = await apiRequest("AMBIL_PETUGAS_INPUT");
+
+    console.log("[INPUT LAPORAN] Response daftar petugas:", response);
+
+    handleGetPetugasSuccess(response);
+  } catch (error) {
+    console.error("[INPUT LAPORAN] Gagal mengambil daftar petugas:", error);
+
+    handleGetPetugasError(error);
+  }
+
   /*
-     Apps Script asli.
-  */
+     =====================================================
+     BACKUP: Apps Script asli
+     =====================================================
+
   if (typeof google === "undefined" || !google.script || !google.script.run) {
     handleGetPetugasError("google.script.run tidak tersedia.");
 
@@ -1706,8 +1749,13 @@ function ambilDaftarPetugas() {
       handleGetPetugasError(error);
     })
     [InputLaporanConfig.BACKEND_FUNCTION.AMBIL_PETUGAS]();
+
+  */
 }
 
+// =====================================================
+// SELESAI: AMBIL DAFTAR PETUGAS INPUT LAPORAN VIA API
+// =====================================================
 /*
    Response daftar petugas.
 */
@@ -1957,12 +2005,18 @@ function ambilDataForm() {
        Data resmi dari backend.
     */
     idLaporan: elements.inputIdLaporan.value.trim(),
-
     nomorLP: elements.inputNomorLP.value.trim(),
-
-    // noUrut: elements.inputNoUrut.value.trim(),
-
     waktuInput: elements.inputWaktuInput.value.trim(),
+
+    // =====================================================
+    // MULAI: RAW LAPORAN
+    // =====================================================
+
+    rawLaporan: InputLaporanState.rawLaporan,
+
+    // =====================================================
+    // SELESAI: RAW LAPORAN
+    // =====================================================
 
     /*
        Data laporan.
@@ -2405,8 +2459,17 @@ function resetFormLaporan() {
      Petugas.
   */
   InputLaporanState.selectedPetugas = [];
-
   renderSelectedPetugas();
+
+  // =====================================================
+  // MULAI: RESET RAW LAPORAN
+  // =====================================================
+
+  InputLaporanState.rawLaporan = "";
+
+  // =====================================================
+  // SELESAI: RESET RAW LAPORAN
+  // =====================================================
 
   /*
      Reset banner.

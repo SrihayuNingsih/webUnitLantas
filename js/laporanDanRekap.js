@@ -374,17 +374,33 @@
     return date;
   }
 
-  function formatDateForInput(date) {
-    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-      return "";
-    }
+  // function parseIndonesiaDate(dateStr) {
+  //   if (!dateStr) return null;
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+  //   const bagianTanggal = dateStr.trim().split("-");
 
-    return `${year}-${month}-${day}`;
-  }
+  //   if (bagianTanggal.length !== 3) return null;
+
+  //   const year = Number(bagianTanggal[0]);
+  //   const month = Number(bagianTanggal[1]);
+  //   const day = Number(bagianTanggal[2]);
+
+  //   if (!year || !month || !day) return null;
+
+  //   return new Date(year, month - 1, day);
+  // }
+
+  // function formatDateForInput(date) {
+  //   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+  //     return "";
+  //   }
+
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, "0");
+  //   const day = String(date.getDate()).padStart(2, "0");
+
+  //   return `${year}-${month}-${day}`;
+  // }
 
   // Akhir tambahan Code
 

@@ -23,32 +23,64 @@ const BULAN_INDONESIA = {
   Desember: 11,
 };
 
+// function parseTanggalIndonesia(tanggal) {
+//   if (!tanggal || typeof tanggal !== "string") {
+//     return null;
+//   }
+
+//   const bagian = tanggal.trim().split(/\s+/);
+
+//   if (bagian.length < 3) {
+//     return null;
+//   }
+
+//   const tanggalAngka = Number(bagian[0]);
+//   const namaBulan = bagian[1];
+//   const tahun = Number(bagian[2]);
+
+//   const bulan = BULAN_INDONESIA[namaBulan];
+
+//   if (
+//     !Number.isInteger(tanggalAngka) ||
+//     !Number.isInteger(tahun) ||
+//     bulan === undefined
+//   ) {
+//     return null;
+//   }
+
+//   const hasil = new Date(tahun, bulan, tanggalAngka);
+
+//   if (Number.isNaN(hasil.getTime())) {
+//     return null;
+//   }
+
+//   return hasil;
+// }
+
 function parseTanggalIndonesia(tanggal) {
   if (!tanggal || typeof tanggal !== "string") {
     return null;
   }
 
-  const bagian = tanggal.trim().split(/\s+/);
+  const bagian = tanggal.trim().split("-");
 
-  if (bagian.length < 3) {
+  if (bagian.length !== 3) {
     return null;
   }
 
-  const tanggalAngka = Number(bagian[0]);
-  const namaBulan = bagian[1];
-  const tahun = Number(bagian[2]);
-
-  const bulan = BULAN_INDONESIA[namaBulan];
+  const tahun = Number(bagian[0]);
+  const bulan = Number(bagian[1]);
+  const hari = Number(bagian[2]);
 
   if (
-    !Number.isInteger(tanggalAngka) ||
     !Number.isInteger(tahun) ||
-    bulan === undefined
+    !Number.isInteger(bulan) ||
+    !Number.isInteger(hari)
   ) {
     return null;
   }
 
-  const hasil = new Date(tahun, bulan, tanggalAngka);
+  const hasil = new Date(tahun, bulan - 1, hari);
 
   if (Number.isNaN(hasil.getTime())) {
     return null;
@@ -296,13 +328,13 @@ function hitungStatus(data) {
 // MULAI: AMBIL LAPORAN DAN REKAP
 // =====================================================
 
-export function ambilLaporanDanRekap(periodeInput = {}) {
+export async function ambilLaporanDanRekap(periodeInput = {}) {
   const periode = prosesPeriode(periodeInput);
 
   // Mengambil SEMUA data Laka Lantas.
   // Berbeda dengan Dashboard yang hanya menggunakan
   // laporan terbaru.
-  const semuaData = ambilLakaLantas();
+  const semuaData = await ambilLakaLantas();
 
   const dataTerfilter = filterDataPeriode(semuaData, periode);
 

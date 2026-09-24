@@ -485,7 +485,7 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "AMBIL_LAPORAN_DAN_REKAP") {
-    const data = ambilLaporanDanRekap(req.body?.periode);
+    const data = await ambilLaporanDanRekap(req.body?.periode);
 
     return res.status(200).json(data);
   }

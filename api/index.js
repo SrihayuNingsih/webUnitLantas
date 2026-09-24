@@ -5,97 +5,189 @@
 import { ambilLakaLantas } from "./apiLakaLantas.js";
 import { ambilLaporanDanRekap } from "./apiLaporanDanRekap.js";
 
-function ambilLakaTerbaruDashboard() {
-  const dataLaka = [
-    {
-      id: "LKA-2026-001",
-      tanggal: "23 Juli 2026",
-      jam: "08:15",
-      nomorLP: "LP-0101-BJN/I/2026",
-      status: "Limpah Polres",
-      jumlahLR: 2,
-      jumlahLB: 1,
-      jumlahMD: 0,
-      tkp: "Jl. Raya Bojonegoro - Babat turut wilayah Desa Baureno Kec. Baureno Kab. Bojonegoro",
-    },
-    {
-      id: "LKA-2026-002",
-      tanggal: "12 Januari 2026",
-      jam: "14:30",
-      nomorLP: "Belum tersedia",
-      status: "Limpah Polres",
-      jumlahLR: 1,
-      jumlahLB: 1,
-      jumlahMD: 0,
-      tkp: "Jl. Raya Baureno - Babat Desa Tanggungan Kec. Baureno",
-    },
-    {
-      id: "LKA-2026-003",
-      tanggal: "20 Januari 2026",
-      jam: "19:20",
-      nomorLP: "Nihil",
-      status: "Selesai",
-      jumlahLR: 3,
-      jumlahLB: 0,
-      jumlahMD: 0,
-      tkp: "Jl. Raya Bojonegoro - Babat Desa Sraturejo Kec. Baureno",
-    },
-    {
-      id: "LKA-2026-004",
-      tanggal: "28 Januari 2026",
-      jam: "06:45",
-      nomorLP: "LP-0104-BJN/I/2026",
-      status: "Limpah Polres",
-      jumlahLR: 0,
-      jumlahLB: 1,
-      jumlahMD: 1,
-      tkp: "Jl. Raya Baureno Desa Gunungsari Kec. Baureno",
-    },
-  ];
+// =====================================================
+// MULAI: KONFIGURASI GOOGLE APPS SCRIPT DASHBOARD
+// =====================================================
 
-  return dataLaka;
+const GAS_API_URL =
+  "https://script.google.com/macros/s/AKfycbzg7AmEQz7qQeAlfogSfGNkyHOlcFYyuY2zkm5SmkQWJwUNN9qx1JV_DhUsziXIjfu_/exec";
+
+// =====================================================
+// SELESAI: KONFIGURASI GOOGLE APPS SCRIPT DASHBOARD
+// =====================================================
+
+// =====================================================
+// MULAI: AMBIL LAKA TERBARU DASHBOARD
+// Sumber : DATA_LAKA melalui Google Apps Script
+// =====================================================
+
+async function ambilLakaTerbaruDashboard() {
+  const gasPayload = {
+    modul: "dashboard",
+    aksi: "laporanterbaru",
+  };
+
+  const gasResponse = await fetch(GAS_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(gasPayload),
+  });
+
+  const gasResult = await gasResponse.json();
+
+  if (!gasResponse.ok || gasResult.sukses === false) {
+    throw new Error(
+      gasResult.pesan ||
+        "Google Apps Script gagal mengambil laporan terbaru Dashboard.",
+    );
+  }
+
+  const hasil = gasResult.hasil || [];
+
+  // ---------------------------------------------------
+  // Sesuaikan hasil GAS dengan kontrak Dashboard
+  // ---------------------------------------------------
+
+  return hasil.map(function (laporan) {
+    return {
+      id: laporan.idLaporan || "",
+
+      tanggal: laporan.tanggal || "",
+
+      jam: laporan.jam || "",
+
+      nomorLP: laporan.nomorLP || "",
+
+      status: laporan.statusPenanganan || "",
+
+      jumlahLR: Number(laporan.korbanLR) || 0,
+
+      jumlahLB: Number(laporan.korbanLB) || 0,
+
+      jumlahMD: Number(laporan.korbanMD) || 0,
+
+      tkp: laporan.tkp || "",
+    };
+  });
 }
 
 // =====================================================
-// MULAI: REKAP DASHBOARD
+// SELESAI: AMBIL LAKA TERBARU DASHBOARD
 // =====================================================
 
-function ambilRekapDashboard() {
+// =====================================================
+// MULAI: AMBIL REKAP DASHBOARD
+// Sumber : DATA_LAKA melalui Google Apps Script
+// =====================================================
+
+async function ambilRekapDashboard() {
+  const gasPayload = {
+    modul: "dashboard",
+    aksi: "rekap",
+  };
+
+  const gasResponse = await fetch(GAS_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(gasPayload),
+  });
+
+  const gasResult = await gasResponse.json();
+
+  if (!gasResponse.ok || gasResult.sukses === false) {
+    throw new Error(
+      gasResult.pesan || "Google Apps Script gagal mengambil rekap Dashboard.",
+    );
+  }
+
+  const hasil = gasResult.hasil || {};
+
+  // ---------------------------------------------------
+  // Sesuaikan hasil GAS dengan kontrak Dashboard
+  // ---------------------------------------------------
+
   return {
-    totalKejadian: 4,
-    jumlahLR: 6,
-    jumlahLB: 3,
-    jumlahMD: 1,
-    dalamPenanganan: 0,
-    selesai: 1,
-    limpahPolres: 3,
+    totalKejadian: Number(hasil.totalKejadian) || 0,
+
+    jumlahLR: Number(hasil.jumlahLR) || 0,
+
+    jumlahLB: Number(hasil.jumlahLB) || 0,
+
+    jumlahMD: Number(hasil.jumlahMD) || 0,
+
+    dalamPenanganan: Number(hasil.statusDalamPenanganan) || 0,
+
+    selesai: Number(hasil.statusSelesai) || 0,
+
+    limpahPolres: Number(hasil.statusLimpahPolres) || 0,
   };
 }
 
 // =====================================================
-// SELESAI: REKAP DASHBOARD
+// SELESAI: AMBIL REKAP DASHBOARD
 // =====================================================
 
 // =====================================================
-// MULAI: PETUGAS PIKET DASHBOARD
+// MULAI: AMBIL PETUGAS PIKET DASHBOARD
+// Sumber : JADWAL_PIKET melalui Google Apps Script
 // =====================================================
 
-function ambilPetugasPiketDashboard() {
+async function ambilPetugasPiketDashboard() {
+  const gasPayload = {
+    modul: "dashboard",
+    aksi: "petugaspiket",
+  };
+
+  const gasResponse = await fetch(GAS_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(gasPayload),
+  });
+
+  const gasResult = await gasResponse.json();
+
+  if (!gasResponse.ok || gasResult.sukses === false) {
+    throw new Error(
+      gasResult.pesan ||
+        "Google Apps Script gagal mengambil petugas piket Dashboard.",
+    );
+  }
+
+  const hasil = gasResult.hasil || {};
+
+  // ---------------------------------------------------
+  // Sesuaikan hasil GAS dengan kontrak Dashboard
+  // ---------------------------------------------------
+
+  const petugas = [];
+
+  if (hasil.petugas1) {
+    petugas.push({
+      namaLengkap: hasil.petugas1,
+    });
+  }
+
+  if (hasil.petugas2) {
+    petugas.push({
+      namaLengkap: hasil.petugas2,
+    });
+  }
+
   return {
-    tanggal: "17 September 2026",
-    petugas: [
-      {
-        namaLengkap: "Bripka Cahyo Tri H",
-      },
-      {
-        namaLengkap: "Briptu Nugroho",
-      },
-    ],
+    tanggal: hasil.tanggal || "",
+
+    petugas: petugas,
   };
 }
 
 // =====================================================
-// SELESAI: PETUGAS PIKET DASHBOARD
+// SELESAI: AMBIL PETUGAS PIKET DASHBOARD
 // =====================================================
 
 export default async function handler(req, res) {
@@ -154,7 +246,7 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "AMBIL_LAKA_TERBARU_DASHBOARD") {
-    const data = ambilLakaTerbaruDashboard();
+    const data = await ambilLakaTerbaruDashboard();
 
     return res.status(200).json({
       success: true,
@@ -167,7 +259,7 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "AMBIL_REKAP_DASHBOARD") {
-    const data = ambilRekapDashboard();
+    const data = await ambilRekapDashboard();
 
     return res.status(200).json({
       success: true,
@@ -184,7 +276,7 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "AMBIL_PETUGAS_PIKET_DASHBOARD") {
-    const data = ambilPetugasPiketDashboard();
+    const data = await ambilPetugasPiketDashboard();
 
     return res.status(200).json({
       success: true,

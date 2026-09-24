@@ -614,7 +614,7 @@ function getStatusBadge(statusTampil) {
     .toLowerCase()
     .trim();
 
-  if (["selesai", "selesai/rj", "rj"].includes(status)) {
+  if (["selesai", "selesai/rj", "rj", "selesai/damai"].includes(status)) {
     return "border-green-200 bg-green-50 text-green-700";
   }
 
@@ -770,41 +770,46 @@ function renderLakaList(data = []) {
         >
 
           <!-- ID LAPORAN + STATUS -->
-          <div class="flex items-start justify-between gap-4">
+<div class="grid grid-cols-2 items-start gap-4">
 
-            <!-- ID LAPORAN -->
-            <div class="flex min-w-0 shrink-0 items-center gap-2">
+  <!-- ID LAPORAN -->
+  <div class="flex min-w-0 items-start gap-2">
 
-              <i
-                data-lucide="file-text"
-                class="h-4 w-4 shrink-0 text-blue-500"
-              ></i>
+    <i
+      data-lucide="file-text"
+      class="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+    ></i>
 
-              <span class="text-[15px] font-bold text-blue-700">
-                ${item.id || "-"}
-              </span>
+    <span
+      class="min-w-0 break-all text-[15px] font-bold leading-snug text-blue-700"
+    >
+      ${item.id || "-"}
+    </span>
 
-            </div>
+  </div>
 
-            <!-- STATUS -->
-            <div class="min-w-0 text-right">
+  <!-- STATUS -->
+  <div class="min-w-0 text-right">
 
-              <div
-                class="inline-flex max-w-full items-start justify-end gap-2 rounded-full border px-3 py-1.5 ${getStatusBadge(statusTampil)}"
-              >
+    <div
+      class="inline-flex max-w-full items-center justify-end gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 ${getStatusBadge(statusTampil)}"
+    >
 
-                <span
-                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(statusTampil)}"
-                ></span>
+      <span
+        class="h-2.5 w-2.5 shrink-0 rounded-full ${getStatusDot(statusTampil)}"
+      ></span>
 
-                <span
-                  class="break-words text-sm font-medium leading-snug ${getStatusText(statusTampil)}"
-                >
-                  
-                  ${statusTampil}
-                </span>
+      <span
+        class="whitespace-nowrap text-sm font-medium ${getStatusText(statusTampil)}"
+      >
+        ${statusTampil}
+      </span>
 
-              </div>
+    </div>
+
+  </div>
+
+</div>
 
             </div>
 

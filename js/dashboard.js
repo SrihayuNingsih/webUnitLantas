@@ -844,8 +844,14 @@ function renderLakaList(data = []) {
             ></i>
 
             <span>
-              ${item.tanggal || "-"} | ${item.jam || "-"}
-            </span>
+  ${
+    item.tanggal
+      ? `${new Date(item.tanggal + "T00:00:00").toLocaleDateString("id-ID", {
+          weekday: "long",
+        })}, ${item.tanggal.split("-").reverse().join("-")}`
+      : "-"
+  } | ${item.jam || "-"}
+</span>
 
           </div>
 

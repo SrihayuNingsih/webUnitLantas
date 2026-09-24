@@ -110,37 +110,57 @@ function getStatusText(statusText) {
 /* =====================================================
          HELPER TANGGAL & WAKTU LAKA
       ===================================================== */
+// function getLakaMonthNumber(item) {
+//   if (!item || !item.tanggal) return "";
+
+//   const bulanMap = {
+//     Januari: "01",
+//     Februari: "02",
+//     Maret: "03",
+//     April: "04",
+//     Mei: "05",
+//     Juni: "06",
+//     Juli: "07",
+//     Agustus: "08",
+//     September: "09",
+//     Oktober: "10",
+//     November: "11",
+//     Desember: "12",
+//   };
+
+//   const tanggal = item.tanggal.trim().split(" ");
+
+//   if (tanggal.length < 3) return "";
+
+//   return bulanMap[tanggal[1]] || "";
+// }
+
 function getLakaMonthNumber(item) {
   if (!item || !item.tanggal) return "";
 
-  const bulanMap = {
-    Januari: "01",
-    Februari: "02",
-    Maret: "03",
-    April: "04",
-    Mei: "05",
-    Juni: "06",
-    Juli: "07",
-    Agustus: "08",
-    September: "09",
-    Oktober: "10",
-    November: "11",
-    Desember: "12",
-  };
+  const bagianTanggal = item.tanggal.split("-");
 
-  const tanggal = item.tanggal.trim().split(" ");
+  if (bagianTanggal.length !== 3) return "";
 
-  if (tanggal.length < 3) return "";
-
-  return bulanMap[tanggal[1]] || "";
+  return bagianTanggal[1];
 }
+
+// function getLakaYear(item) {
+//   if (!item || !item.tanggal) return "";
+
+//   const bagianTanggal = item.tanggal.trim().split(" ");
+
+//   return bagianTanggal[bagianTanggal.length - 1] || "";
+// }
 
 function getLakaYear(item) {
   if (!item || !item.tanggal) return "";
 
-  const bagianTanggal = item.tanggal.trim().split(" ");
+  const bagianTanggal = item.tanggal.split("-");
 
-  return bagianTanggal[bagianTanggal.length - 1] || "";
+  if (bagianTanggal.length !== 3) return "";
+
+  return bagianTanggal[0];
 }
 
 function getLakaHour(item) {
@@ -223,32 +243,48 @@ async function ambilDataLakaLantas() {
 //   renderLakaPage();
 // }
 
+// function parseIndonesianDate(dateStr) {
+//   if (!dateStr) return null;
+//   const monthMap = {
+//     Januari: "01",
+//     Februari: "02",
+//     Maret: "03",
+//     April: "04",
+//     Mei: "05",
+//     Juni: "06",
+//     Juli: "07",
+//     Agustus: "08",
+//     September: "09",
+//     Oktober: "10",
+//     November: "11",
+//     Desember: "12",
+//   };
+//   const parts = dateStr.split(",");
+//   const strToParse = parts.length > 1 ? parts[1].trim() : parts[0].trim();
+//   const dateTokens = strToParse.split(" ");
+//   if (dateTokens.length < 3) return null;
+
+//   const day = dateTokens[0].padStart(2, "0");
+//   const month = monthMap[dateTokens[1]] || "01";
+//   const year = dateTokens[2];
+
+//   return new Date(`${year}-${month}-${day}`);
+// }
+
 function parseIndonesianDate(dateStr) {
   if (!dateStr) return null;
-  const monthMap = {
-    Januari: "01",
-    Februari: "02",
-    Maret: "03",
-    April: "04",
-    Mei: "05",
-    Juni: "06",
-    Juli: "07",
-    Agustus: "08",
-    September: "09",
-    Oktober: "10",
-    November: "11",
-    Desember: "12",
-  };
-  const parts = dateStr.split(",");
-  const strToParse = parts.length > 1 ? parts[1].trim() : parts[0].trim();
-  const dateTokens = strToParse.split(" ");
-  if (dateTokens.length < 3) return null;
 
-  const day = dateTokens[0].padStart(2, "0");
-  const month = monthMap[dateTokens[1]] || "01";
-  const year = dateTokens[2];
+  const bagianTanggal = dateStr.trim().split("-");
 
-  return new Date(`${year}-${month}-${day}`);
+  if (bagianTanggal.length !== 3) return null;
+
+  const year = Number(bagianTanggal[0]);
+  const month = Number(bagianTanggal[1]);
+  const day = Number(bagianTanggal[2]);
+
+  if (!year || !month || !day) return null;
+
+  return new Date(year, month - 1, day);
 }
 
 // Tambahan Code
@@ -1051,7 +1087,8 @@ function renderLakaPage() {
       data-lucide="calendar-days"
       class="h-4 w-4 shrink-0 text-blue-400"
     ></i>
-    <span>${
+    <span>
+    ${
       item.tanggal
         ? `${new Date(item.tanggal + "T00:00:00").toLocaleDateString("id-ID", {
             weekday: "long",

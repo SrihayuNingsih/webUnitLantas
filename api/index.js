@@ -209,7 +209,7 @@ export default async function handler(req, res) {
   }
 
   if (action === "AMBIL_LAKA_LANTAS") {
-    const data = ambilLakaLantas();
+    const data = await ambilLakaLantas();
 
     return res.status(200).json({
       success: true,
@@ -224,7 +224,7 @@ export default async function handler(req, res) {
   if (action === "AMBIL_DETAIL_LAPORAN") {
     const { id } = req.body;
 
-    const data = ambilLakaLantas();
+    const data = await ambilLakaLantas();
 
     const laporan = data.find((item) => String(item.id) === String(id));
 

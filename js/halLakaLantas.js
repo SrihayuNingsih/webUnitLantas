@@ -1051,7 +1051,13 @@ function renderLakaPage() {
       data-lucide="calendar-days"
       class="h-4 w-4 shrink-0 text-blue-400"
     ></i>
-    <span>${item.tanggal} | ${item.jam}</span>
+    <span>${
+      item.tanggal
+        ? `${new Date(item.tanggal + "T00:00:00").toLocaleDateString("id-ID", {
+            weekday: "long",
+          })}, ${item.tanggal.split("-").reverse().join("-")}`
+        : "-"
+    } | ${item.jam}</span>
   </div>
 
   <!-- TKP -->

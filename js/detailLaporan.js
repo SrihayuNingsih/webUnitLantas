@@ -291,9 +291,14 @@ function renderRingkasan(data) {
       ====================================================== */
 
 function renderWaktu(data) {
-  document.getElementById("tanggalKejadian").textContent = safeText(
-    data.tanggal,
-  );
+  // document.getElementById("tanggalKejadian").textContent = safeText(
+  //   data.tanggal,
+  // );
+
+  document.getElementById("tanggalKejadian").textContent =
+    data.hari && data.hari !== "-"
+      ? `${safeText(data.hari)}, ${safeText(data.tanggal)}`
+      : safeText(data.tanggal);
 
   document.getElementById("jamKejadian").textContent = safeText(data.jam);
 }
@@ -686,6 +691,7 @@ function normalisasiData(data) {
     return {
       id: "-",
       nomorLP: "-",
+      hari: "_",
       tanggal: "-",
       jam: "-",
       waktuInput: "-",
@@ -715,6 +721,19 @@ function normalisasiData(data) {
 
   const dokumentasi = data.dokumentasi || null;
 
+  // return {
+  //   id: data.id || "-",
+  //   nomorLP:
+  //     data.nomorLP !== undefined &&
+  //     data.nomorLP !== null &&
+  //     String(data.nomorLP).trim() !== ""
+  //       ? String(data.nomorLP).trim()
+  //       : "-",
+  //   tanggal: data.tanggal || "-",
+  //   jam: data.jam || "-",
+  //   waktuInput: data.waktuInput || "-",
+  //   status: data.status || "-",
+
   return {
     id: data.id || "-",
     nomorLP:
@@ -723,6 +742,7 @@ function normalisasiData(data) {
       String(data.nomorLP).trim() !== ""
         ? String(data.nomorLP).trim()
         : "-",
+    hari: data.hari || "-",
     tanggal: data.tanggal || "-",
     jam: data.jam || "-",
     waktuInput: data.waktuInput || "-",

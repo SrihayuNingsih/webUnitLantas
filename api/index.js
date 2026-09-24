@@ -3,6 +3,7 @@
 // =====================================================
 
 import { ambilLakaLantas } from "./apiLakaLantas.js";
+import { ambilDetailLaporan } from "./apiDetailLaporan.js";
 import { ambilLaporanDanRekap } from "./apiLaporanDanRekap.js";
 
 // =====================================================
@@ -224,14 +225,12 @@ export default async function handler(req, res) {
   if (action === "AMBIL_DETAIL_LAPORAN") {
     const { id } = req.body;
 
-    const data = await ambilLakaLantas();
-
-    const laporan = data.find((item) => String(item.id) === String(id));
+    const laporan = await ambilDetailLaporan(id);
 
     if (!laporan) {
       return res.status(404).json({
         success: false,
-        message: "Data laporan tidak ditemukan",
+        message: "Laporan tidak ditemukan.",
       });
     }
 

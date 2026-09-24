@@ -1027,17 +1027,20 @@ function renderLakaPage() {
   class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
 >
   <!-- ID LAPORAN + STATUS -->
-<div class="flex items-start justify-between gap-4">
-  <!-- ID LAPORAN -->
-  <div class="flex min-w-0 shrink-0 items-center gap-2">
-    <i
-      data-lucide="file-text"
-      class="h-4 w-4 shrink-0 text-blue-500"
-    ></i>
+<div class="grid grid-cols-2 items-start gap-4">
 
-    <span class="text-[15px] font-bold text-blue-700">
-      ${item.id}
-    </span>
+  <!-- ID LAPORAN -->
+  <div class="min-w-0">
+    <div class="flex items-start gap-2">
+      <i
+        data-lucide="file-text"
+        class="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+      ></i>
+
+      <span class="break-all text-[15px] font-bold leading-snug text-blue-700">
+        ${item.id}
+      </span>
+    </div>
   </div>
 
   <!-- STATUS -->
@@ -1056,6 +1059,7 @@ function renderLakaPage() {
       </span>
     </div>
   </div>
+
 </div>
 
 <!-- NO. LP -->

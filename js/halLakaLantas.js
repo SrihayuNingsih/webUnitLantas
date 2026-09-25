@@ -1328,6 +1328,40 @@ function confirmDeleteLaka() {
   const idLaporan = lakaIdToDelete;
 
   // =====================================================
+  // MULAI: TOMBOL HAPUS DALAM PROSES
+  // =====================================================
+
+  const button = document.getElementById("confirmDeleteLakaButton");
+
+  const cancelButton = document.getElementById("cancelDeleteLakaButton");
+
+  if (button) {
+    button.disabled = true;
+    button.classList.add("opacity-70", "cursor-not-allowed");
+
+    button.innerHTML = `
+      <i
+        data-lucide="loader-circle"
+        class="h-4 w-4 animate-spin"
+      ></i>
+      Memproses...
+    `;
+
+    if (typeof lucide !== "undefined") {
+      lucide.createIcons();
+    }
+  }
+
+  if (cancelButton) {
+    cancelButton.disabled = true;
+    cancelButton.classList.add("opacity-50", "cursor-not-allowed");
+  }
+
+  // =====================================================
+  // SELESAI: TOMBOL HAPUS DALAM PROSES
+  // =====================================================
+
+  // =====================================================
   // MULAI: HAPUS LAPORAN MELALUI API
   // =====================================================
 
@@ -1376,8 +1410,44 @@ function confirmDeleteLaka() {
 
       renderLakaPage();
     })
+    // .catch(function (error) {
+    //   console.error("[Laka Lantas] Gagal menghapus:", error);
+
+    //   alert(error.message || "Gagal menghapus laporan.");
+    // });
+
     .catch(function (error) {
       console.error("[Laka Lantas] Gagal menghapus:", error);
+
+      // =====================================================
+      // MULAI: KEMBALIKAN TOMBOL HAPUS
+      // =====================================================
+
+      if (button) {
+        button.disabled = false;
+        button.classList.remove("opacity-70", "cursor-not-allowed");
+
+        button.innerHTML = `
+      <i
+        data-lucide="trash-2"
+        class="h-4 w-4"
+      ></i>
+      Ya, Hapus Laporan
+    `;
+
+        if (typeof lucide !== "undefined") {
+          lucide.createIcons();
+        }
+      }
+
+      if (cancelButton) {
+        cancelButton.disabled = false;
+        cancelButton.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+
+      // =====================================================
+      // SELESAI: KEMBALIKAN TOMBOL HAPUS
+      // =====================================================
 
       alert(error.message || "Gagal menghapus laporan.");
     });
@@ -1404,7 +1474,7 @@ function tampilkanToast(pesan) {
     toast.id = "lakaToastNotification";
 
     toast.className =
-      "fixed top-6 right-6 z-[9999] rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300";
+      "fixed top-1/4 left-1/2 z-[9999] -translate-x-1/2 rounded-lg bg-rose-600 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300";
 
     document.body.appendChild(toast);
   }

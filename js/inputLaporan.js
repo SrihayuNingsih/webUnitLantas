@@ -2596,11 +2596,6 @@ function handleSaveReportSuccess(response) {
   const modeEdit = cekModeEdit();
 
   if (modeEdit) {
-    // Kembali ke halaman Laka Lantas
-    // yang menjadi sumber saat tombol Edit ditekan.
-    // Halaman akan dimuat ulang sehingga data terbaru
-    // hasil UPDATE langsung diambil dari backend.
-
     if (document.referrer) {
       window.location.href = document.referrer;
     } else {
@@ -2609,6 +2604,23 @@ function handleSaveReportSuccess(response) {
 
     return;
   }
+
+  // =====================================================
+  // MULAI: TOAST SIMPAN BERHASIL
+  // =====================================================
+
+  const idLaporan =
+    response?.data?.idLaporan ||
+    response?.idLaporan ||
+    InputLaporanElements.inputIdLaporan.value.trim();
+
+  tampilkanToastInputLaporan(`Laporan ${idLaporan} berhasil disimpan.`);
+
+  // =====================================================
+  // SELESAI: TOAST SIMPAN BERHASIL
+  // =====================================================
+
+  resetFormLaporan();
 
   // ===================================================
   // SELESAI: TENTUKAN HASIL SIMPAN / UPDATE
@@ -2627,6 +2639,41 @@ function handleSaveReportSuccess(response) {
 
 // =====================================================
 // SELESAI: HANDLE SAVE REPORT SUCCESS
+// =====================================================
+
+// =====================================================
+// MULAI: TOAST NOTIFIKASI INPUT LAPORAN
+// =====================================================
+
+function tampilkanToastInputLaporan(pesan) {
+  let toast = document.getElementById("inputLaporanToastNotification");
+
+  if (!toast) {
+    toast = document.createElement("div");
+
+    toast.id = "inputLaporanToastNotification";
+
+    toast.className =
+      "fixed top-1/4 left-1/2 z-[9999] -translate-x-1/2 rounded-lg bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300";
+
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = pesan;
+
+  toast.classList.remove("opacity-0");
+
+  toast.classList.add("opacity-100");
+
+  setTimeout(function () {
+    toast.classList.remove("opacity-100");
+
+    toast.classList.add("opacity-0");
+  }, 4000);
+}
+
+// =====================================================
+// SELESAI: TOAST NOTIFIKASI INPUT LAPORAN
 // =====================================================
 
 /* ============================================================

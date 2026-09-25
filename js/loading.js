@@ -30,13 +30,13 @@ const LoadingGlobal = {
     // CARI AREA KONTEN
     // =================================================
 
-    const content = document.querySelector(
-      "#main-content, #laporanRekapMain, #detailLaporanContent, #inputLaporan",
-    );
+    // const content = document.querySelector(
+    //   "#main-content, #laporanRekapMain, #detailLaporanContent, #inputLaporan",
+    // );
 
-    if (!content) {
-      return;
-    }
+    // if (!content) {
+    //   return;
+    // }
 
     // =================================================
     // CEK LOADING SUDAH ADA
@@ -58,7 +58,7 @@ const LoadingGlobal = {
     loading.id = "globalLoadingOverlay";
 
     loading.className =
-      "absolute -translate-y-[30vh] inset-0 z-[999] flex items-center justify-center bg-blue-50/80 backdrop-blur-sm";
+      "fixed inset-0 z-[999] flex items-center justify-center bg-blue-50/80 backdrop-blur-sm";
 
     loading.innerHTML = `
       <div
@@ -122,13 +122,19 @@ const LoadingGlobal = {
     // PASTIKAN AREA KONTEN MENJADI REFERENSI POSISI
     // =================================================
 
-    const currentPosition = window.getComputedStyle(content).position;
+    // const currentPosition = window.getComputedStyle(content).position;
 
-    if (currentPosition === "static") {
-      content.style.position = "relative";
-    }
+    // if (currentPosition === "static") {
+    //   content.style.position = "relative";
+    // }
 
-    content.appendChild(loading);
+    // content.appendChild(loading);
+
+    // =================================================
+    // PASANG LOADING KE BODY / VIEWPORT
+    // =================================================
+
+    document.body.appendChild(loading);
 
     // =================================================
     // ANIMASI TITIK

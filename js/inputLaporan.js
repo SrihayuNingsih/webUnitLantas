@@ -2274,10 +2274,18 @@ function ambilDataForm() {
     /*
        Petugas.
     */
+    // petugas: InputLaporanState.selectedPetugas.map(function (item) {
+    //   return {
+    //     id: item.id,
+    //     nama: item.nama,
+    //   };
+    // }),
+
     petugas: InputLaporanState.selectedPetugas.map(function (item) {
       return {
         id: item.id,
         nama: item.nama,
+        pangkat: item.pangkat,
       };
     }),
 

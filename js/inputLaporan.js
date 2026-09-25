@@ -2654,7 +2654,7 @@ function tampilkanToastInputLaporan(pesan) {
     toast.id = "inputLaporanToastNotification";
 
     toast.className =
-      "fixed top-1/4 left-1/2 z-[9999] -translate-x-1/2 rounded-lg bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300";
+      "fixed top-1/4 text-center w-[80%] max-w-xl left-1/2 z-[9999] -translate-x-1/2 rounded-xl bg-green-600 px-6 py-3 text-sm md:text-md font-medium text-white shadow-lg transition-opacity duration-300";
 
     document.body.appendChild(toast);
   }

@@ -2520,7 +2520,34 @@ function kirimLaporan() {
   // MULAI SIMPAN LAPORAN MELALUI API
   // =====================================================
 
-  apiRequest("SIMPAN_LAPORAN", data)
+  // apiRequest("SIMPAN_LAPORAN", data)
+  //   .then(function (response) {
+  //     handleSaveReportSuccess(response);
+  //   })
+  //   .catch(function (error) {
+  //     handleSaveReportError(error);
+  //   })
+  //   .finally(function () {
+  //     setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
+  //   });
+
+  // =====================================================
+  // MULAI: TENTUKAN ACTION SIMPAN / UPDATE
+  // =====================================================
+
+  const modeEdit = cekModeEdit();
+
+  const actionSimpan = modeEdit ? "UPDATE_LAKA_LANTAS" : "SIMPAN_LAPORAN";
+
+  // =====================================================
+  // SELESAI: TENTUKAN ACTION SIMPAN / UPDATE
+  // =====================================================
+
+  // =====================================================
+  // MULAI: KIRIM LAPORAN MELALUI API
+  // =====================================================
+
+  apiRequest(actionSimpan, data)
     .then(function (response) {
       handleSaveReportSuccess(response);
     })
@@ -2530,6 +2557,10 @@ function kirimLaporan() {
     .finally(function () {
       setButtonLoading(button, false, "🚀 KIRIM LAPORAN");
     });
+
+  // =====================================================
+  // SELESAI: KIRIM LAPORAN MELALUI API
+  // =====================================================
 }
 
 // =====================================================
@@ -2551,14 +2582,39 @@ function handleSaveReportSuccess(response) {
   tampilkanAlert("success", normalized.message || "Laporan berhasil disimpan.");
 
   // ===================================================
-  // MULAI: RESET FORM SETELAH BERHASIL DISIMPAN
+  // MULAI: TENTUKAN HASIL SIMPAN / UPDATE
   // ===================================================
+
+  const modeEdit = cekModeEdit();
+
+  if (modeEdit) {
+    // Kembali ke halaman Laka Lantas
+    // yang menjadi sumber saat tombol Edit ditekan.
+    // Halaman akan dimuat ulang sehingga data terbaru
+    // hasil UPDATE langsung diambil dari backend.
+
+    if (document.referrer) {
+      window.location.href = document.referrer;
+    } else {
+      window.location.href = "../pages/halLakaLantas.html";
+    }
+
+    return;
+  }
+
+  // ===================================================
+  // SELESAI: TENTUKAN HASIL SIMPAN / UPDATE
+  // =====================================================
+
+  // ===================================================
+  // MULAI: RESET FORM SETELAH BERHASIL DISIMPAN
+  // =====================================================
 
   resetFormLaporan();
 
   // ===================================================
   // SELESAI: RESET FORM SETELAH BERHASIL DISIMPAN
-  // ===================================================
+  // =====================================================
 }
 
 // =====================================================

@@ -544,6 +544,107 @@ export default async function handler(req, res) {
   // =====================================================
 
   // =====================================================
+  // MULAI: ACTION UPDATE LAPORAN
+  // =====================================================
+
+  if (action === "UPDATE_LAKA_LANTAS") {
+    const data = { ...req.body };
+
+    delete data.action;
+
+    console.log("[API UPDATE LAKA LANTAS] Data final dari FE:", data);
+
+    // =====================================================
+    // MULAI: KIRIM DATA UPDATE KE GOOGLE APPS SCRIPT
+    // =====================================================
+
+    const gasPayload = {
+      modul: "laka",
+      aksi: "update",
+      ...data,
+    };
+
+    let gasResponse;
+    let gasResult;
+
+    try {
+      gasResponse = await fetch(GAS_API_URL, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasText = await gasResponse.text();
+
+      console.log(
+        "[API UPDATE LAKA LANTAS] HTTP GAS:",
+        gasResponse.status,
+        gasResponse.statusText,
+      );
+
+      console.log("[API UPDATE LAKA LANTAS] RAW RESPONSE GAS:", gasText);
+
+      try {
+        gasResult = JSON.parse(gasText);
+      } catch (parseError) {
+        console.error(
+          "[API UPDATE LAKA LANTAS] RESPONSE GAS BUKAN JSON:",
+          parseError,
+        );
+
+        return res.status(500).json({
+          success: false,
+
+          message: "Response Google Apps Script bukan JSON.",
+
+          detail: gasText.substring(0, 500),
+        });
+      }
+
+      console.log("[API UPDATE LAKA LANTAS] Response GAS:", gasResult);
+    } catch (error) {
+      console.error("[API UPDATE LAKA LANTAS] ERROR FETCH GAS:", error);
+
+      return res.status(500).json({
+        success: false,
+
+        message: "Gagal menghubungi Google Apps Script.",
+
+        detail: error.message,
+      });
+    }
+
+    // =====================================================
+    // SELESAI: KIRIM DATA UPDATE KE GOOGLE APPS SCRIPT
+    // =====================================================
+
+    if (!gasResponse.ok || gasResult.sukses === false) {
+      return res.status(500).json({
+        success: false,
+
+        message:
+          gasResult.pesan || "Google Apps Script gagal memperbarui laporan.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+
+      message: gasResult.pesan || "Laporan berhasil diperbarui.",
+
+      data: gasResult,
+    });
+  }
+
+  // =====================================================
+  // SELESAI: ACTION UPDATE LAPORAN
+  // =====================================================
+
+  // =====================================================
   // MULAI: ACTION AMBIL LAPORAN DAN REKAP
   // =====================================================
 

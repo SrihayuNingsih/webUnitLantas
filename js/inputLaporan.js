@@ -1108,6 +1108,21 @@ function ubahTanggalKeInputDate(tanggal) {
     desember: "12",
   };
 
+  // const cocok = teks.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+
+  // if (!cocok) return "";
+
+  // Format DD/MM/YYYY
+  const cocokTanggalSlash = teks.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+
+  if (cocokTanggalSlash) {
+    const hari = cocokTanggalSlash[1].padStart(2, "0");
+    const nomorBulan = cocokTanggalSlash[2].padStart(2, "0");
+    const tahun = cocokTanggalSlash[3];
+
+    return `${tahun}-${nomorBulan}-${hari}`;
+  }
+
   const cocok = teks.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
 
   if (!cocok) return "";
@@ -1575,6 +1590,25 @@ function buatDaftarPihakTerlibatDariKendaraan(kendaraanList = []) {
   return hasil;
 }
 
+function normalisasiNamaSaksi(value) {
+  if (!value) {
+    return "";
+  }
+
+  let nama = String(value).trim();
+
+  // Hapus awalan "Nama :"
+  nama = nama.replace(/^Nama\s*:\s*/i, "");
+
+  // Hapus awalan "Sdr." / "Sdr"
+  nama = nama.replace(/^Sdr\.?\s*/i, "");
+
+  // Hapus awalan "An." / "An"
+  nama = nama.replace(/^An\.?\s*/i, "");
+
+  return nama.trim();
+}
+
 function tambahSaksi(data = "", index = null) {
   const container = InputLaporanElements.containerListSaksi;
 
@@ -1586,7 +1620,8 @@ function tambahSaksi(data = "", index = null) {
 
   item.className = "dynamic-item-saksi";
 
-  const value = ambilDataItemString(data);
+  // const value = ambilDataItemString(data);
+  const value = normalisasiNamaSaksi(ambilDataItemString(data));
 
   item.innerHTML = `
     <div class="flex items-center justify-between gap-2 mb-1">
@@ -1660,7 +1695,16 @@ function ambilDataItemString(item) {
   if (typeof item === "object") {
     return ambilNilai(
       item,
-      ["nama", "name", "identitas", "keterangan", "data", "uraian", "value"],
+      [
+        "nama",
+        "name",
+        "identitas",
+        "keterangan",
+        "data",
+        "uraian",
+        "value",
+        "saksi",
+      ],
       JSON.stringify(item),
     );
   }
@@ -1792,7 +1836,11 @@ async function ambilDaftarPetugas() {
    Response daftar petugas.
 */
 function handleGetPetugasSuccess(response) {
+  console.log("[DEBUG PETUGAS] Response API mentah:", response);
+
   const normalized = normalisasiResponseBackend(response);
+
+  console.log("[DEBUG PETUGAS] Setelah normalisasi response:", normalized);
 
   if (!normalized.success) {
     handleGetPetugasError(
@@ -1833,7 +1881,7 @@ function handleGetPetugasSuccess(response) {
 
   // renderPetugasSelector();
 
-  renderSelectedPetugas();
+  renderPetugasSelector();
 }
 
 /*
@@ -1860,48 +1908,53 @@ function normalizePetugasArray(list = []) {
     return [];
   }
 
-  return list
-    .map(function (item) {
-      if (typeof item === "string") {
-        return {
-          id: item,
-          nama: item,
-        };
-      }
+  return (
+    list
+      .map(function (item) {
+        if (typeof item === "string") {
+          return {
+            id: item,
+            nama: item,
+          };
+        }
 
-      if (item && typeof item === "object") {
-        // =====================================================
-        // MULAI: NORMALISASI DATA PETUGAS
-        // =====================================================
+        if (item && typeof item === "object") {
+          // =====================================================
+          // MULAI: NORMALISASI DATA PETUGAS
+          // =====================================================
 
-        return {
-          id: ambilNilai(item, [
-            "id",
-            "idPetugas",
-            "id_personil",
-            "idPersonil",
-          ]),
+          return {
+            id: ambilNilai(item, [
+              "id",
+              "idPetugas",
+              "id_personil",
+              "idPersonil",
+            ]),
 
-          nama: ambilNilai(item, [
-            "nama",
-            "namaPetugas",
-            "namaPersonil",
-            "name",
-          ]),
+            nama: ambilNilai(item, [
+              "nama",
+              "namaPetugas",
+              "namaPersonil",
+              "name",
+            ]),
 
-          pangkat: ambilNilai(item, ["pangkat", "pangkatPetugas"]),
-        };
+            pangkat: ambilNilai(item, ["pangkat", "pangkatPetugas"]),
+          };
 
-        // =====================================================
-        // SELESAI: NORMALISASI DATA PETUGAS
-        // =====================================================
-      }
+          // =====================================================
+          // SELESAI: NORMALISASI DATA PETUGAS
+          // =====================================================
+        }
 
-      return null;
-    })
-    .filter(function (item) {
-      return item && item.id && item.nama;
-    });
+        return null;
+      })
+      // .filter(function (item) {
+      //   return item && item.id && item.nama;
+      // });
+      .filter(function (item) {
+        return item && item.nama;
+      })
+  );
 }
 
 /* ============================================================
@@ -1931,15 +1984,36 @@ function renderPetugasSelector() {
     selector.className =
       "w-full text-sm p-2 border border-slate-300 rounded bg-white mt-2";
 
-    selector.addEventListener("change", function () {
-      const id = selector.value;
+    // selector.addEventListener("change", function () {
+    //   const id = selector.value;
 
-      if (!id) {
+    //   if (!id) {
+    //     return;
+    //   }
+
+    //   const petugas = InputLaporanState.daftarPetugas.find(function (item) {
+    //     return item.id === id;
+    //   });
+
+    //   if (!petugas) {
+    //     return;
+    //   }
+
+    //   const alreadySelected = InputLaporanState.selectedPetugas.some(
+    //     function (item) {
+    //       return item.id === id;
+    //     },
+    //   );
+
+    selector.addEventListener("change", function () {
+      const nama = selector.value;
+
+      if (!nama) {
         return;
       }
 
       const petugas = InputLaporanState.daftarPetugas.find(function (item) {
-        return item.id === id;
+        return item.nama === nama;
       });
 
       if (!petugas) {
@@ -1948,7 +2022,7 @@ function renderPetugasSelector() {
 
       const alreadySelected = InputLaporanState.selectedPetugas.some(
         function (item) {
-          return item.id === id;
+          return item.nama === nama;
         },
       );
 
@@ -1997,7 +2071,7 @@ function renderPetugasSelector() {
     // MULAI: TAMPILKAN PANGKAT + NAMA PETUGAS
     // =====================================================
 
-    option.value = petugas.id;
+    option.value = petugas.nama;
 
     // const pangkat = petugas.pangkat
     //   ? petugas.pangkat.charAt(0).toUpperCase() +
@@ -2025,6 +2099,16 @@ function renderPetugasSelector() {
 
 function renderSelectedPetugas() {
   const container = InputLaporanElements.containerTagsPetugas;
+
+  console.log(
+    "[DEBUG PETUGAS] daftarPetugas:",
+    InputLaporanState.daftarPetugas,
+  );
+
+  console.log(
+    "[DEBUG PETUGAS] jumlah:",
+    InputLaporanState.daftarPetugas.length,
+  );
 
   if (!container) {
     return;
@@ -2841,7 +2925,7 @@ function cekModeEdit() {
   return true;
 }
 
-function ambilLaporanUntukEdit() {
+async function ambilLaporanUntukEdit() {
   const params = new URLSearchParams(window.location.search);
   const mode = params.get("mode");
   const id = params.get("id");
@@ -2850,18 +2934,31 @@ function ambilLaporanUntukEdit() {
     return null;
   }
 
-  const laporan = lakaData.find(function (item) {
-    return item.id === id;
-  });
+  try {
+    const response = await apiRequest("AMBIL_DETAIL_LAPORAN", {
+      id: id,
+    });
 
-  if (!laporan) {
-    console.error("[InputLaporan] Laporan tidak ditemukan:", id);
+    const laporan = response.data || null;
+
+    if (!laporan) {
+      console.error("[InputLaporan] Laporan tidak ditemukan:", id);
+      return null;
+    }
+
+    console.log("[InputLaporan] Data laporan untuk edit:", laporan);
+
+    return laporan;
+  } catch (error) {
+    console.error("[InputLaporan] Gagal mengambil laporan untuk edit:", error);
+
+    tampilkanAlert(
+      "error",
+      error.message || "Data laporan untuk edit gagal diambil.",
+    );
+
     return null;
   }
-
-  console.log("[InputLaporan] Data laporan untuk edit:", laporan);
-
-  return laporan;
 }
 
 /* ============================================================
@@ -3107,23 +3204,26 @@ window.InputLaporanComponent = {
    45. INITIALIZATION
    ============================================================ */
 
-function initializeInputLaporan() {
-  /* ============================================================
-     EVENT LISTENER
-     Tetap dijalankan untuk Input Baru maupun Mode Edit
-     ============================================================ */
-
+async function initializeInputLaporan() {
   initializeInputLaporanEvents();
 
-  /* ============================================================
-     MODE EDIT — CEK PARAMETER ID DARI URL
-     ============================================================ */
-
-  const laporanEdit = ambilLaporanUntukEdit();
+  const laporanEdit = await ambilLaporanUntukEdit();
 
   /* ============================================================
      MODE EDIT — SIAPKAN DAN TAMPILKAN FORM
      ============================================================ */
+
+  // if (laporanEdit) {
+  //   InputLaporanState.inputMethod = "manual";
+  //   InputLaporanState.parsedFromWhatsApp = false;
+
+  //   updateInputMethodActiveState("manual");
+  //   resetFormLaporan();
+  //   isiFormDariJSON(laporanEdit);
+  //   showInputView("form");
+
+  //   return;
+  // }
 
   if (laporanEdit) {
     InputLaporanState.inputMethod = "manual";
@@ -3131,6 +3231,16 @@ function initializeInputLaporan() {
 
     updateInputMethodActiveState("manual");
     resetFormLaporan();
+
+    console.log("[DEBUG PETUGAS] Sebelum ambilDaftarPetugas");
+
+    await ambilDaftarPetugas();
+
+    console.log(
+      "[DEBUG PETUGAS] Sesudah ambilDaftarPetugas:",
+      InputLaporanState.daftarPetugas,
+    );
+
     isiFormDariJSON(laporanEdit);
     showInputView("form");
 

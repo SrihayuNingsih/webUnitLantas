@@ -136,6 +136,40 @@ const InputLaporanElements = {
   btnBatalForm: document.getElementById("btn-batal-form"),
 };
 
+// =====================================================
+// MULAI: AUTO RESIZE TEXTAREA LAPORAN WHATSAPP
+// =====================================================
+
+if (InputLaporanElements.textareaRawWA) {
+  InputLaporanElements.textareaRawWA.addEventListener("input", function () {
+    this.style.height = "auto";
+
+    const tinggiMaksimal = 400;
+
+    this.style.height = Math.min(this.scrollHeight, tinggiMaksimal) + "px";
+
+    this.style.overflowY =
+      this.scrollHeight > tinggiMaksimal ? "auto" : "hidden";
+  });
+
+  InputLaporanElements.textareaRawWA.addEventListener("paste", function () {
+    setTimeout(() => {
+      this.style.height = "auto";
+
+      const tinggiMaksimal = 600;
+
+      this.style.height = Math.min(this.scrollHeight, tinggiMaksimal) + "px";
+
+      this.style.overflowY =
+        this.scrollHeight > tinggiMaksimal ? "auto" : "hidden";
+    }, 0);
+  });
+}
+
+// =====================================================
+// SELESAI: AUTO RESIZE TEXTAREA LAPORAN WHATSAPP
+// =====================================================
+
 /* ============================================================
    3. STATE HALAMAN
    ============================================================ */

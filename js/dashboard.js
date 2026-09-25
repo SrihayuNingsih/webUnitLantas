@@ -1649,18 +1649,58 @@ async function ambilPetugasPiketDashboard() {
 // MULAI: RENDER PETUGAS PIKET DASHBOARD
 // =====================================================
 
+// function renderPetugasPiketDashboard(data) {
+//   const petugas = data?.petugas || [];
+
+//   const petugas1 = document.getElementById("petugasPiket1");
+//   const petugas2 = document.getElementById("petugasPiket2");
+
+//   if (petugas1) {
+//     petugas1.textContent = petugas[0]?.namaLengkap || "-";
+//   }
+
+//   if (petugas2) {
+//     petugas2.textContent = petugas[1]?.namaLengkap || "-";
+//   }
+// }
+
 function renderPetugasPiketDashboard(data) {
   const petugas = data?.petugas || [];
 
   const petugas1 = document.getElementById("petugasPiket1");
+
   const petugas2 = document.getElementById("petugasPiket2");
+
+  const cardPetugas1 = document.getElementById("cardPetugasPiket1");
+
+  const cardPetugas2 = document.getElementById("cardPetugasPiket2");
+
+  // =====================================================
+  // PETUGAS 1
+  // =====================================================
 
   if (petugas1) {
     petugas1.textContent = petugas[0]?.namaLengkap || "-";
   }
 
+  // =====================================================
+  // PETUGAS 2
+  // =====================================================
+
   if (petugas2) {
     petugas2.textContent = petugas[1]?.namaLengkap || "-";
+  }
+
+  // =====================================================
+  // TAMPILKAN / SEMBUNYIKAN CARD
+  // =====================================================
+
+  if (cardPetugas1) {
+    cardPetugas1.hidden = !petugas[0];
+  }
+
+  if (cardPetugas2) {
+    cardPetugas2.hidden = !petugas[1];
   }
 }
 

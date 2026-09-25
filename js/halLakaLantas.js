@@ -1145,7 +1145,7 @@ function renderLakaPage() {
         type="button"
         data-action="detail-visitor-page"
         data-id="${item.id}"
-        class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+        class="visitor-page-detail-button inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-800"
       >
         Lihat Detail
         <i data-lucide="chevron-right" class="h-4 w-4"></i>
@@ -1155,7 +1155,7 @@ function renderLakaPage() {
         type="button"
         data-action="detail-officer-page"
         data-id="${item.id}"
-        class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+        class="officer-page-detail-button hidden inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-800"
       >
         Lihat Detail
       </button>
@@ -1164,7 +1164,7 @@ function renderLakaPage() {
         type="button"
         data-action="menu-page"
         data-id="${item.id}"
-        class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 transition-colors hover:bg-blue-100 hover:text-blue-700"
+        class="officer-page-action-button hidden flex h-9 w-9 items-center justify-center rounded-xl border border-blue-100 bg-blue-600 text-white transition-colors hover:bg-blue-800"
         aria-label="Menu aksi"
       >
         <i data-lucide="more-vertical" class="h-5 w-5"></i>

@@ -172,11 +172,205 @@ function updateNavbarMode(isOfficer) {
    LOGIN PETUGAS
    ===================================================== */
 
+// if (loginButton) {
+//   loginButton.addEventListener("click", function () {
+//     setMode("officer");
+
+//     document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
+//   });
+// }
+
+/* =====================================================
+   LOGIN PETUGAS
+   ===================================================== */
+
+const loginModal = document.getElementById("loginModal");
+const loginModalContent = document.getElementById("loginModalContent");
+
+const loginUsername = document.getElementById("loginUsername");
+
+const loginPassword = document.getElementById("loginPassword");
+
+const loginError = document.getElementById("loginError");
+
+const cancelLoginButton = document.getElementById("cancelLoginButton");
+
+const cancelLoginButtonFooter = document.getElementById(
+  "cancelLoginButtonFooter",
+);
+
+const submitLoginButton = document.getElementById("submitLoginButton");
+
+// =====================================================
+// BUKA MODAL LOGIN
+// =====================================================
+
+function openLoginModal() {
+  if (!loginModal) {
+    return;
+  }
+
+  loginModal.classList.remove("hidden");
+  loginModal.classList.add("flex");
+
+  if (loginError) {
+    loginError.textContent = "";
+    loginError.classList.add("hidden");
+  }
+
+  if (loginUsername) {
+    loginUsername.value = "";
+  }
+
+  if (loginPassword) {
+    loginPassword.value = "";
+  }
+
+  if (loginUsername) {
+    setTimeout(function () {
+      loginUsername.focus();
+    }, 100);
+  }
+}
+
+// =====================================================
+// TUTUP MODAL LOGIN
+// =====================================================
+
+function closeLoginModal() {
+  if (!loginModal) {
+    return;
+  }
+
+  loginModal.classList.add("hidden");
+  loginModal.classList.remove("flex");
+}
+
+// =====================================================
+// TOMBOL LOGIN
+// =====================================================
+
 if (loginButton) {
   loginButton.addEventListener("click", function () {
-    setMode("officer");
+    openLoginModal();
 
     document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
+  });
+}
+
+// =====================================================
+// TOMBOL BATAL / TUTUP
+// =====================================================
+
+if (cancelLoginButton) {
+  cancelLoginButton.addEventListener("click", closeLoginModal);
+}
+
+if (cancelLoginButtonFooter) {
+  cancelLoginButtonFooter.addEventListener("click", closeLoginModal);
+}
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+if (submitLoginButton) {
+  submitLoginButton.addEventListener("click", async function () {
+    const username = loginUsername ? loginUsername.value.trim() : "";
+
+    const password = loginPassword ? loginPassword.value : "";
+
+    // -------------------------------------------------
+    // VALIDASI FORM
+    // -------------------------------------------------
+
+    if (!username) {
+      if (loginError) {
+        loginError.textContent = "Username belum diisi.";
+
+        loginError.classList.remove("hidden");
+      }
+
+      if (loginUsername) {
+        loginUsername.focus();
+      }
+
+      return;
+    }
+
+    if (!password) {
+      if (loginError) {
+        loginError.textContent = "Password belum diisi.";
+
+        loginError.classList.remove("hidden");
+      }
+
+      if (loginPassword) {
+        loginPassword.focus();
+      }
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // RESET PESAN ERROR
+    // -------------------------------------------------
+
+    if (loginError) {
+      loginError.textContent = "";
+      loginError.classList.add("hidden");
+    }
+
+    // -------------------------------------------------
+    // KIRIM KE BACKEND
+    // -------------------------------------------------
+
+    try {
+      submitLoginButton.disabled = true;
+      submitLoginButton.textContent = "Memproses...";
+
+      const response = await apiRequest("LOGIN", {
+        username: username,
+        password: password,
+      });
+
+      // -------------------------------------------------
+      // LOGIN BERHASIL
+      // -------------------------------------------------
+
+      if (response && response.success === true) {
+        setMode("officer");
+
+        closeLoginModal();
+
+        document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
+
+        return;
+      }
+
+      // -------------------------------------------------
+      // LOGIN GAGAL
+      // -------------------------------------------------
+
+      if (loginError) {
+        loginError.textContent =
+          response?.message || "Username atau password salah.";
+
+        loginError.classList.remove("hidden");
+      }
+    } catch (error) {
+      console.error("[Login] Gagal melakukan login:", error);
+
+      if (loginError) {
+        loginError.textContent =
+          error.message || "Login gagal. Silakan coba lagi.";
+
+        loginError.classList.remove("hidden");
+      }
+    } finally {
+      submitLoginButton.disabled = false;
+      submitLoginButton.textContent = "Login";
+    }
   });
 }
 

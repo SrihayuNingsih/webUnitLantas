@@ -6,7 +6,7 @@
 // const API_URL = "/api";
 
 // Menjadi seperti ini:
-const API_URL = "/api/index";
+const API_URL = "/api";
 
 async function apiRequest(action, data = {}) {
   if (!action) {

@@ -587,6 +587,112 @@
   ====================================================== -->
 
     <!-- =====================================================
+     MODAL LOGIN PETUGAS
+     ===================================================== -->
+
+    <div
+      id="loginModal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm"
+    >
+      <div
+        id="loginModalContent"
+        class="w-full max-w-[400px] overflow-hidden rounded-2xl bg-white shadow-2xl"
+      >
+        <!-- HEADER -->
+        <div
+          class="flex items-center justify-between border-b border-slate-200 px-5 py-4"
+        >
+          <div>
+            <h2 class="text-base font-semibold text-slate-800">
+              Login Petugas
+            </h2>
+
+            <p class="mt-0.5 text-xs text-slate-500">
+              Silakan masukkan akun petugas
+            </p>
+          </div>
+
+          <button
+            id="cancelLoginButton"
+            type="button"
+            aria-label="Tutup"
+            class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 active:scale-95"
+          >
+            <i data-lucide="x" class="h-5 w-5"></i>
+          </button>
+        </div>
+
+        <!-- FORM -->
+        <div class="space-y-4 px-5 py-5">
+          <!-- USERNAME -->
+          <div>
+            <label
+              for="loginUsername"
+              class="mb-1.5 block text-sm font-medium text-slate-700"
+            >
+              Username
+            </label>
+
+            <input
+              id="loginUsername"
+              type="text"
+              autocomplete="username"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              placeholder="Masukkan username"
+            />
+          </div>
+
+          <!-- PASSWORD -->
+          <div>
+            <label
+              for="loginPassword"
+              class="mb-1.5 block text-sm font-medium text-slate-700"
+            >
+              Password
+            </label>
+
+            <input
+              id="loginPassword"
+              type="password"
+              autocomplete="current-password"
+              class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              placeholder="Masukkan password"
+            />
+          </div>
+
+          <!-- PESAN ERROR -->
+          <div
+            id="loginError"
+            class="hidden rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600"
+          ></div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="flex justify-end gap-2 border-t border-slate-200 px-5 py-4">
+          <button
+            id="cancelLoginButtonFooter"
+            type="button"
+            class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 active:scale-95"
+          >
+            Batal
+          </button>
+
+          <button
+            id="submitLoginButton"
+            type="button"
+            class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-800 active:scale-95"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+     AKHIR KOMPONEN MODAL LOGIN
+     ===================================================== -->
+
+    <!-- =====================================================
        AWAL KOMPONEN MODAL LOGOUT
   ====================================================== -->
 
@@ -726,10 +832,10 @@
            AWAL FOTO MOBILE
       ================================================== -->
 
-        <div class="mt-4 grid grid-cols-2 gap-3 md:hidden">
-          <!-- FOTO KAPOLSEK -->
+        <!-- <div class="mt-4 grid grid-cols-2 gap-3 md:hidden"> -->
+        <!-- FOTO KAPOLSEK -->
 
-          <div
+        <!-- <div
             class="overflow-hidden rounded-xl border bg-950/80 border-t border-blue-800/50 shadow-sm"
           >
             <div class="aspect-[3/4] w-full overflow-hidden bg-slate-100">
@@ -753,11 +859,11 @@
                 Kapolsek Baureno
               </p>
             </div>
-          </div>
+          </div> -->
 
-          <!-- FOTO KANIT -->
+        <!-- FOTO KANIT -->
 
-          <div
+        <!-- <div
             class="overflow-hidden rounded-xl border bg-950/80 border-t border-blue-800/50 shadow-sm"
           >
             <div class="aspect-[3/4] w-full overflow-hidden bg-slate-100">
@@ -782,7 +888,7 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- =================================================
            AKHIR FOTO MOBILE
@@ -982,7 +1088,6 @@
                 >
                   <i data-lucide="car-front" class="h-6 w-6 sm:h-7 sm:w-7"></i>
                 </div>
-
                 <div class="min-w-0 text-left leading-tight">
                   <p class="text-xs font-bold text-blue-700 sm:text-base">
                     Total Kejadian

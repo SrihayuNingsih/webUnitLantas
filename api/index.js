@@ -209,6 +209,70 @@ export default async function handler(req, res) {
     });
   }
 
+  // =====================================================
+  // MULAI: ACTION LOGIN
+  // =====================================================
+
+  if (action === "LOGIN") {
+    const username = req.body?.username
+      ? req.body.username.toString().trim()
+      : "";
+
+    const password = req.body?.password ? req.body.password.toString() : "";
+
+    const gasPayload = {
+      modul: "login",
+      aksi: "login",
+      username: username,
+      password: password,
+    };
+
+    try {
+      const gasResponse = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasResult = await gasResponse.json();
+
+      console.log("[API LOGIN] Response GAS:", gasResult);
+
+      if (!gasResponse.ok) {
+        return res.status(500).json({
+          success: false,
+          message: "Gagal menghubungi Google Apps Script.",
+        });
+      }
+
+      if (gasResult.sukses === false) {
+        return res.status(401).json({
+          success: false,
+          message: gasResult.pesan || "Username atau password salah.",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: gasResult.pesan || "Login berhasil.",
+        data: gasResult.pengguna || null,
+      });
+    } catch (error) {
+      console.error("[API LOGIN] ERROR:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghubungi Google Apps Script.",
+      });
+    }
+  }
+
+  // =====================================================
+  // SELESAI: ACTION LOGIN
+  // =====================================================
+
   if (action === "AMBIL_LAKA_LANTAS") {
     const data = await ambilLakaLantas();
 

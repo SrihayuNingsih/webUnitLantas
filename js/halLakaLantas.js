@@ -1300,23 +1300,131 @@ function closeDeleteLakaModal() {
   lakaIdToDelete = null;
 }
 
+// function confirmDeleteLaka() {
+//   if (!lakaIdToDelete) return;
+
+//   const index = lakaData.findIndex((item) => item.id === lakaIdToDelete);
+//   if (index !== -1) {
+//     lakaData.splice(index, 1);
+//     lakaFilteredData = [...lakaData];
+//     const totalPages = Math.max(
+//       1,
+//       Math.ceil(lakaFilteredData.length / lakaPageSize),
+//     );
+//     if (lakaPageCurrent > totalPages) lakaPageCurrent = totalPages;
+//     renderLakaPage();
+//   }
+
+//   closeDeleteLakaModal();
+// }
+
+// =====================================================
+// MULAI: CONFIRM DELETE LAKA
+// =====================================================
+
 function confirmDeleteLaka() {
   if (!lakaIdToDelete) return;
 
-  const index = lakaData.findIndex((item) => item.id === lakaIdToDelete);
-  if (index !== -1) {
-    lakaData.splice(index, 1);
-    lakaFilteredData = [...lakaData];
-    const totalPages = Math.max(
-      1,
-      Math.ceil(lakaFilteredData.length / lakaPageSize),
-    );
-    if (lakaPageCurrent > totalPages) lakaPageCurrent = totalPages;
-    renderLakaPage();
+  const idLaporan = lakaIdToDelete;
+
+  // =====================================================
+  // MULAI: HAPUS LAPORAN MELALUI API
+  // =====================================================
+
+  apiRequest("HAPUS_LAKA_LANTAS", {
+    id: idLaporan,
+  })
+    // .then(function (response) {
+    //   console.log("[Laka Lantas] Hapus berhasil:", response);
+
+    //   closeDeleteLakaModal();
+
+    //   // Ambil ulang data dari backend
+    //   return apiRequest("AMBIL_LAKA_LANTAS");
+    // })
+    .then(function (response) {
+      console.log("[Laka Lantas] Hapus berhasil:", response);
+
+      closeDeleteLakaModal();
+
+      // =====================================================
+      // MULAI: TOAST HAPUS BERHASIL
+      // =====================================================
+
+      tampilkanToast(`Laporan ${idLaporan} berhasil dihapus.`);
+
+      // =====================================================
+      // SELESAI: TOAST HAPUS BERHASIL
+      // =====================================================
+
+      // Ambil ulang data dari backend
+      return apiRequest("AMBIL_LAKA_LANTAS");
+    })
+    .then(function (response) {
+      lakaData = Array.isArray(response.data) ? response.data : [];
+
+      lakaFilteredData = [...lakaData];
+
+      const totalPages = Math.max(
+        1,
+        Math.ceil(lakaFilteredData.length / lakaPageSize),
+      );
+
+      if (lakaPageCurrent > totalPages) {
+        lakaPageCurrent = totalPages;
+      }
+
+      renderLakaPage();
+    })
+    .catch(function (error) {
+      console.error("[Laka Lantas] Gagal menghapus:", error);
+
+      alert(error.message || "Gagal menghapus laporan.");
+    });
+
+  // =====================================================
+  // SELESAI: HAPUS LAPORAN MELALUI API
+  // =====================================================
+}
+
+// =====================================================
+// SELESAI: CONFIRM DELETE LAKA
+// =====================================================
+
+// =====================================================
+// MULAI: TOAST NOTIFIKASI
+// =====================================================
+
+function tampilkanToast(pesan) {
+  let toast = document.getElementById("lakaToastNotification");
+
+  if (!toast) {
+    toast = document.createElement("div");
+
+    toast.id = "lakaToastNotification";
+
+    toast.className =
+      "fixed top-6 right-6 z-[9999] rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300";
+
+    document.body.appendChild(toast);
   }
 
-  closeDeleteLakaModal();
+  toast.textContent = pesan;
+
+  toast.classList.remove("opacity-0");
+
+  toast.classList.add("opacity-100");
+
+  setTimeout(function () {
+    toast.classList.remove("opacity-100");
+
+    toast.classList.add("opacity-0");
+  }, 3000);
 }
+
+// =====================================================
+// SELESAI: TOAST NOTIFIKASI
+// =====================================================
 
 /* =====================================================
          ACTION FUNCTIONS

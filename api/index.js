@@ -645,6 +645,95 @@ export default async function handler(req, res) {
   // =====================================================
 
   // =====================================================
+  // MULAI: ACTION HAPUS LAKA LANTAS
+  // =====================================================
+
+  if (action === "HAPUS_LAKA_LANTAS") {
+    const idLaporan = req.body.id ? req.body.id.toString().trim() : "";
+
+    if (!idLaporan) {
+      return res.status(400).json({
+        success: false,
+        message: "ID laporan untuk dihapus tidak ditemukan.",
+      });
+    }
+
+    console.log("[API HAPUS LAKA LANTAS] ID:", idLaporan);
+
+    const gasPayload = {
+      modul: "laka",
+      aksi: "hapus",
+      idLaporan: idLaporan,
+    };
+
+    let gasResponse;
+    let gasResult;
+
+    try {
+      gasResponse = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasText = await gasResponse.text();
+
+      console.log(
+        "[API HAPUS LAKA LANTAS] HTTP GAS:",
+        gasResponse.status,
+        gasResponse.statusText,
+      );
+
+      console.log("[API HAPUS LAKA LANTAS] RAW RESPONSE GAS:", gasText);
+
+      try {
+        gasResult = JSON.parse(gasText);
+      } catch (parseError) {
+        console.error(
+          "[API HAPUS LAKA LANTAS] RESPONSE GAS BUKAN JSON:",
+          parseError,
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Response Google Apps Script bukan JSON.",
+          detail: gasText.substring(0, 500),
+        });
+      }
+
+      console.log("[API HAPUS LAKA LANTAS] Response GAS:", gasResult);
+    } catch (error) {
+      console.error("[API HAPUS LAKA LANTAS] ERROR FETCH GAS:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghubungi Google Apps Script.",
+        detail: error.message,
+      });
+    }
+
+    if (!gasResponse.ok || gasResult.sukses === false) {
+      return res.status(500).json({
+        success: false,
+        message:
+          gasResult.pesan || "Google Apps Script gagal menghapus laporan.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: gasResult.pesan || "Laporan berhasil dihapus.",
+      data: gasResult,
+    });
+  }
+
+  // =====================================================
+  // SELESAI: ACTION HAPUS LAKA LANTAS
+  // =====================================================
+
+  // =====================================================
   // MULAI: ACTION AMBIL LAPORAN DAN REKAP
   // =====================================================
 

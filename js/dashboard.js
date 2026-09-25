@@ -1688,7 +1688,7 @@ function renderPetugasPiketDashboard(data) {
   // =====================================================
 
   if (petugas2) {
-    petugas2.textContent = petugas[1]?.namaLengkap || "-";
+    petugas2.textContent = petugas[1]?.namaLengkap || "";
   }
 
   // =====================================================
@@ -1696,11 +1696,11 @@ function renderPetugasPiketDashboard(data) {
   // =====================================================
 
   if (cardPetugas1) {
-    cardPetugas1.hidden = !petugas[0];
+    cardPetugas1.style.display = petugas[0] ? "" : "none";
   }
 
   if (cardPetugas2) {
-    cardPetugas2.hidden = !petugas[1];
+    cardPetugas2.style.display = petugas[1] ? "" : "none";
   }
 }
 

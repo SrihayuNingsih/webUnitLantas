@@ -493,6 +493,282 @@ function escapeHtml(value) {
 // =====================================================
 
 // =====================================================
+// MULAI: AMBIL JADWAL PIKET LENGKAP
+// =====================================================
+
+let dataJadwalPiketLengkap = {
+  tahun: 0,
+  bulan: 0,
+  jumlahHari: 0,
+  personil: [],
+};
+
+async function ambilJadwalPiketLengkap() {
+  const container = document.getElementById("bodyTabelJadwalPiket");
+
+  if (!container) return;
+
+  try {
+    const response = await apiRequest("AMBIL_JADWAL_PIKET_LENGKAP");
+
+    dataJadwalPiketLengkap = response.data || {
+      tahun: 0,
+      bulan: 0,
+      jumlahHari: 0,
+      personil: [],
+    };
+
+    renderJadwalPiketLengkap();
+  } catch (error) {
+    console.error("GAGAL JADWAL PIKET LENGKAP:", error);
+
+    container.innerHTML = `
+      <tr>
+        <td
+          colspan="35"
+          class="px-4 py-6 text-center text-sm text-red-600"
+        >
+          ${escapeHtml(
+            error.message || "Gagal mengambil jadwal piket lengkap.",
+          )}
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// =====================================================
+// SELESAI: AMBIL JADWAL PIKET LENGKAP
+// =====================================================
+
+// =====================================================
+// MULAI: RENDER JADWAL PIKET LENGKAP
+// =====================================================
+
+// function renderJadwalPiketLengkap() {
+//   const body = document.getElementById("bodyTabelJadwalPiket");
+
+//   const headerTanggal = document.getElementById("headerTanggalPiket");
+
+//   if (!body || !headerTanggal) return;
+
+//   const jumlahHari = dataJadwalPiketLengkap.jumlahHari || 0;
+
+//   const personil = dataJadwalPiketLengkap.personil || [];
+
+//   // ===================================================
+//   // ATUR JUMLAH KOLOM TANGGAL
+//   // ===================================================
+
+//   headerTanggal.colSpan = jumlahHari;
+
+//   headerTanggal.textContent = "";
+
+//   for (let tanggal = 1; tanggal <= jumlahHari; tanggal++) {
+//     const th = document.createElement("th");
+
+//     th.className =
+//       "min-w-[48px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-center font-semibold";
+
+//     th.textContent = tanggal;
+
+//     headerTanggal.parentElement.appendChild(th);
+//   }
+
+//   headerTanggal.remove();
+
+function renderJadwalPiketLengkap() {
+  const body = document.getElementById("bodyTabelJadwalPiket");
+
+  const header = document.getElementById("headerTabelJadwalPiket");
+
+  if (!body || !header) return;
+
+  const jumlahHari = dataJadwalPiketLengkap.jumlahHari || 0;
+
+  const personil = dataJadwalPiketLengkap.personil || [];
+
+  // ===================================================
+  // MULAI: BUAT HEADER TABEL
+  // ===================================================
+
+  header.innerHTML = "";
+
+  const barisHeader = document.createElement("tr");
+
+  barisHeader.className = "bg-blue-950 text-white";
+
+  // ===================================================
+  // NO
+  // ===================================================
+
+  const thNo = document.createElement("th");
+
+  thNo.className =
+    "sticky left-0 z-30 min-w-[45px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-center font-semibold";
+
+  thNo.textContent = "No";
+
+  barisHeader.appendChild(thNo);
+
+  // ===================================================
+  // NAMA
+  // ===================================================
+
+  const thNama = document.createElement("th");
+
+  thNama.className =
+    "sticky left-[45px] z-30 min-w-[180px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold";
+
+  thNama.textContent = "Nama";
+
+  barisHeader.appendChild(thNama);
+
+  // ===================================================
+  // PANGKAT
+  // ===================================================
+
+  const thPangkat = document.createElement("th");
+
+  thPangkat.className =
+    "sticky left-[225px] z-30 min-w-[100px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold";
+
+  thPangkat.textContent = "Pangkat";
+
+  barisHeader.appendChild(thPangkat);
+
+  // ===================================================
+  // JABATAN
+  // ===================================================
+
+  const thJabatan = document.createElement("th");
+
+  thJabatan.className =
+    "sticky left-[325px] z-30 min-w-[150px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold";
+
+  thJabatan.textContent = "Jabatan";
+
+  barisHeader.appendChild(thJabatan);
+
+  // ===================================================
+  // TANGGAL
+  // ===================================================
+
+  for (let tanggal = 1; tanggal <= jumlahHari; tanggal++) {
+    const thTanggal = document.createElement("th");
+
+    thTanggal.className =
+      "min-w-[48px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-center font-semibold";
+
+    thTanggal.textContent = tanggal;
+
+    barisHeader.appendChild(thTanggal);
+  }
+
+  header.appendChild(barisHeader);
+
+  // ===================================================
+  // SELESAI: BUAT HEADER TABEL
+  // ===================================================
+
+  // ===================================================
+  // DATA KOSONG
+  // ===================================================
+
+  if (personil.length === 0) {
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="${5 + jumlahHari}"
+          class="px-4 py-8 text-center text-sm text-slate-500"
+        >
+          Data jadwal piket belum tersedia.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  // ===================================================
+  // RENDER BARIS PERSONIL
+  // ===================================================
+
+  body.innerHTML = personil
+    .map(function (item, index) {
+      const jadwal = item.jadwal || {};
+
+      let html = `
+        <tr class="border-b border-slate-100">
+          <td
+                class="sticky left-0 z-20 min-w-[45px] border-r border-slate-200 bg-white px-3 py-3 text-center font-medium text-slate-600"
+            >
+                ${index + 1}
+            </td>
+
+            <td
+                class="sticky left-[45px] z-20 min-w-[180px] border-r border-slate-200 bg-white px-3 py-3 font-semibold text-slate-800"
+            >
+                    ${escapeHtml(item.nama || "-")}
+            </td>
+
+            <td
+                class="sticky left-[225px] z-20 min-w-[100px] border-r border-slate-200 bg-white px-3 py-3 text-slate-600"
+            >
+                    ${escapeHtml(item.pangkat || "-")}
+            </td>
+
+            <td
+                class="sticky left-[325px] z-20 min-w-[150px] border-r border-slate-200 bg-white px-3 py-3 text-slate-600"
+            >
+                    ${escapeHtml(item.jabatan || "-")}
+            </td>
+            `;
+
+      for (let tanggal = 1; tanggal <= jumlahHari; tanggal++) {
+        const kode = jadwal[tanggal] || "";
+
+        let kelasKode = "text-slate-300";
+
+        if (kode === "P") {
+          kelasKode = "font-bold text-green-600";
+        } else if (kode === "LD") {
+          kelasKode = "font-bold text-red-600";
+        } else if (kode === "C") {
+          kelasKode = "font-bold text-amber-400";
+        }
+
+        html += `
+          <td
+            class="min-w-[48px] border-r border-slate-100 px-2 py-3 text-center ${kelasKode}"
+          >
+            ${escapeHtml(kode)}
+          </td>
+        `;
+      }
+
+      html += `
+        </tr>
+      `;
+
+      return html;
+    })
+    .join("");
+
+  // ===================================================
+  // ICON
+  // ===================================================
+
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+// =====================================================
+// SELESAI: RENDER JADWAL PIKET LENGKAP
+// =====================================================
+
+// =====================================================
 // MULAI: INITIALIZATION JADWAL PIKET
 // =====================================================
 
@@ -506,6 +782,8 @@ async function initializeJadwalPiket() {
   renderKalenderPiket();
 
   await ambilDetailJadwalPiket();
+
+  await ambilJadwalPiketLengkap();
 }
 
 // =====================================================

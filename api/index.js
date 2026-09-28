@@ -5,7 +5,10 @@
 import { ambilLakaLantas } from "./apiLakaLantas.js";
 import { ambilDetailLaporan } from "./apiDetailLaporan.js";
 import { ambilLaporanDanRekap } from "./apiLaporanDanRekap.js";
-import { ambilDetailJadwalPiket } from "./apiJadwalPiket.js";
+import {
+  ambilDetailJadwalPiket,
+  ambilJadwalPiketLengkap,
+} from "./apiJadwalPiket.js";
 
 // =====================================================
 // MULAI: KONFIGURASI GOOGLE APPS SCRIPT DASHBOARD
@@ -367,6 +370,23 @@ export default async function handler(req, res) {
 
   // =====================================================
   // SELESAI: AMBIL DETAIL JADWAL PIKET
+  // =====================================================
+
+  // =====================================================
+  // MULAI: ACTION JADWAL PIKET LENGKAP
+  // =====================================================
+
+  if (action === "AMBIL_JADWAL_PIKET_LENGKAP") {
+    const data = await ambilJadwalPiketLengkap();
+
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+
+  // =====================================================
+  // SELESAI: ACTION JADWAL PIKET LENGKAP
   // =====================================================
 
   // =====================================================

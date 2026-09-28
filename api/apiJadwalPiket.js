@@ -56,3 +56,44 @@ export async function ambilDetailJadwalPiket(tanggal) {
 // =====================================================
 // SELESAI: AMBIL DETAIL JADWAL PIKET
 // =====================================================
+
+// =====================================================
+// MULAI: AMBIL JADWAL PIKET LENGKAP
+// =====================================================
+
+export async function ambilJadwalPiketLengkap() {
+  const gasPayload = {
+    modul: "jadwalpiket",
+    aksi: "jadwallengkap",
+  };
+
+  const gasResponse = await fetch(GAS_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(gasPayload),
+  });
+
+  const gasResult = await gasResponse.json();
+
+  if (!gasResponse.ok || gasResult.sukses === false) {
+    throw new Error(
+      gasResult.pesan ||
+        "Google Apps Script gagal mengambil jadwal piket lengkap.",
+    );
+  }
+
+  return (
+    gasResult.hasil || {
+      tahun: new Date().getFullYear(),
+      bulan: new Date().getMonth() + 1,
+      jumlahHari: 0,
+      personil: [],
+    }
+  );
+}
+
+// =====================================================
+// SELESAI: AMBIL JADWAL PIKET LENGKAP
+// =====================================================

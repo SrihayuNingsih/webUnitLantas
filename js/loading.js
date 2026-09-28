@@ -186,18 +186,26 @@ const LoadingGlobal = {
       return;
     }
 
+    // let jumlahTitik = 0;
+
+    // LoadingGlobal.stopDots();
+
+    // LoadingGlobal.dotsInterval = setInterval(function () {
+    //   jumlahTitik++;
+
+    //   if (jumlahTitik > 3) {
+    //     jumlahTitik = 0;
+    //   }
+
+    //   dots.textContent = ".".repeat(jumlahTitik);
+    // }, 500);
+
     let jumlahTitik = 0;
 
-    LoadingGlobal.stopDots();
+    const intervalTitik = setInterval(() => {
+      jumlahTitik = (jumlahTitik + 1) % 4;
 
-    LoadingGlobal.dotsInterval = setInterval(function () {
-      jumlahTitik++;
-
-      if (jumlahTitik > 3) {
-        jumlahTitik = 0;
-      }
-
-      dots.textContent = ".".repeat(jumlahTitik);
+      titik.textContent = ".".repeat(jumlahTitik);
     }, 500);
   },
 

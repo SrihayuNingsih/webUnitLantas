@@ -849,58 +849,8 @@
               id="tabelJadwalPiket"
               class="w-max min-w-full border-collapse text-xs sm:text-sm"
             >
-              <thead>
-                <tr class="bg-blue-950 text-white">
-                  <!-- NO -->
-
-                  <th
-                    class="sticky left-0 z-30 min-w-[45px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-center font-semibold"
-                  >
-                    No
-                  </th>
-
-                  <!-- NAMA -->
-
-                  <th
-                    class="sticky left-[45px] z-30 min-w-[180px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold"
-                  >
-                    Nama
-                  </th>
-
-                  <!-- PANGKAT -->
-
-                  <th
-                    class="sticky left-[225px] z-30 min-w-[100px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold"
-                  >
-                    Pangkat
-                  </th>
-
-                  <!-- NRP -->
-
-                  <th
-                    class="sticky left-[325px] z-30 min-w-[110px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold"
-                  >
-                    NRP
-                  </th>
-
-                  <!-- JABATAN -->
-
-                  <th
-                    class="sticky left-[435px] z-30 min-w-[150px] border-r border-blue-800 bg-blue-950 px-3 py-3 text-left font-semibold"
-                  >
-                    Jabatan
-                  </th>
-
-                  <!-- TANGGAL 1 - 31 AKAN DIBUAT JAVASCRIPT -->
-
-                  <th
-                    id="headerTanggalPiket"
-                    class="px-3 py-3 text-center font-semibold"
-                    colspan="31"
-                  >
-                    Tanggal
-                  </th>
-                </tr>
+              <thead id="headerTabelJadwalPiket">
+                <!-- Header tabel dibuat oleh JavaScript -->
               </thead>
 
               <tbody id="bodyTabelJadwalPiket">
@@ -922,17 +872,16 @@
               <span class="font-semibold text-slate-600"> Keterangan: </span>
 
               <span>
-                <strong class="text-blue-700">P</strong>
+                <strong class="text-green-600">P</strong>
                 = Piket
               </span>
 
-              <span>
-                <strong class="text-amber-600">L</strong>
-                = Lepas Dinas
-              </span>
+              <span
+                ><strong class="text-red-600">LD</strong> = Lepas Dinas</span
+              >
 
               <span>
-                <strong class="text-green-600">C</strong>
+                <strong class="text-amber-400">C</strong>
                 = Cadangan
               </span>
             </div>

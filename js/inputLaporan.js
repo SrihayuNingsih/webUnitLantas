@@ -1200,16 +1200,43 @@ function setSelectValue(selectElement, value) {
    16. STATUS PENANGANAN
    ============================================================ */
 
+// function setStatusPenanganan(status) {
+//   if (!status) {
+//     return;
+//   }
+
+//   let normalized = String(status).trim().toLowerCase();
+
+//   /*
+//      Normalisasi variasi status lama/backend.
+//   */
+
+//   if (
+//     normalized === "selesai" ||
+//     normalized === "selesai / damai" ||
+//     normalized === "selesai/damai"
+//   ) {
+//     normalized = "Selesai / Damai";
+//   } else if (normalized === "Limpah Polres" || normalized === "pelimpahan") {
+//     normalized = "Pelimpahan";
+//   } else if (normalized === "dalam penanganan") {
+//     normalized = "Dalam Penanganan";
+//   }
+
+//   // setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
+//   // updateWarnaStatus();
+
+//   setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
+//   updateWarnaStatus();
+//   updateNomorLPBerdasarkanStatus();
+// }
+
 function setStatusPenanganan(status) {
   if (!status) {
     return;
   }
 
   let normalized = String(status).trim().toLowerCase();
-
-  /*
-     Normalisasi variasi status lama/backend.
-  */
 
   if (
     normalized === "selesai" ||
@@ -1223,12 +1250,20 @@ function setStatusPenanganan(status) {
     normalized = "Dalam Penanganan";
   }
 
-  // setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
-  // updateWarnaStatus();
-
   setSelectValue(InputLaporanElements.selectStatusPenanganan, normalized);
   updateWarnaStatus();
-  updateNomorLPBerdasarkanStatus();
+
+  // =====================================================
+  // MULAI: JANGAN TIMPA NOMOR LP SAAT MODE EDIT
+  // =====================================================
+
+  if (!cekModeEdit()) {
+    updateNomorLPBerdasarkanStatus();
+  }
+
+  // =====================================================
+  // SELESAI: JANGAN TIMPA NOMOR LP SAAT MODE EDIT
+  // =====================================================
 }
 
 // =====================================================

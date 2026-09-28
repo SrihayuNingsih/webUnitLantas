@@ -44,8 +44,16 @@ const LoadingGlobal = {
 
     let loading = document.getElementById("globalLoadingOverlay");
 
+    // if (loading) {
+    //   loading.classList.remove("hidden");
+    //   return;
+    // }
+
     if (loading) {
       loading.classList.remove("hidden");
+
+      LoadingGlobal.startDots();
+
       return;
     }
 

@@ -202,10 +202,12 @@ const LoadingGlobal = {
 
     let jumlahTitik = 0;
 
-    const intervalTitik = setInterval(() => {
+    LoadingGlobal.stopDots();
+
+    LoadingGlobal.dotsInterval = setInterval(() => {
       jumlahTitik = (jumlahTitik + 1) % 4;
 
-      titik.textContent = ".".repeat(jumlahTitik);
+      dots.textContent = ".".repeat(jumlahTitik);
     }, 500);
   },
 

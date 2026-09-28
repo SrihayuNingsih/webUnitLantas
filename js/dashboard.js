@@ -1018,11 +1018,11 @@ function renderLakaList(data = []) {
               class="h-3.5 w-3.5 shrink-0 text-slate-400"
             ></i>
 
-            <span class="text-xs font-medium text-slate-500">
+            <span class="text-xs font-medium text-slate-500 shrink-0">
               No. LP :
             </span>
 
-            <span class="text-sm font-semibold text-slate-700">
+            <span class="text-sm font-semibold text-slate-700 min-w-0 break-all leading-snug">
               ${noLp}
             </span>
 

@@ -423,7 +423,7 @@ function renderDetailJadwalPiket(data) {
 
               <div>
                 <p
-                  class="text-md font-bold text-slate-700"
+                  class="text-md font-bold text-blue-800"
                 >
                   ${item.label}
                 </p>

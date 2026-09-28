@@ -1,0 +1,36 @@
+/* =========================================================
+   LAPORAN & REKAP
+   CSS TAMBAHAN
+========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   AREA UTAMA DESKTOP
+   Mengikuti --sidebar-width milik dashboard utama.
+========================================================= */
+
+@media (min-width: 768px) {
+  #jadwalPiketMain {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
+}
+
+/* =========================================================
+   MOBILE
+   Tidak memakai margin sidebar.
+========================================================= */
+
+@media (max-width: 767px) {
+  #jadwalPiketMain {
+    width: 100%;
+    margin-left: 0;
+  }
+}

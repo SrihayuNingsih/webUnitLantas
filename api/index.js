@@ -5,6 +5,7 @@
 import { ambilLakaLantas } from "./apiLakaLantas.js";
 import { ambilDetailLaporan } from "./apiDetailLaporan.js";
 import { ambilLaporanDanRekap } from "./apiLaporanDanRekap.js";
+import { ambilDetailJadwalPiket } from "./apiJadwalPiket.js";
 
 // =====================================================
 // MULAI: KONFIGURASI GOOGLE APPS SCRIPT DASHBOARD
@@ -349,6 +350,23 @@ export default async function handler(req, res) {
 
   // =====================================================
   // SELESAI: ACTION PETUGAS PIKET DASHBOARD
+  // =====================================================
+
+  // =====================================================
+  // MULAI: AMBIL DETAIL JADWAL PIKET
+  // =====================================================
+
+  if (action === "AMBIL_DETAIL_JADWAL_PIKET") {
+    const data = await ambilDetailJadwalPiket(req.body.tanggal);
+
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+
+  // =====================================================
+  // SELESAI: AMBIL DETAIL JADWAL PIKET
   // =====================================================
 
   // =====================================================

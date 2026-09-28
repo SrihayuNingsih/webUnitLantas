@@ -1070,7 +1070,7 @@ function renderLakaPage() {
     class="h-3.5 w-3.5 shrink-0 text-slate-400"
   ></i>
 
-  <span class="text-xs font-medium text-slate-500">
+  <span class="shrink-0 text-xs font-medium text-slate-500">
     No. LP :
   </span>
 

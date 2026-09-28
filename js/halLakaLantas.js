@@ -1074,7 +1074,7 @@ function renderLakaPage() {
     No. LP :
   </span>
 
-  <span class="text-sm font-semibold text-slate-700">
+  <span class="text-sm font-semibold text-slate-700 min-w-0 break-all leading-snug">
     ${
       ["Selesai", "Selesai/RJ", "RJ"].includes((item.status || "").trim())
         ? "Nihil"

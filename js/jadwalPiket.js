@@ -6,7 +6,35 @@
 // MULAI: STATE JADWAL PIKET
 // =====================================================
 
+// let tanggalPiketTerpilih = new Date();
+
+// Code diaatas diganti ini:
+
 let tanggalPiketTerpilih = new Date();
+
+const JAM_GANTI_PIKET = 8;
+
+function getTanggalPiketAktif() {
+  const sekarang = new Date();
+
+  const jamSekarang = Number(
+    new Intl.DateTimeFormat("id-ID", {
+      hour: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Jakarta",
+    }).format(sekarang),
+  );
+
+  const tanggalAktif = new Date(sekarang);
+
+  if (jamSekarang < JAM_GANTI_PIKET) {
+    tanggalAktif.setDate(tanggalAktif.getDate() - 1);
+  }
+
+  return tanggalAktif;
+}
+
+tanggalPiketTerpilih = getTanggalPiketAktif();
 
 let dataPetugasPiketHariIni = {
   tanggal: "",
@@ -285,10 +313,24 @@ function renderKalenderPiket() {
 // MULAI: PILIH TANGGAL PIKET
 // =====================================================
 
+// function pilihTanggalPiket(tanggal) {
+//   tanggalPiketTerpilih = new Date(
+//     new Date().getFullYear(),
+//     new Date().getMonth(),
+//     tanggal,
+//   );
+
+//   renderKalenderPiket();
+
+//   ambilDetailJadwalPiket();
+// }
+
 function pilihTanggalPiket(tanggal) {
+  const tanggalAktif = getTanggalPiketAktif();
+
   tanggalPiketTerpilih = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
+    tanggalAktif.getFullYear(),
+    tanggalAktif.getMonth(),
     tanggal,
   );
 

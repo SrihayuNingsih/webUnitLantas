@@ -201,6 +201,39 @@ const cancelLoginButtonFooter = document.getElementById(
 
 const submitLoginButton = document.getElementById("submitLoginButton");
 
+const toggleLoginPassword = document.getElementById("toggleLoginPassword");
+const toggleLoginPasswordIcon = document.getElementById(
+  "toggleLoginPasswordIcon",
+);
+
+// =====================================================
+// TOGGLE PASSWORD LOGIN
+// =====================================================
+
+if (toggleLoginPassword && loginPassword) {
+  toggleLoginPassword.addEventListener("click", function () {
+    const tampil = loginPassword.type === "password";
+
+    loginPassword.type = tampil ? "text" : "password";
+
+    toggleLoginPassword.setAttribute(
+      "aria-label",
+      tampil ? "Sembunyikan password" : "Tampilkan password",
+    );
+
+    if (toggleLoginPasswordIcon) {
+      toggleLoginPasswordIcon.setAttribute(
+        "data-lucide",
+        tampil ? "eye-off" : "eye",
+      );
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+  });
+}
+
 // =====================================================
 // BUKA MODAL LOGIN
 // =====================================================

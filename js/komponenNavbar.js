@@ -336,20 +336,45 @@ if (menuButton) {
      MODE DARI KOMPONEN LAIN
   ===================================================== */
 
+// document.addEventListener("setApplicationMode", function (event) {
+//   const mode =
+//     event.detail && event.detail.mode ? event.detail.mode : "visitor";
+
+//   setMode(mode);
+// });
+
 document.addEventListener("setApplicationMode", function (event) {
   const mode =
     event.detail && event.detail.mode ? event.detail.mode : "visitor";
 
-  setMode(mode);
+  if (mode === "visitor") {
+    setMode("visitor");
+  }
 });
 
 /* =====================================================
      PUBLIC API NAVBAR
   ===================================================== */
 
+// window.NavbarComponent = {
+//   setMode: function (mode) {
+//     setMode(mode);
+//   },
+
+//   getMode: function () {
+//     return isOfficerMode ? "officer" : "visitor";
+//   },
+
+//   isOfficerMode: function () {
+//     return isOfficerMode;
+//   },
+// };
+
 window.NavbarComponent = {
   setMode: function (mode) {
-    setMode(mode);
+    if (mode === "visitor") {
+      setMode("visitor");
+    }
   },
 
   getMode: function () {

@@ -3,6 +3,7 @@
 // =====================================================
 
 import { ambilLakaLantas } from "./apiLakaLantas.js";
+import { buatSessionToken, ambilSessionDariRequest } from "./auth.js";
 import { ambilDetailLaporan } from "./apiDetailLaporan.js";
 import { ambilLaporanDanRekap } from "./apiLaporanDanRekap.js";
 import {
@@ -258,10 +259,32 @@ export default async function handler(req, res) {
         });
       }
 
+      // return res.status(200).json({
+      //   success: true,
+      //   message: gasResult.pesan || "Login berhasil.",
+      //   data: gasResult.pengguna || null,
+      // });
+
+      const pengguna = gasResult.pengguna || null;
+
+      if (!pengguna) {
+        return res.status(500).json({
+          success: false,
+          message: "Data pengguna login tidak tersedia.",
+        });
+      }
+
+      const sessionToken = buatSessionToken(pengguna);
+
+      res.setHeader(
+        "Set-Cookie",
+        `auth_session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`,
+      );
+
       return res.status(200).json({
         success: true,
         message: gasResult.pesan || "Login berhasil.",
-        data: gasResult.pengguna || null,
+        data: pengguna,
       });
     } catch (error) {
       console.error("[API LOGIN] ERROR:", error);
@@ -472,6 +495,14 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "SIMPAN_LAPORAN") {
+    const session = ambilSessionDariRequest(req);
+
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Sesi login tidak valid atau sudah berakhir.",
+      });
+    }
     const data = { ...req.body };
     delete data.action;
 
@@ -586,6 +617,17 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "UPDATE_LAKA_LANTAS") {
+    const session = ambilSessionDariRequest(req);
+
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Sesi login tidak valid atau sudah berakhir.",
+      });
+    }
+
+    // kode update yang sudah ada
+
     const data = { ...req.body };
 
     delete data.action;
@@ -687,6 +729,17 @@ export default async function handler(req, res) {
   // =====================================================
 
   if (action === "HAPUS_LAKA_LANTAS") {
+    const session = ambilSessionDariRequest(req);
+
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Sesi login tidak valid atau sudah berakhir.",
+      });
+    }
+
+    // kode hapus yang sudah ada
+
     const idLaporan = req.body.id ? req.body.id.toString().trim() : "";
 
     if (!idLaporan) {

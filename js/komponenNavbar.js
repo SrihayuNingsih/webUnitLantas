@@ -148,13 +148,30 @@ function updateNavbarMode(isOfficer) {
      LOGIN PETUGAS
   ===================================================== */
 
+// if (loginButton) {
+//   loginButton.addEventListener("click", function () {
+//     /*
+//           Ubah mode menjadi Petugas.
+//         */
+
+//     setMode("officer");
+
+//     /*
+//           Minta Sidebar ditutup.
+//         */
+
+//     document.dispatchEvent(new CustomEvent("sidebarCloseRequest"));
+//   });
+// }
+
 if (loginButton) {
   loginButton.addEventListener("click", function () {
     /*
-          Ubah mode menjadi Petugas.
+          Login diproses oleh sistem login utama.
+          Navbar hanya meminta modal login dibuka.
         */
 
-    setMode("officer");
+    document.dispatchEvent(new CustomEvent("loginRequest"));
 
     /*
           Minta Sidebar ditutup.

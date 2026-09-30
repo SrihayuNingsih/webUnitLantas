@@ -336,11 +336,20 @@ if (menuButton) {
      MODE DARI KOMPONEN LAIN
   ===================================================== */
 
+// document.addEventListener("setApplicationMode", function (event) {
+//   const mode =
+//     event.detail && event.detail.mode ? event.detail.mode : "visitor";
+
+//   setMode(mode);
+// });
+
 document.addEventListener("setApplicationMode", function (event) {
   const mode =
     event.detail && event.detail.mode ? event.detail.mode : "visitor";
 
-  setMode(mode);
+  if (mode === "visitor") {
+    setMode("visitor");
+  }
 });
 
 /* =====================================================

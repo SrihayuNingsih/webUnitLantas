@@ -1873,16 +1873,24 @@ function initLakaPage() {
   if (deleteBtn) deleteBtn.addEventListener("click", handleDelete);
 
   // Auth Controls
+  // const loginBtn = document.getElementById("loginButton");
+  // if (loginBtn) {
+  //   loginBtn.addEventListener("click", () => {
+  //     isOfficerMode = true;
+  //     updateLakaMode(true);
+  //     document.dispatchEvent(
+  //       new CustomEvent("modeChanged", {
+  //         detail: { isOfficerMode: true },
+  //       }),
+  //     );
+  //   });
+  // }
+
+  // Auth Controls
   const loginBtn = document.getElementById("loginButton");
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
-      isOfficerMode = true;
-      updateLakaMode(true);
-      document.dispatchEvent(
-        new CustomEvent("modeChanged", {
-          detail: { isOfficerMode: true },
-        }),
-      );
+      document.dispatchEvent(new CustomEvent("loginRequest"));
     });
   }
 

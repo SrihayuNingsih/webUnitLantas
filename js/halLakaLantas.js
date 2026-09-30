@@ -28,7 +28,7 @@ let lakaPageActiveMenuId = null;
 function getStatusTampil(statusText) {
   const status = (statusText || "").trim();
 
-  if (["RJ", "Selesai/RJ", "Selesai"].includes(status)) {
+  if (["RJ", "Selesai/RJ", "Selesai", "Selesai/Damai"].includes(status)) {
     return "Selesai";
   }
 
@@ -1076,7 +1076,9 @@ function renderLakaPage() {
 
   <span class="text-sm font-semibold text-slate-700 min-w-0 break-all leading-snug">
     ${
-      ["Selesai", "Selesai/RJ", "RJ"].includes((item.status || "").trim())
+      ["Selesai", "Selesai/RJ", "RJ", "Selesai/Damai"].includes(
+        (item.status || "").trim(),
+      )
         ? "Nihil"
         : (item.status || "").trim() === "Dalam Penanganan"
           ? "Nihil"

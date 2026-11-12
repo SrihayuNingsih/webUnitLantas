@@ -307,8 +307,63 @@ function renderWaktu(data) {
          RENDER LOKASI
       ====================================================== */
 
+// function renderLokasi(data) {
+//   document.getElementById("tkp").textContent = safeText(data.tkp);
+// }
+
 function renderLokasi(data) {
-  document.getElementById("tkp").textContent = safeText(data.tkp);
+  const elemenTKP = document.getElementById("tkp");
+  const mapContainer = document.getElementById("mapContainer");
+
+  if (!elemenTKP || !mapContainer) return;
+
+  const tkp = String(data.tkp || "").trim();
+
+  // Tampilkan teks TKP
+  elemenTKP.textContent = tkp || "-";
+
+  // Siapkan tampilan peta
+  if (!tkp || tkp === "-") {
+    mapContainer.classList.add("items-center", "justify-center", "p-3");
+
+    mapContainer.innerHTML = `
+      <div>
+        <div class="mx-auto flex h-10 w-10 items-center justify-center rounded-xl border border-blue-300/50 bg-blue-100/70 text-blue-700">
+          <i data-lucide="map" class="h-5 w-5"></i>
+        </div>
+        <p class="mt-2 text-xs font-black text-blue-950">
+          Peta Lokasi
+        </p>
+        <p class="mt-0.5 max-w-xs text-[0.68rem] leading-normal text-blue-800/70">
+          Lokasi belum tersedia karena teks TKP masih kosong.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  // Hilangkan padding agar peta menggunakan area yang tersedia
+  mapContainer.classList.remove("items-center", "justify-center", "p-3");
+
+  // Buat iframe Google Maps berdasarkan teks TKP
+  const iframe = document.createElement("iframe");
+
+  iframe.src =
+    "https://www.google.com/maps?q=" +
+    encodeURIComponent(tkp) +
+    "&output=embed";
+
+  iframe.title = "Peta lokasi kejadian: " + tkp;
+  iframe.loading = "lazy";
+  iframe.referrerPolicy = "no-referrer-when-downgrade";
+  iframe.allowFullscreen = true;
+
+  iframe.className =
+    "block min-h-[160px] sm:min-h-[200px] w-full flex-1 border-0";
+
+  // Ganti tampilan sebelumnya dengan peta yang baru
+  mapContainer.replaceChildren(iframe);
 }
 
 /* =====================================================
